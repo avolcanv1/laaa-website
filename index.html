@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LAAA | Laboratorio de Arte, Arquitectura y Arqueología</title>
+    <!-- Exhibition assets: warm TLS + DNS before first image request -->
+    <link rel="preconnect" href="https://freight.cargo.site" crossorigin />
+    <link rel="dns-prefetch" href="https://freight.cargo.site" />
+  </head>
+  <body>
+    <!-- Shared SVG filter: film grain for archival image treatment -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="0"
+      height="0"
+      aria-hidden="true"
+      style="position: absolute; overflow: hidden"
+    >
+      <defs>
+        <filter
+          id="archivalGrainFilter"
+          x="-5%"
+          y="-5%"
+          width="110%"
+          height="110%"
+          color-interpolation-filters="sRGB"
+        >
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.82"
+            numOctaves="4"
+            stitchTiles="stitch"
+            result="noise"
+          />
+          <feColorMatrix
+            in="noise"
+            type="matrix"
+            values="0.33 0.33 0.33 0 0
+                    0.33 0.33 0.33 0 0
+                    0.33 0.33 0.33 0 0
+                    0 0 0 0.55 0"
+            result="grain"
+          />
+        </filter>
+      </defs>
+    </svg>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
