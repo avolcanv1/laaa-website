@@ -568,6 +568,7 @@
   min-width: 0;
   align-self: stretch;
   box-sizing: border-box;
+  padding-bottom: var(--exhibition-cascade-gap);
 }
 
 .exhibitionHeroSlot--landscapeFirst .exhibitionHeroSlot__media {
@@ -787,15 +788,29 @@
 }
 
 .exhibitionCascade {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascade-gap);
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--exhibition-cascade-gap);
+}
+
+/* Flush tiles: drop the archival “mat” here so seams don’t read as white gaps */
+.exhibitionCascade .archivalMedia {
+  background: transparent;
+}
+
+.exhibitionCascade__pair {
+  display: contents;
 }
 
 .exhibitionCascade__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  column-gap: var(--exhibition-cascade-gap);
   opacity: 0;
   transform: translate3d(0, clamp(18px, 3.2vw, 32px), 0);
   transition:
@@ -810,6 +825,11 @@
   will-change: auto;
 }
 
+.exhibitionCascade__hit--wide,
+.exhibitionCascade__hit--full {
+  grid-column: 1 / -1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .exhibitionCascade__row,
   .exhibitionCascade__row--visible {
@@ -820,30 +840,16 @@
   }
 }
 
-.exhibitionCascade__pair {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--cascade-gap);
-  align-items: start;
-  width: 100%;
-}
-
-.exhibitionCascade__pair .exhibitionCascade__hit--spanAll {
-  grid-column: 1 / -1;
-}
-
-.exhibitionCascade__cell {
-  width: 100%;
-  min-width: 0;
-}
-
+.exhibitionCascade__cell,
 .exhibitionCascade__full {
   width: 100%;
+  min-width: 0;
 }
 
 .exhibitionCascade__hit {
   display: block;
   width: 100%;
+  min-width: 0;
   padding: 0;
   margin: 0;
   border: none;
@@ -857,8 +863,8 @@
   outline-offset: 2px;
 }
 
-.exhibitionCascade__pair .exhibitionCascade__hit {
-  min-width: 0;
+.exhibitionCascade .exhibitionCascade__hit.exhibitionCascade__hit--wide {
+  padding-bottom: var(--exhibition-cascade-gap);
 }
 
 /* Laaa Tienda — horizontal strip, full viewport height */
@@ -1532,10 +1538,6 @@
     width: 100%;
     max-width: 100%;
     align-self: stretch;
-  }
-
-  .exhibitionCascade__pair {
-    grid-template-columns: 1fr;
   }
 
   .galleryLightbox__frame {

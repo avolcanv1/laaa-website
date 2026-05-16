@@ -1,29 +1,37 @@
 /**
- * Cargo freight CDN supports JPEG recompression via `/t/q/{quality}/i/…`
- * (much smaller than `/t/original/i/…` for large exhibition photos).
- * Other hosts / already-original URLs are left unchanged by {@link cargoFreightUrlToOriginal}.
+ * Exhibition/project photos live as flat files under `public/cargo-media/`
+ * (`{assetId}__{filename}`). Run `npm run download-media` to populate them.
  */
 
-const FREIGHT = "https://freight.cargo.site";
-
-/** Default JPEG quality for in-page display (hero, grid, hover previews). */
-const DEFAULT_WEB_QUALITY = 78;
-
-export function cargoImageForWeb(
-  id: string,
-  file: string,
-  quality: number = DEFAULT_WEB_QUALITY,
-): string {
-  return `${FREIGHT}/t/q/${quality}/i/${id}/${file}`;
+/** Mirrors naming in scripts/download-cargo-media.mjs — keep both in sync */
+function cargoMediaFlatFilename(assetId: string, filename: string): string {
+  const safe = filename.replace(/\//g, "_").replace(/__/g, "_");
+  return `${assetId}__${safe}`;
 }
 
-export function cargoImageOriginal(id: string, file: string): string {
-  return `${FREIGHT}/t/original/i/${id}/${file}`;
+function cargoMediaPublicUrl(assetId: string, filename: string): string {
+  const flat = cargoMediaFlatFilename(assetId, filename);
+  return `/cargo-media/${encodeURIComponent(flat)}`;
 }
 
 /**
- * Use full-resolution Cargo assets in the lightbox while the page uses compressed URLs.
+ * Legacy helper name — previously pointed at Cargo’s JPEG-quality CDN path.
+ * Quality is ignored for local assets (original files on disk).
  */
+export function cargoImageForWeb(
+  id: string,
+  file: string,
+  _quality: number = 78,
+): string {
+  void _quality;
+  return cargoMediaPublicUrl(id, file);
+}
+
+export function cargoImageOriginal(id: string, file: string): string {
+  return cargoMediaPublicUrl(id, file);
+}
+
+/** Lightbox uses originals; local `/cargo-media/` URLs are already full files. */
 export function cargoFreightUrlToOriginal(url: string): string {
   if (!url.includes("freight.cargo.site")) return url;
   if (url.includes("/t/original/i/")) return url;

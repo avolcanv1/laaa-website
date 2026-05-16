@@ -6,6 +6,8 @@ type CascadeArchivalMediaProps = {
   className?: string;
   /** First visible cascade row: starts fetch early with the hero */
   priority?: boolean;
+  /** When true (default), portrait images use a fixed 3∶4 frame with `object-fit: cover`. */
+  framePortrait?: boolean;
   /** Orientation/layout without a second `Image()` request */
   onIntrinsicDimensions?: (naturalWidth: number, naturalHeight: number) => void;
 };
@@ -21,12 +23,13 @@ function classifyShape(w: number, h: number): IntrinsicShape {
 
 /**
  * Cascade / ficha: landscape and square keep intrinsic proportions (width 100%, height auto).
- * Portrait is shown in a fixed **3∶4** frame with `object-fit: cover`.
+ * Portrait uses a fixed **3∶4** frame with `object-fit: cover`, unless `framePortrait` is false.
  */
 export function CascadeArchivalMedia({
   src,
   className = "",
   priority = false,
+  framePortrait = true,
   onIntrinsicDimensions,
 }: CascadeArchivalMediaProps) {
   const [shape, setShape] = useState<IntrinsicShape>(null);
@@ -39,7 +42,7 @@ export function CascadeArchivalMedia({
     [onIntrinsicDimensions],
   );
 
-  const portraitFrame = shape === "portrait";
+  const portraitFrame = shape === "portrait" && framePortrait;
 
   return (
     <ArchivalMedia

@@ -37,7 +37,8 @@
   --detail-content-max: clamp(640px, 58vw, 980px);
   --detail-body-max: clamp(380px, 36vw, 520px);
   --detail-hero-max: clamp(300px, 36vw, 500px);
-  --cascade-gap: clamp(10px, 1.2vw, 15px);
+  /** Ficha cascade: gutter between columns and between rows */
+  --exhibition-cascade-gap: 20px;
   --mobile-header-height: 52px;
 }
 

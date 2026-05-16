@@ -1,6 +1,6 @@
 /**
  * Investigación y desarrollo — same content shape as exposiciones (`ExhibitionContent`).
- * Images from https://laaa.mx/ (Cargo). Minerva Cuevas, Cristóbal Gracia y Dr. Lakra
+ * Images via `/cargo-media/` (npm run download-media); sourced from https://laaa.mx/. Minerva Cuevas, Cristóbal Gracia y Dr. Lakra
  * have no images on the live page.
  */
 

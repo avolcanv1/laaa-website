@@ -3,7 +3,6 @@ import {
   useEffect,
   useRef,
   useState,
-  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import type { GalleryCascadeBlock } from "../data/exhibitionContent";
@@ -18,21 +17,6 @@ type ExhibitionCascadeProps = {
 function indexInSlideshow(slideshow: string[], url: string) {
   const i = slideshow.indexOf(url);
   return i === -1 ? 0 : i;
-}
-
-/** Match `layout.css` — cascade pair spans only above mobile breakpoint. */
-const CASCADE_DESKTOP_MQ = "(min-width: 1201px)";
-
-function useCascadeDesktopLayout(): boolean {
-  return useSyncExternalStore(
-    (onChange) => {
-      const mq = window.matchMedia(CASCADE_DESKTOP_MQ);
-      mq.addEventListener("change", onChange);
-      return () => mq.removeEventListener("change", onChange);
-    },
-    () => window.matchMedia(CASCADE_DESKTOP_MQ).matches,
-    () => false,
-  );
 }
 
 function CascadeRevealRow({ children }: { children: ReactNode }) {
@@ -93,7 +77,6 @@ function ExhibitionCascadePair({
   onOpenLightbox: (slideIndex: number) => void;
   priority?: boolean;
 }) {
-  const isDesktop = useCascadeDesktopLayout();
   const [leftLandscape, setLeftLandscape] = useState(false);
   const [rightLandscape, setRightLandscape] = useState(false);
 
@@ -109,16 +92,13 @@ function ExhibitionCascadePair({
     setRightLandscape(false);
   }, [left, right]);
 
-  const leftSpan = isDesktop && leftLandscape;
-  const rightSpan = isDesktop && rightLandscape;
-
   return (
     <div className="exhibitionCascade__pair">
       <button
         type="button"
         className={[
           "exhibitionCascade__hit",
-          leftSpan ? "exhibitionCascade__hit--spanAll" : "",
+          leftLandscape ? "exhibitionCascade__hit--wide" : "",
         ]
           .filter(Boolean)
           .join(" ")}
@@ -136,7 +116,7 @@ function ExhibitionCascadePair({
         type="button"
         className={[
           "exhibitionCascade__hit",
-          rightSpan ? "exhibitionCascade__hit--spanAll" : "",
+          rightLandscape ? "exhibitionCascade__hit--wide" : "",
         ]
           .filter(Boolean)
           .join(" ")}
@@ -151,6 +131,50 @@ function ExhibitionCascadePair({
         />
       </button>
     </div>
+  );
+}
+
+function ExhibitionCascadeFullHit({
+  src,
+  slideshow,
+  onOpenLightbox,
+  priority,
+}: {
+  src: string;
+  slideshow: string[];
+  onOpenLightbox: (slideIndex: number) => void;
+  priority?: boolean;
+}) {
+  const [landscape, setLandscape] = useState(false);
+
+  const onIntrinsicDimensions = useCallback((w: number, h: number) => {
+    setLandscape(w > h);
+  }, []);
+
+  useEffect(() => {
+    setLandscape(false);
+  }, [src]);
+
+  return (
+    <button
+      type="button"
+      className={[
+        "exhibitionCascade__hit",
+        "exhibitionCascade__hit--full",
+        landscape ? "exhibitionCascade__hit--wide" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      onClick={() => onOpenLightbox(indexInSlideshow(slideshow, src))}
+      aria-label="Abrir imagen en galería"
+    >
+      <CascadeArchivalMedia
+        src={src}
+        className="exhibitionCascade__full"
+        priority={priority}
+        onIntrinsicDimensions={onIntrinsicDimensions}
+      />
+    </button>
   );
 }
 
@@ -174,20 +198,12 @@ export function ExhibitionCascade({
                 priority={priorityFirstRow}
               />
             ) : (
-              <button
-                type="button"
-                className="exhibitionCascade__hit exhibitionCascade__hit--full"
-                onClick={() =>
-                  onOpenLightbox(indexInSlideshow(slideshow, block.src))
-                }
-                aria-label="Abrir imagen en galería"
-              >
-                <CascadeArchivalMedia
-                  src={block.src}
-                  className="exhibitionCascade__full"
-                  priority={priorityFirstRow}
-                />
-              </button>
+              <ExhibitionCascadeFullHit
+                src={block.src}
+                slideshow={slideshow}
+                onOpenLightbox={onOpenLightbox}
+                priority={priorityFirstRow}
+              />
             )}
           </CascadeRevealRow>
         );

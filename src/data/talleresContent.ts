@@ -1,5 +1,5 @@
 /**
- * Talleres — copy and image URLs from https://laaa.mx/ (Cargo / freight.cargo.site).
+ * Talleres — copy from https://laaa.mx/; images under `/cargo-media/` (npm run download-media).
  */
 
 import {

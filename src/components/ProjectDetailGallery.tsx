@@ -14,8 +14,8 @@ type ProjectDetailGalleryProps = {
 };
 
 /**
- * Hero uses the first slide; cascade shows every image from content (portrait frames
- * use 3∶4 in {@link CascadeArchivalMedia}).
+ * Hero uses the first slide; cascade is a two-column grid — portraits use 3∶4 via
+ * {@link CascadeArchivalMedia}.
  */
 export function ProjectDetailGallery({
   slugKey,
