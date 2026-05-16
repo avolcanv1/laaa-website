@@ -1,6 +1,14 @@
+@font-face {
+  font-family: UniversLTStd;
+  src: url("../fonts/UniversLTStd.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --font-sans: "Helvetica Neue", Helvetica, "Arial Nova", Arial, ui-sans-serif,
-    system-ui, sans-serif;
+  --font-sans: UniversLTStd, "Helvetica Neue", Helvetica, "Arial Nova", Arial,
+    ui-sans-serif, system-ui, sans-serif;
   --color-black: #000000;
   --color-white: #ffffff;
   --color-stroke: #a9a9a9; /* #A9A9A9 — 1px rules, mobile + desktop */

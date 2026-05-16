@@ -192,7 +192,7 @@ export const EXHIBITION_BY_SLUG: Record<string, ExhibitionContent> = {
     cascade: cascadeAfterHero(tenisPhotos),
   },
   "biblioteca-praxis": {
-    title: "Laaa biblioteca praxis",
+    title: "LAAA Biblioteca Praxis",
     listDate: "2025.08.01",
     body: bibliotecaPraxisBody,
     slideshow: [...praxisCatalogoPhotos, ...praxis175Photos],
