@@ -7,24 +7,19 @@ import {
 } from "react";
 import { NavLink } from "react-router-dom";
 import shopCardPlaceholder from "../assets/shop-card-placeholder.png";
-import {
-  exhibitionEntryIsSoon,
-  getExhibitionContent,
-  getExhibitionNavSlugsOrdered,
-} from "../data/exhibitionContent";
-import {
-  INVESTIGACION_ORDER,
-  getInvestigacionContent,
-  investigacionEntryIsSoon,
-} from "../data/investigacionContent";
-import {
-  getTalleresContent,
-  getTalleresNavSlugsOrdered,
-} from "../data/talleresContent";
+import { useSanityProjectList } from "../hooks/useSanityProjects";
+import type { ProjectDocumentType } from "../lib/queries";
 import {
   probeImageOrientations,
   urlMatchesBreakpointOrientation,
 } from "../lib/imageOrientationProbe";
+import {
+  entryIsSoonForType,
+  orderProjectSlugs,
+  projectBySlug,
+  type ProjectWithSlug,
+} from "../lib/sanityProject";
+import { SanityQueryState } from "./SanityQueryState";
 
 export type SectionIndexMosaicSection =
   | "exposiciones"
@@ -40,57 +35,29 @@ type Tile = {
   href: string | null;
 };
 
-function tilesForSection(section: SectionIndexMosaicSection): Tile[] {
-  if (section === "exposiciones") {
-    return getExhibitionNavSlugsOrdered().map((slug) => {
-      const item = getExhibitionContent(slug);
-      if (!item) {
-        return {
-          slug,
-          title: slug,
-          meta: "",
-          slides: [],
-          soon: false,
-          href: `/exposiciones/${slug}`,
-        };
-      }
-      const soon = exhibitionEntryIsSoon(item);
-      return {
-        slug,
-        title: item.title,
-        meta: soon ? "Próximamente" : item.listDate,
-        slides: item.slideshow,
-        soon,
-        href: soon ? null : `/exposiciones/${slug}`,
-      };
-    });
-  }
-  if (section === "investigacion") {
-    return INVESTIGACION_ORDER.map((slug) => {
-      const item = getInvestigacionContent(slug);
-      if (!item) {
-        return {
-          slug,
-          title: slug,
-          meta: "",
-          slides: [],
-          soon: false,
-          href: `/investigacion/${slug}`,
-        };
-      }
-      const soon = investigacionEntryIsSoon(item);
-      return {
-        slug,
-        title: item.title,
-        meta: soon ? "Próximamente" : item.listDate,
-        slides: item.slideshow,
-        soon,
-        href: soon ? null : `/investigacion/${slug}`,
-      };
-    });
-  }
-  return getTalleresNavSlugsOrdered().map((slug) => {
-    const item = getTalleresContent(slug);
+function sectionToDocumentType(
+  section: SectionIndexMosaicSection,
+): ProjectDocumentType {
+  if (section === "exposiciones") return "exhibition";
+  if (section === "investigacion") return "investigacion";
+  return "taller";
+}
+
+function sectionBasePath(section: SectionIndexMosaicSection): string {
+  if (section === "exposiciones") return "/exposiciones";
+  if (section === "investigacion") return "/investigacion";
+  return "/talleres";
+}
+
+function tilesFromProjects(
+  section: SectionIndexMosaicSection,
+  projects: ProjectWithSlug[],
+): Tile[] {
+  const type = sectionToDocumentType(section);
+  const base = sectionBasePath(section);
+
+  return orderProjectSlugs(type, projects).map((slug) => {
+    const item = projectBySlug(projects, slug);
     if (!item) {
       return {
         slug,
@@ -98,17 +65,17 @@ function tilesForSection(section: SectionIndexMosaicSection): Tile[] {
         meta: "",
         slides: [],
         soon: false,
-        href: `/talleres/${slug}`,
+        href: `${base}/${slug}`,
       };
     }
-    const soon = exhibitionEntryIsSoon(item);
+    const soon = entryIsSoonForType(type, item);
     return {
       slug,
       title: item.title,
       meta: soon ? "Próximamente" : item.listDate,
       slides: item.slideshow,
       soon,
-      href: soon ? null : `/talleres/${slug}`,
+      href: soon ? null : `${base}/${slug}`,
     };
   });
 }
@@ -245,7 +212,8 @@ type SectionIndexMosaicProps = {
  * Desktop: blank “marco”. ≤1200px: two-column grid — image, then date + title (cf. cancan proyectos).
  */
 export function SectionIndexMosaic({ section }: SectionIndexMosaicProps) {
-  const tiles = tilesForSection(section);
+  const documentType = sectionToDocumentType(section);
+  const fetchState = useSanityProjectList(documentType);
   const mosaicHeadingId = useId();
 
   return (
@@ -253,14 +221,25 @@ export function SectionIndexMosaic({ section }: SectionIndexMosaicProps) {
       <h2 className="mobileMosaic__sectionHeading" id={mosaicHeadingId}>
         {mosaicSectionHeading[section]}
       </h2>
-      <nav
-        className="sectionIndex__mosaic mobileMosaic"
-        aria-labelledby={mosaicHeadingId}
+      <SanityQueryState
+        state={fetchState}
+        loadingMessage="Cargando proyectos…"
+        errorMessage="No se pudo cargar el listado."
       >
-        {tiles.map((tile, index) => (
-          <MosaicTile key={tile.slug} tile={tile} tileIndex={index} />
-        ))}
-      </nav>
+        {(projects) => {
+          const tiles = tilesFromProjects(section, projects);
+          return (
+            <nav
+              className="sectionIndex__mosaic mobileMosaic"
+              aria-labelledby={mosaicHeadingId}
+            >
+              {tiles.map((tile, index) => (
+                <MosaicTile key={tile.slug} tile={tile} tileIndex={index} />
+              ))}
+            </nav>
+          );
+        }}
+      </SanityQueryState>
       <div className="sectionIndex__blank pageHome" />
     </section>
   );

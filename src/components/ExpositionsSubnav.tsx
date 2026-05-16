@@ -1,51 +1,83 @@
+import { useMemo } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useExpoSubHover } from "../context/ExpoSubHoverContext";
 import { useMobileNav } from "../context/MobileNavContext";
+import { useSanityProjectList } from "../hooks/useSanityProjects";
 import {
-  exhibitionEntryIsSoon,
-  getExhibitionContent,
-  getExhibitionNavSlugsOrdered,
-} from "../data/exhibitionContent";
+  entryIsSoonForType,
+  orderProjectSlugs,
+  projectBySlug,
+  type ProjectWithSlug,
+} from "../lib/sanityProject";
+import { SanityQueryState } from "./SanityQueryState";
 
 type Row =
   | { kind: "soon"; left: string; title: string; slug?: string }
   | { kind: "item"; left: string; title: string; slug: string };
 
-function exhibitionItemRows(): Row[] {
-  return getExhibitionNavSlugsOrdered().map((slug) => {
-    const item = getExhibitionContent(slug);
-    if (!item) {
-      return {
-        kind: "item" as const,
-        left: "",
-        title: slug,
-        slug,
-      };
-    }
-    if (exhibitionEntryIsSoon(item)) {
-      return {
-        kind: "soon" as const,
-        left: "Próximamente",
-        title: item.title,
-        slug,
-      };
-    }
-    return {
-      kind: "item" as const,
-      left: item.listDate,
-      title: item.title,
-      slug,
-    };
-  });
-}
-
 export function ExpositionsSubnav() {
+  const fetchState = useSanityProjectList("exhibition");
   const { setHoveredSlug } = useExpoSubHover();
   const { close: closeMobileNav } = useMobileNav();
   const { pathname } = useLocation();
-  /** On a ficha, inactive rows turn gray; on `/exposiciones` index everything stays black. */
   const detailOpen = /^\/exposiciones\/[^/]+$/.test(pathname);
-  const rows: Row[] = exhibitionItemRows();
+
+  return (
+    <SanityQueryState
+      state={fetchState}
+      loadingMessage="Cargando exposiciones…"
+      errorMessage="No se pudo cargar el listado."
+    >
+      {(projects) => (
+        <ExpositionsSubnavList
+          projects={projects}
+          detailOpen={detailOpen}
+          setHoveredSlug={setHoveredSlug}
+          closeMobileNav={closeMobileNav}
+        />
+      )}
+    </SanityQueryState>
+  );
+}
+
+function ExpositionsSubnavList({
+  projects,
+  detailOpen,
+  setHoveredSlug,
+  closeMobileNav,
+}: {
+  projects: ProjectWithSlug[];
+  detailOpen: boolean;
+  setHoveredSlug: (slug: string | null) => void;
+  closeMobileNav: () => void;
+}) {
+  const rows: Row[] = useMemo(() => {
+    return orderProjectSlugs("exhibition", projects).map((slug) => {
+      const item = projectBySlug(projects, slug);
+      if (!item) {
+        return {
+          kind: "item" as const,
+          left: "",
+          title: slug,
+          slug,
+        };
+      }
+      if (entryIsSoonForType("exhibition", item)) {
+        return {
+          kind: "soon" as const,
+          left: "Próximamente",
+          title: item.title,
+          slug,
+        };
+      }
+      return {
+        kind: "item" as const,
+        left: item.listDate,
+        title: item.title,
+        slug,
+      };
+    });
+  }, [projects]);
 
   return (
     <aside className="expoSub" aria-label="Listado de exposiciones">

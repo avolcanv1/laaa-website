@@ -1,17 +1,56 @@
+import { useMemo } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useInvestigacionSubHover } from "../context/InvestigacionSubHoverContext";
 import { useMobileNav } from "../context/MobileNavContext";
+import { useSanityProjectList } from "../hooks/useSanityProjects";
 import {
-  INVESTIGACION_ORDER,
-  getInvestigacionContent,
-  investigacionEntryIsSoon,
-} from "../data/investigacionContent";
+  entryIsSoonForType,
+  orderProjectSlugs,
+  projectBySlug,
+  type ProjectWithSlug,
+} from "../lib/sanityProject";
+import { SanityQueryState } from "./SanityQueryState";
 
 export function InvestigacionSubnav() {
+  const fetchState = useSanityProjectList("investigacion");
   const { setHoveredSlug } = useInvestigacionSubHover();
   const { close: closeMobileNav } = useMobileNav();
   const { pathname } = useLocation();
   const detailOpen = /^\/investigacion\/[^/]+$/.test(pathname);
+
+  return (
+    <SanityQueryState
+      state={fetchState}
+      loadingMessage="Cargando investigación…"
+      errorMessage="No se pudo cargar el listado."
+    >
+      {(projects) => (
+        <InvestigacionSubnavList
+          projects={projects}
+          detailOpen={detailOpen}
+          setHoveredSlug={setHoveredSlug}
+          closeMobileNav={closeMobileNav}
+        />
+      )}
+    </SanityQueryState>
+  );
+}
+
+function InvestigacionSubnavList({
+  projects,
+  detailOpen,
+  setHoveredSlug,
+  closeMobileNav,
+}: {
+  projects: ProjectWithSlug[];
+  detailOpen: boolean;
+  setHoveredSlug: (slug: string | null) => void;
+  closeMobileNav: () => void;
+}) {
+  const orderedSlugs = useMemo(
+    () => orderProjectSlugs("investigacion", projects),
+    [projects],
+  );
 
   return (
     <aside className="expoSub" aria-label="Investigación y desarrollo">
@@ -24,11 +63,11 @@ export function InvestigacionSubnav() {
           .join(" ")}
         onMouseLeave={() => setHoveredSlug(null)}
       >
-        {INVESTIGACION_ORDER.map((slug) => {
-          const item = getInvestigacionContent(slug);
+        {orderedSlugs.map((slug) => {
+          const item = projectBySlug(projects, slug);
           if (!item) return null;
 
-          if (investigacionEntryIsSoon(item)) {
+          if (entryIsSoonForType("investigacion", item)) {
             return (
               <li key={slug} className="expoSub__item">
                 <div

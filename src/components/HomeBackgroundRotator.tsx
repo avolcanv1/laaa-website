@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { ArchivalMedia } from "./ArchivalMedia";
 import { useMainNavHover } from "../context/MainNavHoverContext";
 import { useMobileLayoutMax1200 } from "../hooks/useMobileLayoutMax1200";
-import { getAllProjectImageUrls } from "../lib/projectImagePool";
+import { useSanityAllProjectImageUrls } from "../hooks/useSanityProjects";
 import {
   probeImageOrientations,
   urlMatchesBreakpointOrientation,
@@ -24,7 +24,9 @@ function pickRandom(urls: string[], exclude?: string): string {
 export function HomeBackgroundRotator() {
   const { pathname } = useLocation();
   const { hovered } = useMainNavHover();
-  const allUrls = useMemo(() => getAllProjectImageUrls(), []);
+  const urlFetchState = useSanityAllProjectImageUrls();
+  const allUrls =
+    urlFetchState.status === "success" ? urlFetchState.data : [];
   const isMobile = useMobileLayoutMax1200();
   const reduceMotion = useReducedMotionPreference();
 
@@ -104,7 +106,26 @@ export function HomeBackgroundRotator() {
     return () => window.clearInterval(id);
   }, [poolKey, pool, reduceMotion]);
 
-  if (pool.length === 0 || hideForNavHover) {
+  if (hideForNavHover) {
+    return null;
+  }
+
+  if (urlFetchState.status === "loading" || urlFetchState.status === "idle") {
+    return null;
+  }
+
+  if (urlFetchState.status === "error") {
+    return (
+      <p
+        className="sanityQuery__status sanityQuery__status--error pageHome__ambientError"
+        role="alert"
+      >
+        No se pudieron cargar las imágenes de fondo.
+      </p>
+    );
+  }
+
+  if (pool.length === 0) {
     return null;
   }
 
