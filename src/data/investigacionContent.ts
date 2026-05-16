@@ -8,8 +8,8 @@ import {
   compareListDateDesc,
   type ExhibitionContent,
   type GalleryCascadeBlock,
-} from "./exhibitionContent";
-import { cargoImageForWeb } from "../lib/cargoImage";
+} from "./exhibitionContent.ts";
+import { cargoImageForWeb } from "../lib/cargoImage.ts";
 
 const cargo = cargoImageForWeb;
 
@@ -306,7 +306,7 @@ export const INVESTIGACION_BY_SLUG: Record<string, ExhibitionContent> = {
     ),
   },
   "barbara-sanchez-kane": {
-    title: "Bárbara Sánchez-Kane",
+    title: "Bárbara Sánchez\u2011Kane",
     ...entry(
       "2024.10.01",
       "Tank top (wt), 2024. 35 × 28 × 54 cm. Impresión 3D (FDM y SLA).",

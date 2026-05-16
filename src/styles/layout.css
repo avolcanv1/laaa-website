@@ -810,7 +810,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: start;
-  column-gap: var(--exhibition-cascade-gap);
+  gap: var(--exhibition-cascade-gap);
   opacity: 0;
   transform: translate3d(0, clamp(18px, 3.2vw, 32px), 0);
   transition:
@@ -861,10 +861,6 @@
 .exhibitionCascade__hit:focus-visible {
   outline: 2px solid var(--color-black);
   outline-offset: 2px;
-}
-
-.exhibitionCascade .exhibitionCascade__hit.exhibitionCascade__hit--wide {
-  padding-bottom: var(--exhibition-cascade-gap);
 }
 
 /* Laaa Tienda — horizontal strip, full viewport height */

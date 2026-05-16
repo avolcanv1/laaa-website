@@ -1,3 +1,6 @@
 node_modules
 dist
 .DS_Store
+
+# Sanity Studio (caché local)
+studio/.sanity

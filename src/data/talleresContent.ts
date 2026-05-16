@@ -6,8 +6,8 @@ import {
   compareListDateDesc,
   type ExhibitionContent,
   type GalleryCascadeBlock,
-} from "./exhibitionContent";
-import { cargoImageForWeb } from "../lib/cargoImage";
+} from "./exhibitionContent.ts";
+import { cargoImageForWeb } from "../lib/cargoImage.ts";
 
 const cargo = cargoImageForWeb;
 

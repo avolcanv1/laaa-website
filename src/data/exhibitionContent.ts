@@ -2,7 +2,7 @@
  * Exposiciones — copy from https://laaa.mx/; images resolved via `/cargo-media/` (see npm run download-media).
  */
 
-import { cargoImageForWeb } from "../lib/cargoImage";
+import { cargoImageForWeb } from "../lib/cargoImage.ts";
 
 const cargo = cargoImageForWeb;
 
