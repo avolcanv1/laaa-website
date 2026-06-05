@@ -180,8 +180,24 @@ function MosaicTile({ tile, tileIndex }: MosaicTileProps) {
         )}
       </div>
       <div className="mobileMosaic__text">
-        <span className="mobileMosaic__meta">{tile.meta}</span>
-        <span className="mobileMosaic__title">{tile.title}</span>
+        <span
+          className={
+            tile.soon
+              ? "mobileMosaic__meta mobileMosaic__meta--muted"
+              : "mobileMosaic__meta"
+          }
+        >
+          {tile.meta}
+        </span>
+        <span
+          className={
+            tile.soon
+              ? "mobileMosaic__title mobileMosaic__title--muted"
+              : "mobileMosaic__title"
+          }
+        >
+          {tile.title}
+        </span>
       </div>
     </>
   );

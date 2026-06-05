@@ -67,6 +67,22 @@ function TalleresSubnavList({
           const item = projectBySlug(projects, slug);
           if (!item) return null;
 
+          if (entryIsSoonForType("taller", item)) {
+            return (
+              <li key={slug} className="expoSub__item">
+                <div
+                  className="expoSub__row expoSub__row--soon"
+                  onMouseEnter={() => setHoveredSlug(null)}
+                >
+                  <span className="expoSub__meta">Próximamente</span>
+                  <span className="expoSub__title expoSub__title--muted">
+                    {item.title}
+                  </span>
+                </div>
+              </li>
+            );
+          }
+
           return (
             <li key={slug} className="expoSub__item">
               <NavLink
@@ -86,20 +102,8 @@ function TalleresSubnavList({
                   setHoveredSlug(slug);
                 }}
               >
-                <span className="expoSub__meta">
-                  {entryIsSoonForType("taller", item)
-                    ? "Próximamente"
-                    : item.listDate}
-                </span>
-                <span
-                  className={
-                    entryIsSoonForType("taller", item)
-                      ? "expoSub__title expoSub__title--muted"
-                      : "expoSub__title"
-                  }
-                >
-                  {item.title}
-                </span>
+                <span className="expoSub__meta">{item.listDate}</span>
+                <span className="expoSub__title">{item.title}</span>
               </NavLink>
             </li>
           );

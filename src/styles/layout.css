@@ -1729,6 +1729,12 @@
   .mobileMosaic__tile--soon {
     pointer-events: none;
     cursor: default;
+    color: var(--color-stroke);
+  }
+
+  .mobileMosaic__meta--muted,
+  .mobileMosaic__title--muted {
+    color: var(--color-stroke);
   }
 
   .mobileMosaic__tile:focus-visible {
