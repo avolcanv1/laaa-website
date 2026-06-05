@@ -16,12 +16,16 @@ export function ExhibitionHeroSlotShell({
 }: ExhibitionHeroSlotShellProps) {
   const landscapeFirst = useImageIsLandscape(heroUrl);
 
+  const oriented = landscapeFirst !== null;
+
   return (
     <div
       className={[
         "exhibitionSlideshow",
         "exhibitionHeroSlot",
+        !oriented ? "exhibitionHeroSlot--orienting" : "",
         landscapeFirst === true ? "exhibitionHeroSlot--landscapeFirst" : "",
+        oriented && landscapeFirst === false ? "exhibitionHeroSlot--portrait" : "",
       ]
         .filter(Boolean)
         .join(" ")}

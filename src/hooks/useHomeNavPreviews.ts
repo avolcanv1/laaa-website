@@ -17,9 +17,20 @@ export function useHomeNavPreviews(): Partial<
   useEffect(() => {
     let cancelled = false;
 
+    for (const preview of Object.values(NAV_HOVER_PREVIEWS)) {
+      const img = new Image();
+      img.src = preview.imageSrc;
+    }
+
     fetchHomeNavPreviews()
       .then((data) => {
-        if (!cancelled) setPreviews(data);
+        if (cancelled) return;
+        setPreviews(data);
+        for (const preview of Object.values(data)) {
+          if (!preview?.imageSrc) continue;
+          const img = new Image();
+          img.src = preview.imageSrc;
+        }
       })
       .catch(() => {
         if (!cancelled) setPreviews({});

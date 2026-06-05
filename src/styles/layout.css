@@ -144,6 +144,12 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mainHoverPreview__imageWrap--ready {
+  opacity: 1;
 }
 
 .mainHoverPreview__imageWrap::after {
@@ -505,6 +511,15 @@
   height: 100%;
 }
 
+.archivalMedia:not(.archivalMedia--natural) {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.archivalMedia:not(.archivalMedia--natural).archivalMedia--imageLoaded {
+  opacity: 1;
+}
+
 .archivalMedia:not(.archivalMedia--natural) .archivalMedia__img {
   display: block;
   width: 100%;
@@ -592,6 +607,10 @@
   box-sizing: border-box;
 }
 
+.exhibitionHeroSlot--orienting {
+  opacity: 0;
+}
+
 .exhibitionHeroSlot--landscapeFirst {
   width: 100%;
   max-width: 100%;
@@ -612,20 +631,18 @@
   height: auto;
 }
 
-.exhibitionHeroSlot:not(.exhibitionHeroSlot--landscapeFirst) {
+.exhibitionHeroSlot--portrait {
   width: 50%;
   max-width: 50%;
   align-self: flex-start;
 }
 
-.exhibitionHeroSlot:not(.exhibitionHeroSlot--landscapeFirst) .exhibitionHeroSlot__media {
+.exhibitionHeroSlot--portrait .exhibitionHeroSlot__media {
   width: 100%;
   max-width: 100%;
 }
 
-.exhibitionHeroSlot:not(.exhibitionHeroSlot--landscapeFirst)
-  .exhibitionHeroSlot__media
-  .archivalMedia__img {
+.exhibitionHeroSlot--portrait .exhibitionHeroSlot__media .archivalMedia__img {
   width: 100%;
   max-width: 100%;
   height: auto;
@@ -888,11 +905,6 @@
   flex-direction: column;
   align-items: stretch;
   gap: var(--exhibition-cascade-gap);
-}
-
-/* Flush tiles: drop the mat overlay so seams don’t read as dark gaps */
-.exhibitionCascade .archivalMedia__mat {
-  display: none;
 }
 
 .exhibitionCascade__pair {
