@@ -29,18 +29,40 @@ function isArtLabelGroup(lines: string[]): boolean {
   return lines.some((line) => DIMENSION_LINE.test(line) || /,\s*\d{4}\s*$/.test(line));
 }
 
-function spansForArtLabelLine(line: string, isFirst: boolean): PortableTextBlock["children"] {
+function spansForArtLabelLine(
+  line: string,
+  options: { italicTitle?: boolean },
+): PortableTextBlock["children"] {
   const text = line.trim();
-  if (isFirst) {
-    const titled = text.match(/^(.+?),\s*(\d{4})\s*$/);
-    if (titled) {
-      return [
-        { _type: "span", text: titled[1]!, marks: ["em"] },
-        { _type: "span", text: `, ${titled[2]}`, marks: [] },
-      ];
-    }
+  const yearMatch = text.match(/^(.*?)(,\s*\d{4})\s*$/);
+
+  if (options.italicTitle && yearMatch) {
+    return [
+      { _type: "span", text: yearMatch[1]!, marks: ["em"] },
+      { _type: "span", text: yearMatch[2]!, marks: ["dateUnivers"] },
+    ];
   }
+
+  if (yearMatch && yearMatch[1] !== text) {
+    return [
+      { _type: "span", text: yearMatch[1]!, marks: [] },
+      { _type: "span", text: yearMatch[2]!, marks: ["dateUnivers"] },
+    ];
+  }
+
   return [{ _type: "span", text, marks: [] }];
+}
+
+function refreshArtLabelBlock(block: PortableTextBlock): PortableTextBlock {
+  const plain = blockPlainText(block);
+  const italicTitle = (block.children ?? []).some((child) =>
+    child.marks?.includes("em"),
+  );
+  return {
+    ...block,
+    markDefs: [],
+    children: spansForArtLabelLine(plain, { italicTitle }),
+  };
 }
 
 function artLabelBlock(
@@ -53,7 +75,7 @@ function artLabelBlock(
     _type: "block",
     style: "artLabel",
     markDefs: [],
-    children: spansForArtLabelLine(line, index === 0),
+    children: spansForArtLabelLine(line, { italicTitle: index === 0 }),
   };
 }
 
@@ -71,7 +93,7 @@ export function structureArtLabelsInBlocks(
       continue;
     }
     if (block.style === "artLabel") {
-      out.push(block);
+      out.push(refreshArtLabelBlock(block));
       continue;
     }
 

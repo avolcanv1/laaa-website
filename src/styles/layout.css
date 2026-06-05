@@ -496,7 +496,7 @@
 
 .expoSub__meta {
   flex: 0 0 clamp(62px, 6vw, 80px);
-  font-family: var(--font-panama);
+  font-family: var(--font-sans);
   font-size: var(--text-small);
   line-height: normal;
   align-self: flex-end;
@@ -809,7 +809,7 @@
   box-sizing: border-box;
   font-family: var(--font-sans);
   font-size: var(--text-exhibition);
-  line-height: 1.3;
+  line-height: var(--line-height-body);
   text-align: left;
   color: var(--color-exhibition-body);
 }
@@ -1011,13 +1011,14 @@
   box-sizing: border-box;
   font-family: var(--font-sans);
   font-size: var(--text-exhibition);
-  line-height: 1.3;
+  line-height: var(--line-height-body);
   text-align: left;
   color: var(--color-black);
 }
 
 .exhibitionDetail__body p:not(.exhibitionDetail__artLabel) {
   margin: 0 0 1em;
+  line-height: var(--line-height-body);
 }
 
 .exhibitionDetail__body .exhibitionDetail__artLabel {
@@ -1033,6 +1034,11 @@
 .exhibitionDetail__artLabel em {
   font-family: var(--font-panama);
   font-style: italic;
+}
+
+.exhibitionDetail__artLabelDate {
+  font-family: var(--font-sans);
+  font-style: normal;
 }
 
 .exhibitionDetail__body .exhibitionDetail__artLabel + .exhibitionDetail__artLabel {
@@ -1862,7 +1868,7 @@
   }
 
   .mobileMosaic__meta {
-    font-family: var(--font-panama);
+    font-family: var(--font-sans);
     font-size: 12px;
     line-height: 1.2;
     letter-spacing: 0.02em;
