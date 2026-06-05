@@ -19,6 +19,12 @@ function indexInSlideshow(slideshow: string[], url: string) {
   return i === -1 ? 0 : i;
 }
 
+function lastCascadeImageUrl(blocks: GalleryCascadeBlock[]): string | null {
+  const last = blocks.at(-1);
+  if (!last) return null;
+  return last.type === "full" ? last.src : last.right;
+}
+
 function CascadeRevealRow({
   children,
   revealOnMount = false,
@@ -80,27 +86,40 @@ function ExhibitionCascadePair({
   slideshow,
   onOpenLightbox,
   priority,
+  lastImageUrl,
 }: {
   left: string;
   right: string;
   slideshow: string[];
   onOpenLightbox: (slideIndex: number) => void;
   priority?: boolean;
+  lastImageUrl: string | null;
 }) {
   const [leftLandscape, setLeftLandscape] = useState(false);
   const [rightLandscape, setRightLandscape] = useState(false);
+  const [leftPortrait, setLeftPortrait] = useState(false);
+  const [rightPortrait, setRightPortrait] = useState(false);
 
   const onLeftIntrinsic = useCallback((w: number, h: number) => {
     setLeftLandscape(w > h);
+    setLeftPortrait(h > w);
   }, []);
   const onRightIntrinsic = useCallback((w: number, h: number) => {
     setRightLandscape(w > h);
+    setRightPortrait(h > w);
   }, []);
 
   useEffect(() => {
     setLeftLandscape(false);
     setRightLandscape(false);
+    setLeftPortrait(false);
+    setRightPortrait(false);
   }, [left, right]);
+
+  const leftIsLast = lastImageUrl !== null && left === lastImageUrl;
+  const rightIsLast = lastImageUrl !== null && right === lastImageUrl;
+  const leftWide = leftLandscape || (leftIsLast && leftPortrait);
+  const rightWide = rightLandscape || (rightIsLast && rightPortrait);
 
   return (
     <div className="exhibitionCascade__pair">
@@ -108,7 +127,7 @@ function ExhibitionCascadePair({
         type="button"
         className={[
           "exhibitionCascade__hit",
-          leftLandscape ? "exhibitionCascade__hit--wide" : "",
+          leftWide ? "exhibitionCascade__hit--wide" : "",
         ]
           .filter(Boolean)
           .join(" ")}
@@ -119,6 +138,7 @@ function ExhibitionCascadePair({
           src={left}
           className="exhibitionCascade__cell"
           priority={priority}
+          framePortrait={!(leftIsLast && leftPortrait)}
           onIntrinsicDimensions={onLeftIntrinsic}
         />
       </button>
@@ -126,7 +146,7 @@ function ExhibitionCascadePair({
         type="button"
         className={[
           "exhibitionCascade__hit",
-          rightLandscape ? "exhibitionCascade__hit--wide" : "",
+          rightWide ? "exhibitionCascade__hit--wide" : "",
         ]
           .filter(Boolean)
           .join(" ")}
@@ -137,6 +157,7 @@ function ExhibitionCascadePair({
           src={right}
           className="exhibitionCascade__cell"
           priority={priority}
+          framePortrait={!(rightIsLast && rightPortrait)}
           onIntrinsicDimensions={onRightIntrinsic}
         />
       </button>
@@ -149,21 +170,28 @@ function ExhibitionCascadeFullHit({
   slideshow,
   onOpenLightbox,
   priority,
+  isLast,
 }: {
   src: string;
   slideshow: string[];
   onOpenLightbox: (slideIndex: number) => void;
   priority?: boolean;
+  isLast: boolean;
 }) {
   const [landscape, setLandscape] = useState(false);
+  const [portrait, setPortrait] = useState(false);
 
   const onIntrinsicDimensions = useCallback((w: number, h: number) => {
     setLandscape(w > h);
+    setPortrait(h > w);
   }, []);
 
   useEffect(() => {
     setLandscape(false);
+    setPortrait(false);
   }, [src]);
+
+  const spanFullColumn = landscape || (isLast && portrait);
 
   return (
     <button
@@ -171,7 +199,7 @@ function ExhibitionCascadeFullHit({
       className={[
         "exhibitionCascade__hit",
         "exhibitionCascade__hit--full",
-        landscape ? "exhibitionCascade__hit--wide" : "",
+        spanFullColumn ? "exhibitionCascade__hit--wide" : "",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -182,6 +210,7 @@ function ExhibitionCascadeFullHit({
         src={src}
         className="exhibitionCascade__full"
         priority={priority}
+        framePortrait={!(isLast && portrait)}
         onIntrinsicDimensions={onIntrinsicDimensions}
       />
     </button>
@@ -193,6 +222,8 @@ export function ExhibitionCascade({
   slideshow,
   onOpenLightbox,
 }: ExhibitionCascadeProps) {
+  const lastImageUrl = lastCascadeImageUrl(blocks);
+
   return (
     <div className="exhibitionCascade">
       {blocks.map((block, i) => {
@@ -206,6 +237,7 @@ export function ExhibitionCascade({
                 slideshow={slideshow}
                 onOpenLightbox={onOpenLightbox}
                 priority={priorityFirstRow}
+                lastImageUrl={lastImageUrl}
               />
             ) : (
               <ExhibitionCascadeFullHit
@@ -213,6 +245,7 @@ export function ExhibitionCascade({
                 slideshow={slideshow}
                 onOpenLightbox={onOpenLightbox}
                 priority={priorityFirstRow}
+                isLast={block.src === lastImageUrl}
               />
             )}
           </CascadeRevealRow>
