@@ -6,7 +6,7 @@ const portableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p>{children}</p>,
     artLabel: ({ children }) => (
-      <span className="exhibitionDetail__artLabel">{children}</span>
+      <p className="exhibitionDetail__artLabel">{children}</p>
     ),
     h2: ({ children }) => <h2 className="exhibitionDetail__bodyHeading">{children}</h2>,
     blockquote: ({ children }) => (
@@ -14,9 +14,6 @@ const portableTextComponents: PortableTextComponents = {
     ),
   },
   marks: {
-    dateUnivers: ({ children }) => (
-      <span className="exhibitionDetail__artLabelDate">{children}</span>
-    ),
     link: ({ value, children }) => {
       const href = typeof value?.href === "string" ? value.href : "#";
       return (

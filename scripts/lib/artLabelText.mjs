@@ -34,20 +34,6 @@ function isArtLabelGroup(lines) {
   return lines.some((line) => DIMENSION_LINE.test(line) || /,\s*\d{4}\s*$/.test(line));
 }
 
-function splitYearSpan(span) {
-  const text = span.text ?? "";
-  const yearMatch = text.match(/^(.*?)(,\s*\d{4})\s*$/);
-  if (!yearMatch || yearMatch[1] === text) return [span];
-
-  const marks = span.marks ?? [];
-  const out = [];
-  if (yearMatch[1]) {
-    out.push({ ...span, text: yearMatch[1], marks: [...marks] });
-  }
-  out.push({ ...span, text: yearMatch[2], marks: ["dateUnivers"] });
-  return out;
-}
-
 function artLabelRandomKey() {
   return `art_${Math.random().toString(36).slice(2, 9)}`;
 }
@@ -68,7 +54,7 @@ function spansForArtLabelLine(line, options = {}) {
   }
 
   const { children } = inlineHtmlToSpans(normalized, artLabelRandomKey);
-  return children.flatMap((span) => splitYearSpan(span));
+  return children;
 }
 
 function refreshArtLabelBlock(block) {

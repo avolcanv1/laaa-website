@@ -10,8 +10,6 @@ const DIMENSION_LINE =
 const LABEL_CONTEXT =
   /^(Parte de|Desarrollado|Desarrollado|Métodos|Acto |En colaboración|Collective|Rice |UJAT|Escuela|Fabricación digital|Fabricación|Impresión 3d|Impresión 3D)/i;
 
-type ArtLabelSpan = NonNullable<PortableTextBlock["children"]>[number];
-
 function blockPlainText(block: PortableTextBlock): string {
   return (block.children ?? []).map((c) => c.text ?? "").join("");
 }
@@ -35,20 +33,6 @@ function isArtLabelGroup(lines: string[]): boolean {
   return lines.some((line) => DIMENSION_LINE.test(line) || /,\s*\d{4}\s*$/.test(line));
 }
 
-function splitYearSpan(span: ArtLabelSpan): ArtLabelSpan[] {
-  const text = span.text ?? "";
-  const yearMatch = text.match(/^(.*?)(,\s*\d{4})\s*$/);
-  if (!yearMatch || yearMatch[1] === text) return [span];
-
-  const marks = span.marks ?? [];
-  const out: ArtLabelSpan[] = [];
-  if (yearMatch[1]!) {
-    out.push({ ...span, text: yearMatch[1]!, marks: [...marks] });
-  }
-  out.push({ ...span, text: yearMatch[2]!, marks: ["dateUnivers"] });
-  return out;
-}
-
 function spansForArtLabelLine(
   line: string,
   options: { italicTitle?: boolean },
@@ -67,7 +51,7 @@ function spansForArtLabelLine(
   }
 
   const { children } = parseInlineHtmlToSpans(normalized);
-  return children.flatMap((span) => splitYearSpan(span));
+  return children;
 }
 
 function refreshArtLabelBlock(block: PortableTextBlock): PortableTextBlock {
