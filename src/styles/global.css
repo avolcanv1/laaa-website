@@ -59,6 +59,8 @@
   --detail-hero-max: clamp(300px, 36vw, 500px);
   /** Ficha cascade: gutter between columns and between rows */
   --exhibition-cascade-gap: 20px;
+  /** Portrait cascade frames — never taller than the viewport */
+  --exhibition-cascade-portrait-max-height: calc(100dvh - 2 * var(--detail-pad));
   --mobile-header-height: 52px;
 }
 
