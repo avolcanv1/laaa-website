@@ -94,7 +94,9 @@ export function TiendaProductPage() {
   }, [product, selectedVariantId, variants]);
 
   const soldOut = product
-    ? isProductSoldOut(product) ||
+    ? isProductSoldOut(product, {
+        ignoreCatalogSoldOut: isTiendaTestMode(),
+      }) ||
       (selectedVariant ? !selectedVariant.availableForSale : false)
     : false;
 

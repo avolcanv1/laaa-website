@@ -78,11 +78,15 @@ export function formatShopifyMoney(
   }
 }
 
-export function isProductSoldOut(product: {
-  availableForSale: boolean;
-  descriptionHtml: string;
-}): boolean {
+export function isProductSoldOut(
+  product: {
+    availableForSale: boolean;
+    descriptionHtml: string;
+  },
+  options?: { ignoreCatalogSoldOut?: boolean },
+): boolean {
   if (!product.availableForSale) return true;
+  if (options?.ignoreCatalogSoldOut) return false;
   const text = product.descriptionHtml.replace(/<[^>]+>/g, " ").toLowerCase();
   return text.includes("sold-out") || text.includes("agotado");
 }
