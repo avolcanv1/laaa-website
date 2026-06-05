@@ -6,9 +6,11 @@
  * @see https://shopify.dev/docs/api/storefront
  */
 
+import { nonBreakingHyphens } from "./nonBreakingHyphens";
+
 const STOREFRONT_API_VERSION = "2024-10";
 
-export type ShopifyMoney = { amount: string; currencyCode: string };
+type ShopifyMoney = { amount: string; currencyCode: string };
 
 export type ShopifyProductCard = {
   id: string;
@@ -117,7 +119,7 @@ export async function fetchStorefrontProducts(
 
   return json.data.products.edges.map(({ node: n }) => ({
     id: n.id,
-    title: n.title,
+    title: nonBreakingHyphens(n.title),
     imageUrl: n.featuredImage?.url ?? null,
     imageAlt: n.featuredImage?.altText ?? null,
     firstVariantId: n.variants.edges[0]?.node.id ?? null,

@@ -4,6 +4,7 @@ import {
   exhibitionEntryIsSoon,
 } from "../data/exhibitionContent";
 import { investigacionEntryIsSoon } from "../data/investigacionContent";
+import { nonBreakingHyphens } from "./nonBreakingHyphens";
 import { portableTextToPlain, type PortableTextBlock } from "./portableText";
 import { repairPortableTextBlocks } from "./inlineHtmlToPortableText";
 import {
@@ -93,7 +94,7 @@ function mapSanityProject(raw: SanityProjectRaw): ProjectWithSlug | null {
     .map(galleryRowToLightboxUrl)
     .filter((url) => url.length > 0);
 
-  const title = raw.title?.trim() ?? slug;
+  const title = nonBreakingHyphens(raw.title?.trim() ?? slug);
   const listDate = raw.listDate?.trim() ?? "";
   const bodyBlocks = raw.body?.length
     ? repairPortableTextBlocks(raw.body as PortableTextBlock[])
