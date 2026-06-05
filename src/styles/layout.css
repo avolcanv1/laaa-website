@@ -211,40 +211,16 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1);
 }
 
-.mainHoverPreview__imageWrap--ready {
-  opacity: 1;
-}
-
-.mainHoverPreview__imageWrap::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--color-image-mat);
-  z-index: 1;
-}
-
-.mainHoverPreview__img {
-  display: block;
+.mainHoverPreview__media {
   width: 100%;
-  height: auto;
-}
-
-.mainHoverPreview__tint {
-  position: absolute;
-  inset: 0;
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 2;
 }
 
 .mainHoverPreview__caption {
-  margin: 0.35em 0 0;
+  margin: 0.35em var(--detail-pad) 0 0;
   width: 100%;
+  box-sizing: border-box;
   font-family: var(--font-panama);
   font-size: var(--text-sm, 0.875rem);
   line-height: 1.35;
@@ -1025,19 +1001,17 @@
   display: block;
   margin: 0;
   padding: 0;
-  font-family: var(--font-panama);
-  font-size: calc(1em + 2px);
+  font-family: inherit;
+  font-size: inherit;
   line-height: 1;
   color: var(--color-black);
 }
 
 .exhibitionDetail__artLabel em {
-  font-family: var(--font-panama);
   font-style: italic;
 }
 
 .exhibitionDetail__artLabelDate {
-  font-family: var(--font-sans);
   font-style: normal;
 }
 

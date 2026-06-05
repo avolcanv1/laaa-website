@@ -1,3 +1,7 @@
+import {
+  normalizeMalformedInlineHtml,
+  parseInlineHtmlToSpans,
+} from "./inlineHtmlToPortableText";
 import type { PortableTextBlock } from "./portableText";
 
 const DIMENSION_LINE =
@@ -5,6 +9,8 @@ const DIMENSION_LINE =
 
 const LABEL_CONTEXT =
   /^(Parte de|Desarrollado|Desarrollado|Métodos|Acto |En colaboración|Collective|Rice |UJAT|Escuela|Fabricación digital|Fabricación|Impresión 3d|Impresión 3D)/i;
+
+type ArtLabelSpan = NonNullable<PortableTextBlock["children"]>[number];
 
 function blockPlainText(block: PortableTextBlock): string {
   return (block.children ?? []).map((c) => c.text ?? "").join("");
@@ -29,35 +35,48 @@ function isArtLabelGroup(lines: string[]): boolean {
   return lines.some((line) => DIMENSION_LINE.test(line) || /,\s*\d{4}\s*$/.test(line));
 }
 
+function splitYearSpan(span: ArtLabelSpan): ArtLabelSpan[] {
+  const text = span.text ?? "";
+  const yearMatch = text.match(/^(.*?)(,\s*\d{4})\s*$/);
+  if (!yearMatch || yearMatch[1] === text) return [span];
+
+  const marks = span.marks ?? [];
+  const out: ArtLabelSpan[] = [];
+  if (yearMatch[1]!) {
+    out.push({ ...span, text: yearMatch[1]!, marks: [...marks] });
+  }
+  out.push({ ...span, text: yearMatch[2]!, marks: ["dateUnivers"] });
+  return out;
+}
+
 function spansForArtLabelLine(
   line: string,
   options: { italicTitle?: boolean },
 ): PortableTextBlock["children"] {
-  const text = line.trim();
-  const yearMatch = text.match(/^(.*?)(,\s*\d{4})\s*$/);
+  let normalized = normalizeMalformedInlineHtml(line.trim());
 
-  if (options.italicTitle && yearMatch) {
-    return [
-      { _type: "span", text: yearMatch[1]!, marks: ["em"] },
-      { _type: "span", text: yearMatch[2]!, marks: ["dateUnivers"] },
-    ];
+  if (
+    options.italicTitle &&
+    !/<\/?i\b/i.test(normalized) &&
+    !/\bi>/i.test(normalized)
+  ) {
+    const titled = normalized.match(/^(.+?),\s*(\d{4})\s*$/);
+    if (titled) {
+      normalized = `<i>${titled[1]}</i>, ${titled[2]}`;
+    }
   }
 
-  if (yearMatch && yearMatch[1] !== text) {
-    return [
-      { _type: "span", text: yearMatch[1]!, marks: [] },
-      { _type: "span", text: yearMatch[2]!, marks: ["dateUnivers"] },
-    ];
-  }
-
-  return [{ _type: "span", text, marks: [] }];
+  const { children } = parseInlineHtmlToSpans(normalized);
+  return children.flatMap((span) => splitYearSpan(span));
 }
 
 function refreshArtLabelBlock(block: PortableTextBlock): PortableTextBlock {
   const plain = blockPlainText(block);
-  const italicTitle = (block.children ?? []).some((child) =>
-    child.marks?.includes("em"),
-  );
+  const italicTitle =
+    (block.children ?? []).some((child) => child.marks?.includes("em")) ||
+    /<\/i>/i.test(plain) ||
+    /,\s*\d{4}\s*$/.test(plain);
+
   return {
     ...block,
     markDefs: [],
@@ -79,7 +98,7 @@ function artLabelBlock(
   };
 }
 
-/** Split newline-joined label blocks into one Panama art-label line per block. */
+/** Split newline-joined label blocks into one art-label line per block. */
 export function structureArtLabelsInBlocks(
   blocks: PortableTextBlock[] | null | undefined,
 ): PortableTextBlock[] | undefined {

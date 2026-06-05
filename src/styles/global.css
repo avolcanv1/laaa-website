@@ -40,7 +40,7 @@
   --text-small: clamp(10px, 0.2vw + 0.55rem, 11px);
   --text-footer: clamp(14px, 0.35vw + 0.75rem, 16px);
   --text-exhibition: clamp(13px, 0.35vw + 0.72rem, 16px);
-  --line-height-body: 130%;
+  --line-height-body: 140%;
   --tracking-logo: clamp(6px, 0.55vw, 9px);
   --color-exhibition-body: #737373;
   --color-archival-wash: #82781b;

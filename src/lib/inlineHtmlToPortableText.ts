@@ -13,6 +13,14 @@ export function normalizeMalformedInlineHtml(html: string): string {
   s = s.replace(/(^|[^<])i>([\s\S]*?)i>/g, "$1<i>$2</i>");
   s = s.replace(/(^|[^<])i>([\s\S]*?)<\/,/g, "$1<i>$2</i>,");
 
+  // Orphan `</i>` without `<i>` — italicize the preceding text run (idempotent)
+  s = s.replace(/([^<]+)<\/i>/gi, (match, inner, offset, whole) => {
+    const before = whole.slice(0, offset);
+    if (/<i[^>]*>[^<]*$/i.test(before + inner)) return match;
+    if (before.endsWith("<")) return match;
+    return `<i>${inner}</i>`;
+  });
+
   return s;
 }
 
@@ -107,8 +115,17 @@ function blockNeedsItalicRepair(plain: string): boolean {
   return (
     /\bi>/.test(plain) ||
     /<\/,/.test(plain) ||
+    /<\/i>/i.test(plain) ||
     /<i>[\s\S]*?<i>/i.test(plain)
   );
+}
+
+/** Parse inline HTML / broken italic markers into Portable Text spans. */
+export function parseInlineHtmlToSpans(html: string): {
+  children: PortableSpan[];
+  markDefs: NonNullable<PortableTextBlock["markDefs"]>;
+} {
+  return inlineHtmlToSpans(html);
 }
 
 /** Re-parse blocks that contain broken `i>` italic markers from earlier imports. */

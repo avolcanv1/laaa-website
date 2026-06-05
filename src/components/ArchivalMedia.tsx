@@ -9,6 +9,8 @@ type ArchivalMediaProps = {
   objectFit?: "cover" | "contain";
   /** `archival` = olive / grain (hover & previews); `natural` = full color on ficha */
   treatment?: "archival" | "natural";
+  /** Archival screen-blend fill; defaults to `--color-archival-wash` */
+  washColor?: string;
   loading?: "eager" | "lazy";
   fetchPriority?: "high" | "low" | "auto";
   /** After decode; use instead of a second `Image()` fetch for layout/orientation */
@@ -26,6 +28,7 @@ export function ArchivalMedia({
   aspectRatio,
   objectFit = "cover",
   treatment = "archival",
+  washColor,
   loading = "lazy",
   fetchPriority,
   onIntrinsicDimensions,
@@ -71,7 +74,11 @@ export function ArchivalMedia({
       <div className="archivalMedia__mat" aria-hidden />
       {treatment === "archival" ? (
         <>
-          <div className="archivalMedia__wash" aria-hidden />
+          <div
+            className="archivalMedia__wash"
+            style={washColor ? { background: washColor } : undefined}
+            aria-hidden
+          />
           <div className="archivalMedia__grain" aria-hidden>
             <svg
               xmlns="http://www.w3.org/2000/svg"

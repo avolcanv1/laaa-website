@@ -1,5 +1,10 @@
 /** @typedef {{ _type?: string; style?: string; children?: { text?: string; marks?: string[] }[]; markDefs?: object[]; _key?: string }} PortableBlock */
 
+import {
+  inlineHtmlToSpans,
+  normalizeMalformedInlineHtml,
+} from "./inlineHtmlToPortableText.mjs";
+
 const DIMENSION_LINE =
   /^[\d.]+(?:\s*(?:×|x)\s*(?:[\d.]+|⌀[\d.]+))+(?:\s*(?:×|x)\s*(?:[\d.]+|⌀[\d.]+))*\s*cm\s*$/i;
 
@@ -29,33 +34,49 @@ function isArtLabelGroup(lines) {
   return lines.some((line) => DIMENSION_LINE.test(line) || /,\s*\d{4}\s*$/.test(line));
 }
 
+function splitYearSpan(span) {
+  const text = span.text ?? "";
+  const yearMatch = text.match(/^(.*?)(,\s*\d{4})\s*$/);
+  if (!yearMatch || yearMatch[1] === text) return [span];
+
+  const marks = span.marks ?? [];
+  const out = [];
+  if (yearMatch[1]) {
+    out.push({ ...span, text: yearMatch[1], marks: [...marks] });
+  }
+  out.push({ ...span, text: yearMatch[2], marks: ["dateUnivers"] });
+  return out;
+}
+
+function artLabelRandomKey() {
+  return `art_${Math.random().toString(36).slice(2, 9)}`;
+}
+
 function spansForArtLabelLine(line, options = {}) {
   const { italicTitle = false } = options;
-  const text = line.trim();
-  const yearMatch = text.match(/^(.*?)(,\s*\d{4})\s*$/);
+  let normalized = normalizeMalformedInlineHtml(line.trim());
 
-  if (italicTitle && yearMatch) {
-    return [
-      { _type: "span", text: yearMatch[1], marks: ["em"] },
-      { _type: "span", text: yearMatch[2], marks: ["dateUnivers"] },
-    ];
+  if (
+    italicTitle &&
+    !/<\/?i\b/i.test(normalized) &&
+    !/\bi>/i.test(normalized)
+  ) {
+    const titled = normalized.match(/^(.+?),\s*(\d{4})\s*$/);
+    if (titled) {
+      normalized = `<i>${titled[1]}</i>, ${titled[2]}`;
+    }
   }
 
-  if (yearMatch && yearMatch[1] !== text) {
-    return [
-      { _type: "span", text: yearMatch[1], marks: [] },
-      { _type: "span", text: yearMatch[2], marks: ["dateUnivers"] },
-    ];
-  }
-
-  return [{ _type: "span", text, marks: [] }];
+  const { children } = inlineHtmlToSpans(normalized, artLabelRandomKey);
+  return children.flatMap((span) => splitYearSpan(span));
 }
 
 function refreshArtLabelBlock(block) {
   const plain = blockPlainText(block);
-  const italicTitle = (block.children ?? []).some((child) =>
-    child.marks?.includes("em"),
-  );
+  const italicTitle =
+    (block.children ?? []).some((child) => child.marks?.includes("em")) ||
+    /<\/i>/i.test(plain) ||
+    /,\s*\d{4}\s*$/.test(plain);
   return {
     ...block,
     markDefs: [],

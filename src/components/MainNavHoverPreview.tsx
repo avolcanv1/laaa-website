@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import {
   resolveNavHoverPreview,
@@ -7,6 +7,7 @@ import {
 import { useHoverFade } from "../hooks/useHoverFade";
 import { useMainNavHover } from "../context/MainNavHoverContext";
 import type { NavHoverPreviewData } from "../lib/homeNavPreviews";
+import { ArchivalMedia } from "./ArchivalMedia";
 
 export function MainNavHoverPreview() {
   const { pathname } = useLocation();
@@ -21,23 +22,11 @@ export function MainNavHoverPreview() {
   const displayPreview = preview ?? lastPreviewRef.current;
 
   const { mounted, visible } = useHoverFade(Boolean(preview));
-  const imgRef = useRef<HTMLImageElement>(null);
-  const [imageReady, setImageReady] = useState(false);
 
   const layoutMod =
     displayPreview?.layout === "vertical"
       ? "mainHoverPreview--vertical"
       : "mainHoverPreview--horizontal";
-
-  useEffect(() => {
-    if (!displayPreview) {
-      setImageReady(false);
-      return;
-    }
-    setImageReady(false);
-    const img = imgRef.current;
-    if (img?.complete && img.naturalWidth > 0) setImageReady(true);
-  }, [displayPreview?.imageSrc, displayPreview]);
 
   if (!mounted || !displayPreview) return null;
 
@@ -55,27 +44,18 @@ export function MainNavHoverPreview() {
     >
       <div
         key={displayPreview.imageSrc}
-        className={[
-          "mainHoverPreview__imageWrap",
-          "hoverContentEnter",
-          imageReady ? "mainHoverPreview__imageWrap--ready" : "",
-        ]
+        className={["mainHoverPreview__imageWrap", "hoverContentEnter"]
           .filter(Boolean)
           .join(" ")}
       >
-        <img
-          ref={imgRef}
+        <ArchivalMedia
           src={displayPreview.imageSrc}
           alt=""
-          className="mainHoverPreview__img"
+          treatment="archival"
+          washColor={displayPreview.overlayColor}
+          className="mainHoverPreview__media"
           loading="eager"
-          decoding="async"
           fetchPriority="high"
-          onLoad={() => setImageReady(true)}
-        />
-        <div
-          className="mainHoverPreview__tint"
-          style={{ backgroundColor: displayPreview.overlayColor }}
         />
       </div>
       {displayPreview.caption ? (
