@@ -245,6 +245,7 @@
 .mainHoverPreview__caption {
   margin: 0.35em 0 0;
   width: 100%;
+  font-family: var(--font-panama);
   font-size: var(--text-sm, 0.875rem);
   line-height: 1.35;
   text-align: right;
@@ -495,6 +496,7 @@
 
 .expoSub__meta {
   flex: 0 0 clamp(62px, 6vw, 80px);
+  font-family: var(--font-panama);
   font-size: var(--text-small);
   line-height: normal;
   align-self: flex-end;
@@ -1016,6 +1018,28 @@
 
 .exhibitionDetail__body p {
   margin: 0 0 1em;
+}
+
+.exhibitionDetail__artLabel {
+  margin: 0;
+  font-family: var(--font-panama);
+  font-size: var(--text-exhibition);
+  line-height: 1.35;
+  color: var(--color-black);
+}
+
+.exhibitionDetail__artLabel em {
+  font-family: var(--font-panama);
+  font-style: italic;
+}
+
+.exhibitionDetail__artLabel + .exhibitionDetail__artLabel {
+  margin-top: 0.15em;
+}
+
+.exhibitionDetail__body .exhibitionDetail__artLabel + p,
+.exhibitionDetail__body p + .exhibitionDetail__artLabel {
+  margin-top: 1em;
 }
 
 .exhibitionDetail__body p:last-child {
@@ -1836,6 +1860,7 @@
   }
 
   .mobileMosaic__meta {
+    font-family: var(--font-panama);
     font-size: 12px;
     line-height: 1.2;
     letter-spacing: 0.02em;

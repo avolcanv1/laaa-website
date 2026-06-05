@@ -6,9 +6,26 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: Panama;
+  src: url("../fonts/Panama.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Panama;
+  src: url("../fonts/PanamaItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --font-sans: UniversLTStd, "Helvetica Neue", Helvetica, "Arial Nova", Arial,
     ui-sans-serif, system-ui, sans-serif;
+  --font-panama: Panama, UniversLTStd, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --color-black: #000000;
   --color-white: #ffffff;
   --color-stroke: #a9a9a9; /* #A9A9A9 — 1px rules, mobile + desktop */

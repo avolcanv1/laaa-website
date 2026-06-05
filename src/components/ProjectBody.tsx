@@ -1,9 +1,13 @@
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import { formatBodyTypography } from "../lib/typographyText";
 import type { PortableTextBlock } from "../lib/portableText";
 
 const portableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p>{children}</p>,
+    artLabel: ({ children }) => (
+      <p className="exhibitionDetail__artLabel">{children}</p>
+    ),
     h2: ({ children }) => <h2 className="exhibitionDetail__bodyHeading">{children}</h2>,
     blockquote: ({ children }) => (
       <blockquote className="exhibitionDetail__bodyQuote">{children}</blockquote>
@@ -45,13 +49,17 @@ export function ProjectBody({ body, bodyBlocks }: ProjectBodyProps) {
 
   const paragraphs = body.split(/\n\n+/).filter((p) => p.trim().length > 0);
   if (paragraphs.length <= 1) {
-    return <p className="exhibitionDetail__body">{body}</p>;
+    return (
+      <p className="exhibitionDetail__body">
+        {formatBodyTypography(body)}
+      </p>
+    );
   }
 
   return (
     <div className="exhibitionDetail__body">
       {paragraphs.map((paragraph, index) => (
-        <p key={index}>{paragraph}</p>
+        <p key={index}>{formatBodyTypography(paragraph)}</p>
       ))}
     </div>
   );

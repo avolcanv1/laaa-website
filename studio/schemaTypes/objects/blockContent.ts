@@ -10,6 +10,7 @@ export default defineType({
       type: "block",
       styles: [
         { title: "Normal", value: "normal" },
+        { title: "Ficha obra", value: "artLabel" },
         { title: "Título", value: "h2" },
         { title: "Cita", value: "blockquote" },
       ],

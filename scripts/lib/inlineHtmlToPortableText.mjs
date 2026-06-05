@@ -1,5 +1,76 @@
-/** @typedef {{ _type?: string; text?: string; marks?: string[] }} PortableSpan */
+/** Replace dimension separators like `15 x 10 cm` with `15 × 10 cm`. */
+export function formatMeasurementMultiplication(text) {
+  return text.replace(
+    /(?<=[\d.)])(?: x | X )(?=[\d.(⌀])/g,
+    " × ",
+  );
+}
+
+/**
+ * @param {PortableBlock[] | null | undefined} blocks
+ */
+export function formatMeasurementInBlocks(blocks) {
+  if (!blocks?.length) return blocks ?? undefined;
+
+  return blocks.map((block) => {
+    if (block._type && block._type !== "block") return block;
+    const children = (block.children ?? []).map((span) => {
+      const text = span.text ?? "";
+      const next = formatMeasurementMultiplication(text);
+      return next === text ? span : { ...span, text: next };
+    });
+    return { ...block, children };
+  });
+}
+
+import { isArtLabelLine } from "./artLabelText.mjs";
 /** @typedef {{ _type?: string; style?: string; children?: PortableSpan[]; markDefs?: object[]; _key?: string }} PortableBlock */
+
+const EN_DASH = "–";
+const PLACEHOLDER = "\uE000";
+
+/** Hyphen-minus or em dash used as punctuation → en dash. Keeps name/compound hyphens. */
+export function formatEnDashes(text) {
+  const protectedSpans = [];
+
+  let s = text.replace(/\p{L}+-\p{L}+/gu, (match) => {
+    const token = `${PLACEHOLDER}${protectedSpans.length}${PLACEHOLDER}`;
+    protectedSpans.push(match);
+    return token;
+  });
+
+  s = s
+    .replace(/—/g, EN_DASH)
+    .replace(/\s--\s/g, ` ${EN_DASH} `)
+    .replace(/\s-\s/g, ` ${EN_DASH} `)
+    .replace(/\s-(?=\p{L})/gu, ` ${EN_DASH} `);
+
+  return s.replace(
+    new RegExp(`${PLACEHOLDER}(\\d+)${PLACEHOLDER}`, "g"),
+    (_, index) => protectedSpans[Number(index)] ?? "",
+  );
+}
+
+/**
+ * @param {PortableBlock[] | null | undefined} blocks
+ */
+export function formatEnDashesInBlocks(blocks) {
+  if (!blocks?.length) return blocks ?? undefined;
+
+  return blocks.map((block) => {
+    if (block._type && block._type !== "block") return block;
+    const children = (block.children ?? []).map((span) => {
+      const text = span.text ?? "";
+      const next = formatEnDashes(text);
+      return next === text ? span : { ...span, text: next };
+    });
+    return { ...block, children };
+  });
+}
+
+export function formatBodyTypography(text) {
+  return formatEnDashes(formatMeasurementMultiplication(text));
+}
 
 /**
  * Source txt files often use `<i>Title<i>` instead of `</i>`, or the parser strips `<`
@@ -130,22 +201,55 @@ export function bodyRawToPortableText(bodyRaw, randomKey) {
     ];
   }
 
-  const paragraphs = bodyRaw
-    .split(/\n\s*--\s*\n/)
-    .flatMap((chunk) => chunk.split(/\n{2,}/))
-    .map((p) => p.trim())
-    .filter(Boolean);
+  const blocks = [];
 
-  return paragraphs.map((paragraph) => {
-    const { children, markDefs } = inlineHtmlToSpans(paragraph, randomKey);
-    return {
-      _type: "block",
-      _key: randomKey(),
-      style: "normal",
-      children,
-      markDefs: dedupeLinkMarkDefs(markDefs),
-    };
-  });
+  for (const section of bodyRaw.split(/\n\s*--\s*\n/)) {
+    const trimmed = section.trim();
+    if (!trimmed) continue;
+
+    const lines = trimmed
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean);
+
+    let i = 0;
+    while (i < lines.length && isArtLabelLine(lines[i], i)) {
+      const { children, markDefs } = inlineHtmlToSpans(
+        formatBodyTypography(lines[i]),
+        randomKey,
+      );
+      blocks.push({
+        _type: "block",
+        _key: randomKey(),
+        style: "artLabel",
+        children,
+        markDefs: dedupeLinkMarkDefs(markDefs),
+      });
+      i += 1;
+    }
+
+    const prose = lines.slice(i).join("\n\n").trim();
+    if (!prose) continue;
+
+    for (const paragraph of prose
+      .split(/\n{2,}/)
+      .map((p) => p.trim())
+      .filter(Boolean)) {
+      const { children, markDefs } = inlineHtmlToSpans(
+        formatBodyTypography(paragraph),
+        randomKey,
+      );
+      blocks.push({
+        _type: "block",
+        _key: randomKey(),
+        style: "normal",
+        children,
+        markDefs: dedupeLinkMarkDefs(markDefs),
+      });
+    }
+  }
+
+  return blocks;
 }
 
 function blockNeedsItalicRepair(plain) {

@@ -4,7 +4,10 @@ import {
   exhibitionEntryIsSoon,
 } from "../data/exhibitionContent";
 import { investigacionEntryIsSoon } from "../data/investigacionContent";
+import { structureArtLabelsInBlocks } from "./artLabelText";
+import { formatMeasurementInBlocks } from "./measurementText";
 import { nonBreakingHyphens } from "./nonBreakingHyphens";
+import { formatEnDashes, formatEnDashesInBlocks } from "./typographyText";
 import { portableTextToPlain, type PortableTextBlock } from "./portableText";
 import { repairPortableTextBlocks } from "./inlineHtmlToPortableText";
 import {
@@ -94,10 +97,16 @@ function mapSanityProject(raw: SanityProjectRaw): ProjectWithSlug | null {
     .map(galleryRowToLightboxUrl)
     .filter((url) => url.length > 0);
 
-  const title = nonBreakingHyphens(raw.title?.trim() ?? slug);
+  const title = nonBreakingHyphens(formatEnDashes(raw.title?.trim() ?? slug));
   const listDate = raw.listDate?.trim() ?? "";
   const bodyBlocks = raw.body?.length
-    ? repairPortableTextBlocks(raw.body as PortableTextBlock[])
+    ? structureArtLabelsInBlocks(
+        formatEnDashesInBlocks(
+          formatMeasurementInBlocks(
+            repairPortableTextBlocks(raw.body as PortableTextBlock[]),
+          ),
+        ),
+      )
     : undefined;
   const body = portableTextToPlain(bodyBlocks);
 
