@@ -6,6 +6,7 @@ import {
 } from "react";
 import { Link } from "react-router-dom";
 import shopCardPlaceholder from "../assets/shop-card-placeholder.png";
+import { TiendaTestBanner } from "../components/TiendaTestBanner";
 import { useWheelScrollContainer } from "../hooks/useWheelScrollContainer";
 import {
   type ShopifyProductCard,
@@ -48,6 +49,7 @@ export function TiendaPage() {
 
   return (
     <div className="tiendaPage">
+      <TiendaTestBanner />
       {!loading && products.length === 0 ? (
         <p className="tiendaPage__empty">
           No hay productos disponibles en la tienda.

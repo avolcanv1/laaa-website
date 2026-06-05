@@ -3,6 +3,10 @@ dist
 .DS_Store
 .tools
 
+# Local env (secrets)
+.env.local
+.env*.local
+
 # Sanity Studio (caché local)
 studio/.sanity
 .vercel

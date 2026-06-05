@@ -1248,6 +1248,27 @@
 }
 
 /* Laaa Tienda — horizontal strip, full viewport height */
+.tiendaTestBanner {
+  margin: 0;
+  padding: 8px var(--detail-pad);
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  line-height: var(--line-height-body);
+  color: var(--color-tienda);
+  background: color-mix(in srgb, var(--color-tienda) 8%, var(--color-white));
+  border-bottom: 1px solid color-mix(in srgb, var(--color-tienda) 18%, var(--color-stroke));
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.tiendaCartDrawer__footer .tiendaTestBanner {
+  padding: 0 0 4px;
+  background: none;
+  border-bottom: 0;
+  text-align: left;
+  color: var(--color-exhibition-body);
+}
+
 .tiendaPage {
   flex: 1;
   min-height: 0;

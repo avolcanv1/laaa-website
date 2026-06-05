@@ -18,6 +18,7 @@ import {
   type CartDetails,
   type CartLine,
 } from "../lib/shopifyStorefront";
+import { isTiendaTestMode } from "../lib/tiendaTestMode";
 
 const CART_STORAGE_KEY = "laaa_shopify_cart_id";
 
@@ -244,6 +245,15 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
 
   const goToCheckout = useCallback(async () => {
     if (!shopify || !cartId || itemCount === 0) return;
+
+    if (
+      isTiendaTestMode() &&
+      !window.confirm(
+        "Vas a entrar al checkout de prueba de Shopify. ¿Continuar?",
+      )
+    ) {
+      return;
+    }
 
     const url =
       checkoutUrl ?? (await fetchCheckoutUrl(cartId));

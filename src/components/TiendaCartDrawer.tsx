@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import shopCardPlaceholder from "../assets/shop-card-placeholder.png";
+import { TiendaTestBanner } from "../components/TiendaTestBanner";
 import { useTiendaCart } from "../context/TiendaCartContext";
+import { isTiendaTestMode } from "../lib/tiendaTestMode";
 import { formatShopifyMoney } from "../lib/shopifyStorefront";
 
 export function TiendaCartDrawer() {
@@ -134,6 +136,7 @@ export function TiendaCartDrawer() {
             </ul>
 
             <footer className="tiendaCartDrawer__footer">
+              <TiendaTestBanner />
               <div className="tiendaCartDrawer__subtotal">
                 <span>Subtotal</span>
                 <span>{formatShopifyMoney(subtotal)}</span>
@@ -144,7 +147,7 @@ export function TiendaCartDrawer() {
                 disabled={itemCount === 0}
                 onClick={() => void goToCheckout()}
               >
-                Finalizar compra
+                {isTiendaTestMode() ? "Probar checkout" : "Finalizar compra"}
               </button>
             </footer>
           </>

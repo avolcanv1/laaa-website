@@ -7,7 +7,9 @@ import {
 } from "react";
 import { Link, useParams } from "react-router-dom";
 import shopCardPlaceholder from "../assets/shop-card-placeholder.png";
+import { TiendaTestBanner } from "../components/TiendaTestBanner";
 import { useTiendaCart } from "../context/TiendaCartContext";
+import { isTiendaTestMode } from "../lib/tiendaTestMode";
 import {
   fetchProductByHandle,
   formatShopifyMoney,
@@ -132,6 +134,7 @@ export function TiendaProductPage() {
 
   return (
     <div className="tiendaProduct">
+      <TiendaTestBanner />
       <div className="tiendaProduct__layout">
         <div className="tiendaProduct__gallery">
           <div
@@ -239,7 +242,13 @@ export function TiendaProductPage() {
             disabled={soldOut || adding || !selectedVariant}
             onClick={() => void onAdd()}
           >
-            {soldOut ? "Agotado" : adding ? "Añadiendo…" : "Añadir al carrito"}
+            {soldOut
+              ? "Agotado"
+              : adding
+                ? "Añadiendo…"
+                : isTiendaTestMode()
+                  ? "Añadir al carrito (prueba)"
+                  : "Añadir al carrito"}
           </button>
         </div>
       </div>
