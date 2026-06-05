@@ -5,6 +5,7 @@ import {
 } from "../data/exhibitionContent";
 import { investigacionEntryIsSoon } from "../data/investigacionContent";
 import { portableTextToPlain, type PortableTextBlock } from "./portableText";
+import { repairPortableTextBlocks } from "./inlineHtmlToPortableText";
 import {
   DEFAULT_LANGUAGE,
   exhibitionBySlugQuery,
@@ -94,8 +95,10 @@ function mapSanityProject(raw: SanityProjectRaw): ProjectWithSlug | null {
 
   const title = raw.title?.trim() ?? slug;
   const listDate = raw.listDate?.trim() ?? "";
-  const bodyBlocks = raw.body?.length ? raw.body : undefined;
-  const body = portableTextToPlain(raw.body);
+  const bodyBlocks = raw.body?.length
+    ? repairPortableTextBlocks(raw.body as PortableTextBlock[])
+    : undefined;
+  const body = portableTextToPlain(bodyBlocks);
 
   return {
     slug,

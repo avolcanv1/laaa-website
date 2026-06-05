@@ -11,6 +11,8 @@ import { homedir } from "node:os";
 
 import { createClient } from "@sanity/client";
 
+import { bodyRawToPortableText } from "./lib/inlineHtmlToPortableText.mjs";
+
 const PROJECT_ID = "xz3cmhei";
 const DATASET = "production";
 const API_VERSION = "2026-05-01";
@@ -130,106 +132,6 @@ function parseMetadataTxt(txtPath) {
     title: meta.titulo,
     bodyRaw: meta.textoLines.join("\n").trim(),
   };
-}
-
-function normalizeHref(href) {
-  const h = href.trim().replace(/^["']|["']$/g, "");
-  if (!h || h === "catalgo") return "https://laaa.mx";
-  if (/^mailto:/i.test(h) || /^https?:\/\//i.test(h)) return h;
-  return `https://${h}`;
-}
-
-/** Convierte HTML inline mínimo (<i>, <b>, <a>) a bloque Portable Text. */
-function inlineHtmlToSpans(html) {
-  const children = [];
-  const markDefs = [];
-  let i = 0;
-
-  function pushText(text, marks = []) {
-    if (!text) return;
-    children.push({ _type: "span", text, marks: [...marks] });
-  }
-
-  while (i < html.length) {
-    const rest = html.slice(i);
-    const tag = rest.match(/^<(i|b|a)(?:\s+href=([^>]*))?>([\s\S]*?)<\/\1>/i);
-    if (tag) {
-      const [, kind, href, inner] = tag;
-      if (kind === "i") {
-        const innerSpans = inlineHtmlToSpans(inner);
-        for (const c of innerSpans.children) {
-          children.push({ ...c, marks: [...(c.marks || []), "em"] });
-        }
-        markDefs.push(...innerSpans.markDefs);
-      } else if (kind === "b") {
-        const innerSpans = inlineHtmlToSpans(inner);
-        for (const c of innerSpans.children) {
-          children.push({ ...c, marks: [...(c.marks || []), "strong"] });
-        }
-        markDefs.push(...innerSpans.markDefs);
-      } else if (kind === "a") {
-        const key = randomKey();
-        markDefs.push({
-          _type: "link",
-          _key: key,
-          href: normalizeHref(href || ""),
-        });
-        const innerSpans = inlineHtmlToSpans(inner);
-        for (const c of innerSpans.children) {
-          children.push({ ...c, marks: [...(c.marks || []), key] });
-        }
-        markDefs.push(...innerSpans.markDefs.filter((d) => d._type === "link"));
-      }
-      i += tag[0].length;
-      continue;
-    }
-    const nextTag = rest.search(/<(i|b|a)\b/i);
-    const chunk = nextTag === -1 ? rest : rest.slice(0, nextTag);
-    pushText(chunk);
-    i += chunk.length || 1;
-  }
-
-  if (children.length === 0) children.push({ _type: "span", text: "", marks: [] });
-  return { children, markDefs };
-}
-
-function bodyToPortableText(bodyRaw) {
-  if (!bodyRaw.trim()) {
-    return [
-      {
-        _type: "block",
-        _key: randomKey(),
-        style: "normal",
-        children: [{ _type: "span", text: "", marks: [] }],
-        markDefs: [],
-      },
-    ];
-  }
-
-  const paragraphs = bodyRaw
-    .split(/\n\s*--\s*\n/)
-    .flatMap((chunk) => chunk.split(/\n{2,}/))
-    .map((p) => p.trim())
-    .filter(Boolean);
-
-  return paragraphs.map((paragraph) => {
-    const { children, markDefs } = inlineHtmlToSpans(paragraph);
-    const uniqueMarkDefs = [];
-    const seen = new Set();
-    for (const def of markDefs) {
-      if (def._type === "link" && !seen.has(def._key)) {
-        seen.add(def._key);
-        uniqueMarkDefs.push(def);
-      }
-    }
-    return {
-      _type: "block",
-      _key: randomKey(),
-      style: "normal",
-      children,
-      markDefs: uniqueMarkDefs,
-    };
-  });
 }
 
 function naturalSort(a, b) {
@@ -371,7 +273,7 @@ async function uploadProject(client, project, { dryRun, assetCache, skipSlugs })
     title: meta.title,
     listDate: meta.listDate,
     slug: { _type: "slug", current: slug },
-    body: bodyToPortableText(meta.bodyRaw),
+    body: bodyRawToPortableText(meta.bodyRaw, randomKey),
     gallery,
   };
 
