@@ -9,6 +9,16 @@ import {
 import type { ProjectDocumentType } from "../lib/queries";
 import { DEFAULT_LANGUAGE } from "../lib/queries";
 
+const projectBySlugCache = new Map<string, ProjectWithSlug | null>();
+
+function projectCacheKey(
+  type: ProjectDocumentType,
+  slug: string,
+  language: string,
+): string {
+  return `${type}:${language}:${slug}`;
+}
+
 export type SanityFetchState<T> =
   | { status: "idle" }
   | { status: "loading" }
@@ -52,8 +62,12 @@ export function useSanityProjectBySlug(
   slug: string | undefined,
   language = DEFAULT_LANGUAGE,
 ): SanityFetchState<ProjectWithSlug | null> {
-  const [state, setState] = useState<SanityFetchState<ProjectWithSlug | null>>({
-    status: slug ? "loading" : "idle",
+  const [state, setState] = useState<SanityFetchState<ProjectWithSlug | null>>(() => {
+    if (!slug) return { status: "idle" };
+    const cached = projectBySlugCache.get(projectCacheKey(type, slug, language));
+    return cached !== undefined
+      ? { status: "success", data: cached }
+      : { status: "loading" };
   });
 
   useEffect(() => {
@@ -62,12 +76,19 @@ export function useSanityProjectBySlug(
       return;
     }
 
+    const key = projectCacheKey(type, slug, language);
+    const cached = projectBySlugCache.get(key);
     let cancelled = false;
-    setState({ status: "loading" });
+
+    if (cached === undefined) {
+      setState({ status: "loading" });
+    }
 
     fetchProjectBySlug(type, slug, language)
       .then((data) => {
-        if (!cancelled) setState({ status: "success", data });
+        if (cancelled) return;
+        projectBySlugCache.set(key, data);
+        setState({ status: "success", data });
       })
       .catch((err) => {
         if (!cancelled) setState({ status: "error", error: toError(err) });

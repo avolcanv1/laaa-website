@@ -605,6 +605,8 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  opacity: 1;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1);
 }
 
 .exhibitionHeroSlot--orienting {
@@ -705,10 +707,58 @@
   padding: 40px 20px;
 }
 
-.exhibitionDetail--hideActiveForHover .exhibitionSlideshow,
-.exhibitionDetail--hideActiveForHover .exhibitionDetail__body,
-.exhibitionDetail--hideActiveForHover .exhibitionCascade {
-  display: none;
+.exhibitionDetail--hideActiveForHover .projectDetailEnter {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.35s ease,
+    visibility 0.35s ease;
+}
+
+.projectDetailEnter {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--detail-gap);
+  width: 100%;
+}
+
+.projectDetailEnter:not(.projectDetailEnter--active) .exhibitionSlideshow,
+.projectDetailEnter:not(.projectDetailEnter--active) .exhibitionDetail__body,
+.projectDetailEnter:not(.projectDetailEnter--active) .exhibitionCascade {
+  opacity: 0;
+  transform: translate3d(0, clamp(14px, 2.4vw, 24px), 0);
+}
+
+.projectDetailEnter--active .exhibitionSlideshow,
+.projectDetailEnter--active .exhibitionDetail__body,
+.projectDetailEnter--active .exhibitionCascade {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.32, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
+.projectDetailEnter--active .exhibitionDetail__body {
+  transition-delay: 0.12s;
+}
+
+.projectDetailEnter--active .exhibitionCascade {
+  transition-delay: 0.22s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projectDetailEnter:not(.projectDetailEnter--active) .exhibitionSlideshow,
+  .projectDetailEnter:not(.projectDetailEnter--active) .exhibitionDetail__body,
+  .projectDetailEnter:not(.projectDetailEnter--active) .exhibitionCascade,
+  .exhibitionDetail--hideActiveForHover .projectDetailEnter {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
 }
 
 .exhibitionDetail__missing {

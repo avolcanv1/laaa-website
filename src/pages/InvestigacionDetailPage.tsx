@@ -4,6 +4,7 @@ import { ExhibitionCascade } from "../components/ExhibitionCascade";
 import { GalleryLightbox } from "../components/GalleryLightbox";
 import { MobileDetailRouteBar } from "../components/MobileDetailRouteBar";
 import { ProjectBody } from "../components/ProjectBody";
+import { ProjectDetailEnter } from "../components/ProjectDetailEnter";
 import { ProjectDetailGallery } from "../components/ProjectDetailGallery";
 import { SanityQueryState } from "../components/SanityQueryState";
 import { useInvestigacionSubHover } from "../context/InvestigacionSubHoverContext";
@@ -61,25 +62,27 @@ export function InvestigacionDetailPage() {
               />
             ) : null}
             {hasSlides ? (
-              <ProjectDetailGallery
-                slugKey={slug}
-                title={content.title}
-                slideshow={content.slideshow}
-                cascade={content.cascade}
-                onOpenLightbox={openAt}
-                betweenHeroAndCascade={
-                  <ProjectBody body={content.body} bodyBlocks={content.bodyBlocks} />
-                }
-              />
+              <ProjectDetailEnter slugKey={slug}>
+                <ProjectDetailGallery
+                  slugKey={slug}
+                  title={content.title}
+                  slideshow={content.slideshow}
+                  cascade={content.cascade}
+                  onOpenLightbox={openAt}
+                  betweenHeroAndCascade={
+                    <ProjectBody body={content.body} bodyBlocks={content.bodyBlocks} />
+                  }
+                />
+              </ProjectDetailEnter>
             ) : (
-              <>
+              <ProjectDetailEnter slugKey={slug}>
                 <ProjectBody body={content.body} bodyBlocks={content.bodyBlocks} />
                 <ExhibitionCascade
                   blocks={content.cascade}
                   slideshow={content.slideshow}
                   onOpenLightbox={openAt}
                 />
-              </>
+              </ProjectDetailEnter>
             )}
           </div>
         );

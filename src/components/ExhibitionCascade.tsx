@@ -19,11 +19,21 @@ function indexInSlideshow(slideshow: string[], url: string) {
   return i === -1 ? 0 : i;
 }
 
-function CascadeRevealRow({ children }: { children: ReactNode }) {
+function CascadeRevealRow({
+  children,
+  revealOnMount = false,
+}: {
+  children: ReactNode;
+  revealOnMount?: boolean;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(revealOnMount);
 
   useEffect(() => {
+    if (revealOnMount) {
+      setVisible(true);
+      return;
+    }
     const el = ref.current;
     if (!el) return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -47,7 +57,7 @@ function CascadeRevealRow({ children }: { children: ReactNode }) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [revealOnMount]);
 
   return (
     <div
@@ -188,7 +198,7 @@ export function ExhibitionCascade({
       {blocks.map((block, i) => {
         const priorityFirstRow = i === 0;
         return (
-          <CascadeRevealRow key={i}>
+          <CascadeRevealRow key={i} revealOnMount={priorityFirstRow}>
             {block.type === "pair" ? (
               <ExhibitionCascadePair
                 left={block.left}
