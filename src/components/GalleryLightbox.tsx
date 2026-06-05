@@ -121,14 +121,16 @@ export function GalleryLightbox({
         <IconArrow />
       </button>
       <div className="galleryLightbox__frame">
-        <img
-          src={images[safe]}
-          alt=""
-          className="galleryLightbox__img"
-          decoding="async"
-          loading="eager"
-          fetchPriority="high"
-        />
+        <div className="galleryLightbox__media">
+          <img
+            src={images[safe]}
+            alt=""
+            className="galleryLightbox__img"
+            decoding="async"
+            loading="eager"
+            fetchPriority="high"
+          />
+        </div>
       </div>
     </div>,
     document.body,

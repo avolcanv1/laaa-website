@@ -70,6 +70,7 @@ export function ArchivalMedia({
         fetchPriority={fetchPriority}
         onLoad={syncFromImg}
       />
+      <div className="archivalMedia__mat" aria-hidden />
       {treatment === "archival" ? (
         <>
           <div className="archivalMedia__wash" aria-hidden />

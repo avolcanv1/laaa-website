@@ -1,9 +1,13 @@
-/** Fragmento GROQ: metadatos de traducción que referencian el documento actual. */
-const translationMetadataProjection = `
-  "slug": *[_type == "translation.metadata" && references(^._id)][0].slug.current,
-  "listDate": *[_type == "translation.metadata" && references(^._id)][0].listDate,
-  "gallery": *[_type == "translation.metadata" && references(^._id)][0].gallery[]{
+const projectFields = `
+  _id,
+  title,
+  body,
+  "slug": slug.current,
+  listDate,
+  gallery[]{
     _key,
+    caption,
+    alt,
     image{
       asset->{
         _id,
@@ -13,61 +17,40 @@ const translationMetadataProjection = `
   }
 `;
 
-const projectFields = `
-  _id,
-  title,
-  language,
-  body,
-  galleryCaptions[]{
-    caption,
-    alt
-  },
-  ${translationMetadataProjection}
-`;
-
 export const DEFAULT_LANGUAGE = "es";
 
 export const exhibitionsQuery = /* groq */ `
-  *[_type == "exhibition" && language == $language]{
+  *[_type == "exhibition"]{
     ${projectFields}
   }
 `;
 
 export const exhibitionBySlugQuery = /* groq */ `
-  *[_type == "exhibition"
-    && language == $language
-    && *[_type == "translation.metadata" && references(^._id)][0].slug.current == $slug
-  ][0]{
+  *[_type == "exhibition" && slug.current == $slug][0]{
     ${projectFields}
   }
 `;
 
 export const investigacionQuery = /* groq */ `
-  *[_type == "investigacion" && language == $language]{
+  *[_type == "investigacion"]{
     ${projectFields}
   }
 `;
 
 export const investigacionBySlugQuery = /* groq */ `
-  *[_type == "investigacion"
-    && language == $language
-    && *[_type == "translation.metadata" && references(^._id)][0].slug.current == $slug
-  ][0]{
+  *[_type == "investigacion" && slug.current == $slug][0]{
     ${projectFields}
   }
 `;
 
 export const talleresQuery = /* groq */ `
-  *[_type == "taller" && language == $language]{
+  *[_type == "taller"]{
     ${projectFields}
   }
 `;
 
 export const tallerBySlugQuery = /* groq */ `
-  *[_type == "taller"
-    && language == $language
-    && *[_type == "translation.metadata" && references(^._id)][0].slug.current == $slug
-  ][0]{
+  *[_type == "taller" && slug.current == $slug][0]{
     ${projectFields}
   }
 `;

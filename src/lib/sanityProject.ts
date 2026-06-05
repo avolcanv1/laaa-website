@@ -4,7 +4,7 @@ import {
   exhibitionEntryIsSoon,
 } from "../data/exhibitionContent";
 import { investigacionEntryIsSoon } from "../data/investigacionContent";
-import { portableTextToPlain } from "./portableText";
+import { portableTextToPlain, type PortableTextBlock } from "./portableText";
 import {
   DEFAULT_LANGUAGE,
   exhibitionBySlugQuery,
@@ -21,9 +21,14 @@ import { urlForSanityImage } from "./sanityImage";
 export type { ExhibitionContent as ProjectContent };
 export { exhibitionEntryIsSoon, investigacionEntryIsSoon, compareListDateDesc };
 
-export type ProjectWithSlug = ExhibitionContent & { slug: string };
+export type ProjectWithSlug = ExhibitionContent & {
+  slug: string;
+  bodyBlocks?: PortableTextBlock[];
+};
 
 type SanityGalleryRow = {
+  caption?: string | null;
+  alt?: string | null;
   image?: {
     asset?: {
       _id?: string;
@@ -35,9 +40,7 @@ type SanityGalleryRow = {
 type SanityProjectRaw = {
   _id: string;
   title?: string;
-  language?: string;
   body?: Parameters<typeof portableTextToPlain>[0];
-  galleryCaptions?: { caption?: string; alt?: string }[] | null;
   slug?: string | null;
   listDate?: string | null;
   gallery?: SanityGalleryRow[] | null;
@@ -78,6 +81,7 @@ function mapSanityProject(raw: SanityProjectRaw): ProjectWithSlug | null {
 
   const title = raw.title?.trim() ?? slug;
   const listDate = raw.listDate?.trim() ?? "";
+  const bodyBlocks = raw.body?.length ? raw.body : undefined;
   const body = portableTextToPlain(raw.body);
 
   return {
@@ -85,6 +89,7 @@ function mapSanityProject(raw: SanityProjectRaw): ProjectWithSlug | null {
     title,
     listDate,
     body,
+    bodyBlocks,
     slideshow,
     cascade: cascadeAfterHero(slideshow),
   };
@@ -152,11 +157,9 @@ export function orderProjectSlugs(
 
 export async function fetchProjectList(
   type: ProjectDocumentType,
-  language = DEFAULT_LANGUAGE,
+  _language = DEFAULT_LANGUAGE,
 ): Promise<ProjectWithSlug[]> {
-  const rows = await sanityClient.fetch<SanityProjectRaw[]>(listQueryForType(type), {
-    language,
-  });
+  const rows = await sanityClient.fetch<SanityProjectRaw[]>(listQueryForType(type));
   return rows
     .map(mapSanityProject)
     .filter((p): p is ProjectWithSlug => p !== null);
@@ -165,11 +168,11 @@ export async function fetchProjectList(
 export async function fetchProjectBySlug(
   type: ProjectDocumentType,
   slug: string,
-  language = DEFAULT_LANGUAGE,
+  _language = DEFAULT_LANGUAGE,
 ): Promise<ProjectWithSlug | null> {
   const row = await sanityClient.fetch<SanityProjectRaw | null>(
     bySlugQueryForType(type),
-    { language, slug },
+    { slug },
   );
   if (!row) return null;
   return mapSanityProject(row);

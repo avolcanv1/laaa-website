@@ -9,13 +9,16 @@
     "preview": "vite preview",
     "download-media": "node scripts/download-cargo-media.mjs",
     "migrate:sanity": "TS_NODE_PROJECT=tsconfig.scripts.json npx ts-node --esm scripts/migrate-to-sanity.ts",
+    "clear:sanity": "node scripts/clear-sanity-content.mjs",
     "studio:dev": "npm run dev --prefix studio",
     "studio:build": "npm run build --prefix studio",
     "studio:deploy": "npm run deploy --prefix studio"
   },
   "dependencies": {
+    "@portabletext/react": "^6.2.0",
     "@sanity/client": "^7.22.0",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/visual-editing": "^5.4.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.0"

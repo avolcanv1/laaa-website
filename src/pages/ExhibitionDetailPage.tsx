@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { ExhibitionCascade } from "../components/ExhibitionCascade";
 import { GalleryLightbox } from "../components/GalleryLightbox";
 import { MobileDetailRouteBar } from "../components/MobileDetailRouteBar";
+import { ProjectBody } from "../components/ProjectBody";
 import { ProjectDetailGallery } from "../components/ProjectDetailGallery";
 import { SanityQueryState } from "../components/SanityQueryState";
 import { useExpoSubHover } from "../context/ExpoSubHoverContext";
@@ -25,7 +26,6 @@ export function ExhibitionDetailPage() {
   return (
     <SanityQueryState
       state={fetchState}
-      loadingMessage="Cargando exposición…"
       errorMessage="No se pudo cargar la exposición."
     >
       {(content) => {
@@ -66,12 +66,12 @@ export function ExhibitionDetailPage() {
                 cascade={content.cascade}
                 onOpenLightbox={openAt}
                 betweenHeroAndCascade={
-                  <p className="exhibitionDetail__body">{content.body}</p>
+                  <ProjectBody body={content.body} bodyBlocks={content.bodyBlocks} />
                 }
               />
             ) : (
               <>
-                <p className="exhibitionDetail__body">{content.body}</p>
+                <ProjectBody body={content.body} bodyBlocks={content.bodyBlocks} />
                 <ExhibitionCascade
                   blocks={content.cascade}
                   slideshow={content.slideshow}

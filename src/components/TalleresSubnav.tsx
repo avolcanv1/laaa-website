@@ -21,7 +21,6 @@ export function TalleresSubnav() {
   return (
     <SanityQueryState
       state={fetchState}
-      loadingMessage="Cargando talleres…"
       errorMessage="No se pudo cargar el listado."
     >
       {(projects) => (

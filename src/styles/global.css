@@ -26,6 +26,8 @@
   --tracking-logo: clamp(6px, 0.55vw, 9px);
   --color-exhibition-body: #737373;
   --color-archival-wash: #82781b;
+  /** Subtle tint so #FFF image backgrounds don’t vanish into the page */
+  --color-image-mat: rgba(0, 0, 0, 0.05);
   --space-nav-row-y: clamp(10px, 1.1vw, 14px);
   --space-nav-row-x: clamp(14px, 1.4vw, 18px);
   --nav-row-min-h: clamp(52px, 5.5vw, 68px);

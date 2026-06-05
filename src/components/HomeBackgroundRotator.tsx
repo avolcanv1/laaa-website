@@ -115,14 +115,7 @@ export function HomeBackgroundRotator() {
   }
 
   if (urlFetchState.status === "error") {
-    return (
-      <p
-        className="sanityQuery__status sanityQuery__status--error pageHome__ambientError"
-        role="alert"
-      >
-        No se pudieron cargar las imágenes de fondo.
-      </p>
-    );
+    return null;
   }
 
   if (pool.length === 0) {

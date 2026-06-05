@@ -221,11 +221,7 @@ export function SectionIndexMosaic({ section }: SectionIndexMosaicProps) {
       <h2 className="mobileMosaic__sectionHeading" id={mosaicHeadingId}>
         {mosaicSectionHeading[section]}
       </h2>
-      <SanityQueryState
-        state={fetchState}
-        loadingMessage="Cargando proyectos…"
-        errorMessage="No se pudo cargar el listado."
-      >
+      <SanityQueryState state={fetchState} errorMessage="No se pudo cargar el listado.">
         {(projects) => {
           const tiles = tilesFromProjects(section, projects);
           return (

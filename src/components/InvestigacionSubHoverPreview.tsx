@@ -37,7 +37,6 @@ function InvestigacionSubHoverPreviewContent({
   return (
     <SanityQueryState
       state={fetchState}
-      loadingMessage="Cargando vista previa…"
       errorMessage="No se pudo cargar la vista previa."
     >
       {(content) => {

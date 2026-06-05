@@ -21,7 +21,6 @@ export function InvestigacionSubnav() {
   return (
     <SanityQueryState
       state={fetchState}
-      loadingMessage="Cargando investigación…"
       errorMessage="No se pudo cargar el listado."
     >
       {(projects) => (

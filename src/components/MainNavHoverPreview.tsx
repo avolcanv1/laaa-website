@@ -1,15 +1,19 @@
 import { useLocation } from "react-router-dom";
-import { NAV_HOVER_PREVIEWS } from "../nav/navHoverPreviews";
+import {
+  resolveNavHoverPreview,
+  useHomeNavPreviews,
+} from "../hooks/useHomeNavPreviews";
 import { useMainNavHover } from "../context/MainNavHoverContext";
 
 export function MainNavHoverPreview() {
   const { pathname } = useLocation();
   const { hovered } = useMainNavHover();
+  const previews = useHomeNavPreviews();
   const isTienda = pathname.startsWith("/tienda");
   if (!hovered) return null;
   if (isTienda) return null;
 
-  const preview = NAV_HOVER_PREVIEWS[hovered];
+  const preview = resolveNavHoverPreview(hovered, previews);
   const layoutMod =
     preview.layout === "vertical"
       ? "mainHoverPreview--vertical"
@@ -18,7 +22,7 @@ export function MainNavHoverPreview() {
   return (
     <div
       className={`mainHoverPreview ${layoutMod}`.trim()}
-      aria-hidden
+      aria-hidden={!preview.caption}
     >
       <div className="mainHoverPreview__imageWrap">
         <img src={preview.imageSrc} alt="" className="mainHoverPreview__img" />
@@ -27,6 +31,9 @@ export function MainNavHoverPreview() {
           style={{ backgroundColor: preview.overlayColor }}
         />
       </div>
+      {preview.caption ? (
+        <p className="mainHoverPreview__caption">{preview.caption}</p>
+      ) : null}
     </div>
   );
 }

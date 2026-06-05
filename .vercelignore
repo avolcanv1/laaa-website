@@ -1,0 +1,7 @@
+node_modules
+studio/node_modules
+.tools
+dist
+.git
+studio/dist
+*.log

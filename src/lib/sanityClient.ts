@@ -5,5 +5,6 @@ export const sanityClient = createClient({
   projectId: "xz3cmhei",
   dataset: "production",
   apiVersion: "2026-05-01",
-  useCdn: true,
+  // Sin CDN para que los cambios del CMS se reflejen de inmediato en el sitio.
+  useCdn: false,
 });

@@ -25,7 +25,6 @@ export function ExpositionsSubnav() {
   return (
     <SanityQueryState
       state={fetchState}
-      loadingMessage="Cargando exposiciones…"
       errorMessage="No se pudo cargar el listado."
     >
       {(projects) => (

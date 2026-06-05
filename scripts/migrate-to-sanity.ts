@@ -1,8 +1,6 @@
 /**
  * Migra exposiciones, investigación y talleres desde `src/data/*.ts` + `public/cargo-media/`
- * hacia Sanity con `@sanity/document-internationalization`:
- * - Documento por idioma (`language: "es"`) con título, cuerpo y `galleryCaptions`.
- * - `translation.metadata` con `slug`, `listDate`, `gallery` compartidos y referencia al doc ES.
+ * hacia Sanity con todos los campos en un único documento por proyecto.
  *
  * Requiere token con permiso de escritura:
  *   export SANITY_API_TOKEN="..."
@@ -26,11 +24,6 @@ import { TALLERES_BY_SLUG } from "../src/data/talleresContent.ts";
 const PROJECT_ID = "xz3cmhei";
 const DATASET = "production";
 const API_VERSION = "2026-05-01";
-
-const DEFAULT_LANGUAGE = "es";
-
-/** Tipo de ítem dentro de `translations` en `translation.metadata` (sanity-plugin-internationalized-array). */
-const INTERNATIONALIZED_REFERENCE_ROW_TYPE = "internationalizedArrayReferenceValue";
 
 /** Coherente con `cargoMediaFlatFilename` en `src/lib/cargoImage.ts`. */
 function cargoMediaFlatFilename(assetId: string, filename: string): string {
@@ -221,7 +214,7 @@ async function resolvePlaceholderAssetId(client: SanityClient): Promise<string> 
   return uploadImageFromPath(client, logoAbsolutePath(), false);
 }
 
-async function buildSharedGallery(
+async function buildGallery(
   client: SanityClient,
   slideshow: string[],
 ): Promise<Record<string, unknown>[]> {
@@ -238,8 +231,10 @@ async function buildSharedGallery(
     }
     const assetId = await uploadImageFromPath(client, fsPath);
     out.push({
-      _type: "sharedGalleryImage",
+      _type: "galleryItem",
       _key: randomKey(),
+      caption: "",
+      alt: "",
       image: {
         _type: "image",
         asset: { _type: "reference", _ref: assetId },
@@ -250,25 +245,8 @@ async function buildSharedGallery(
   return out;
 }
 
-function buildGalleryCaptionRows(count: number): Record<string, unknown>[] {
-  const rows: Record<string, unknown>[] = [];
-  for (let i = 0; i < count; i++) {
-    rows.push({
-      _type: "galleryCaptionRow",
-      _key: randomKey(),
-      caption: "",
-      alt: "",
-    });
-  }
-  return rows;
-}
-
 function sanityDocId(type: "exhibition" | "investigacion" | "taller", slug: string): string {
   return `${type}-${slug}`;
-}
-
-function translationMetadataDocId(type: "exhibition" | "investigacion" | "taller", slug: string): string {
-  return `translation-metadata-${type}-${slug}`;
 }
 
 async function migrateDocuments(
@@ -280,41 +258,19 @@ async function migrateDocuments(
   console.info(`→ ${type}: ${entries.length} documentos`);
   for (const [slug, content] of entries) {
     const body = bodyToPortableText(content.body);
-    const galleryShared = await buildSharedGallery(client, content.slideshow);
-    const galleryCaptions = buildGalleryCaptionRows(galleryShared.length);
+    const gallery = await buildGallery(client, content.slideshow);
 
-    const docId = sanityDocId(type, slug);
-    const localeDoc = {
-      _id: docId,
+    const doc = {
+      _id: sanityDocId(type, slug),
       _type: type,
-      language: DEFAULT_LANGUAGE,
       title: content.title,
-      body,
-      galleryCaptions,
-    };
-
-    const metaDoc = {
-      _id: translationMetadataDocId(type, slug),
-      _type: "translation.metadata",
-      schemaTypes: [type],
-      translations: [
-        {
-          _type: INTERNATIONALIZED_REFERENCE_ROW_TYPE,
-          _key: randomKey(),
-          language: DEFAULT_LANGUAGE,
-          value: {
-            _type: "reference",
-            _ref: docId,
-          },
-        },
-      ],
-      slug: { _type: "slug", current: slug },
       listDate: content.listDate,
-      gallery: galleryShared,
+      slug: { _type: "slug", current: slug },
+      body,
+      gallery,
     };
 
-    await client.createOrReplace(localeDoc as Record<string, unknown>);
-    await client.createOrReplace(metaDoc as Record<string, unknown>);
+    await client.createOrReplace(doc as Record<string, unknown>);
     console.info(`   ✓ ${slug}`);
   }
 }

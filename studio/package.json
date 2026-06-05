@@ -9,11 +9,9 @@
     "deploy": "sanity deploy"
   },
   "dependencies": {
-    "@sanity/document-internationalization": "^6.1.1",
     "react": "^19.2.2",
     "react-dom": "^19.2.2",
     "sanity": "^5.25.1",
-    "sanity-plugin-internationalized-array": "^5.1.1",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {

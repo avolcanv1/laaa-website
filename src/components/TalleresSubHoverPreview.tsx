@@ -33,7 +33,6 @@ function TalleresSubHoverPreviewContent({ hoveredSlug }: { hoveredSlug: string }
   return (
     <SanityQueryState
       state={fetchState}
-      loadingMessage="Cargando vista previa…"
       errorMessage="No se pudo cargar la vista previa."
     >
       {(content) => {

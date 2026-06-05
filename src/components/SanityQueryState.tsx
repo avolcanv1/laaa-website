@@ -4,7 +4,6 @@ import type { SanityFetchState } from "../hooks/useSanityProjects";
 
 type SanityQueryStateProps<T> = {
   state: SanityFetchState<T>;
-  loadingMessage?: string;
   errorMessage?: string;
   emptyMessage?: string;
   isEmpty?: (data: T) => boolean;
@@ -13,18 +12,13 @@ type SanityQueryStateProps<T> = {
 
 export function SanityQueryState<T>({
   state,
-  loadingMessage = "Cargando contenido…",
   errorMessage = "No se pudo cargar el contenido.",
   emptyMessage,
   isEmpty,
   children,
 }: SanityQueryStateProps<T>) {
   if (state.status === "idle" || state.status === "loading") {
-    return (
-      <p className="sanityQuery__status sanityQuery__status--loading" role="status">
-        {loadingMessage}
-      </p>
-    );
+    return null;
   }
 
   if (state.status === "error") {

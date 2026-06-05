@@ -10,12 +10,14 @@ export default defineType({
   preview: {
     select: {
       title: "title",
-      language: "language",
+      listDate: "listDate",
+      slug: "slug.current",
     },
-    prepare({ title, language }) {
+    prepare({ title, listDate, slug }) {
+      const parts = [listDate, slug].filter(Boolean);
       return {
         title: title ?? "Sin título",
-        subtitle: language ? String(language).toUpperCase() : undefined,
+        subtitle: parts.length > 0 ? parts.join(" · ") : undefined,
       };
     },
   },

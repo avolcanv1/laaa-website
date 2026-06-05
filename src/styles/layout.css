@@ -146,6 +146,15 @@
   overflow: hidden;
 }
 
+.mainHoverPreview__imageWrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--color-image-mat);
+  z-index: 1;
+}
+
 .mainHoverPreview__img {
   display: block;
   width: 100%;
@@ -157,6 +166,16 @@
   inset: 0;
   mix-blend-mode: screen;
   pointer-events: none;
+  z-index: 2;
+}
+
+.mainHoverPreview__caption {
+  margin: 0.35em 0 0;
+  width: 100%;
+  font-size: var(--text-sm, 0.875rem);
+  line-height: 1.35;
+  text-align: right;
+  color: var(--color-ink, #000);
 }
 
 .logoBlock {
@@ -464,8 +483,19 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  /* Slight mat so pure-white image backgrounds don’t disappear into the page */
-  background: rgba(0, 0, 0, 0.03);
+}
+
+.archivalMedia__mat {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--color-image-mat);
+  z-index: 1;
+}
+
+.archivalMedia:not(.archivalMedia--natural) .archivalMedia__wash,
+.archivalMedia:not(.archivalMedia--natural) .archivalMedia__grain {
+  z-index: 2;
 }
 
 .archivalMedia--ratio .archivalMedia__img {
@@ -706,6 +736,31 @@
   color: var(--color-black);
 }
 
+.exhibitionDetail__body p {
+  margin: 0 0 1em;
+}
+
+.exhibitionDetail__body p:last-child {
+  margin-bottom: 0;
+}
+
+.exhibitionDetail__bodyHeading {
+  margin: 0 0 0.5em;
+  font-size: inherit;
+  font-weight: 600;
+}
+
+.exhibitionDetail__bodyQuote {
+  margin: 0 0 1em;
+  padding-left: 1em;
+  border-left: 2px solid var(--color-black);
+}
+
+.exhibitionDetail__bodyList {
+  margin: 0 0 1em;
+  padding-left: 1.25em;
+}
+
 .exhibitionSlideshow__heroBtn {
   display: block;
   width: 100%;
@@ -801,6 +856,20 @@
   pointer-events: none;
 }
 
+.galleryLightbox__media {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.galleryLightbox__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--color-image-mat);
+}
+
 .galleryLightbox__img {
   display: block;
   max-width: 100%;
@@ -821,9 +890,9 @@
   gap: var(--exhibition-cascade-gap);
 }
 
-/* Flush tiles: drop the archival “mat” here so seams don’t read as white gaps */
-.exhibitionCascade .archivalMedia {
-  background: transparent;
+/* Flush tiles: drop the mat overlay so seams don’t read as dark gaps */
+.exhibitionCascade .archivalMedia__mat {
+  display: none;
 }
 
 .exhibitionCascade__pair {
@@ -1412,6 +1481,19 @@
     position: absolute;
     inset: 0;
     background: var(--color-white);
+  }
+
+  .mobileMosaic__figureInner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: var(--color-image-mat);
+    z-index: 1;
+  }
+
+  .mobileMosaic__figureInner--tiendaPlaceholder::after {
+    display: none;
   }
 
   .mobileMosaic__figureInner--tiendaPlaceholder {
