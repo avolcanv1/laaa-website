@@ -42,6 +42,7 @@ export function ProjectDetailGallery({
       />
       {betweenHeroAndCascade}
       <ExhibitionCascade
+        key={slugKey}
         blocks={cascade}
         slideshow={slideshow}
         onOpenLightbox={onOpenLightbox}

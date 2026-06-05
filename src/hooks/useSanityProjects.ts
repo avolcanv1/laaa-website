@@ -10,6 +10,7 @@ import type { ProjectDocumentType } from "../lib/queries";
 import { DEFAULT_LANGUAGE } from "../lib/queries";
 
 const projectBySlugCache = new Map<string, ProjectWithSlug | null>();
+const projectBySlugErrors = new Map<string, Error>();
 
 function projectCacheKey(
   type: ProjectDocumentType,
@@ -43,7 +44,14 @@ export function useSanityProjectList(
 
     fetchProjectList(type, language)
       .then((data) => {
-        if (!cancelled) setState({ status: "success", data });
+        if (cancelled) return;
+        for (const project of data) {
+          projectBySlugCache.set(
+            projectCacheKey(type, project.slug, language),
+            project,
+          );
+        }
+        setState({ status: "success", data });
       })
       .catch((err) => {
         if (!cancelled) setState({ status: "error", error: toError(err) });
@@ -62,36 +70,27 @@ export function useSanityProjectBySlug(
   slug: string | undefined,
   language = DEFAULT_LANGUAGE,
 ): SanityFetchState<ProjectWithSlug | null> {
-  const [state, setState] = useState<SanityFetchState<ProjectWithSlug | null>>(() => {
-    if (!slug) return { status: "idle" };
-    const cached = projectBySlugCache.get(projectCacheKey(type, slug, language));
-    return cached !== undefined
-      ? { status: "success", data: cached }
-      : { status: "loading" };
-  });
+  const [, setVersion] = useState(0);
 
   useEffect(() => {
-    if (!slug) {
-      setState({ status: "idle" });
-      return;
-    }
+    if (!slug) return;
 
     const key = projectCacheKey(type, slug, language);
-    const cached = projectBySlugCache.get(key);
-    let cancelled = false;
+    if (projectBySlugCache.has(key) || projectBySlugErrors.has(key)) return;
 
-    if (cached === undefined) {
-      setState({ status: "loading" });
-    }
+    let cancelled = false;
 
     fetchProjectBySlug(type, slug, language)
       .then((data) => {
         if (cancelled) return;
         projectBySlugCache.set(key, data);
-        setState({ status: "success", data });
+        projectBySlugErrors.delete(key);
+        setVersion((v) => v + 1);
       })
       .catch((err) => {
-        if (!cancelled) setState({ status: "error", error: toError(err) });
+        if (cancelled) return;
+        projectBySlugErrors.set(key, toError(err));
+        setVersion((v) => v + 1);
       });
 
     return () => {
@@ -99,7 +98,20 @@ export function useSanityProjectBySlug(
     };
   }, [type, slug, language]);
 
-  return state;
+  if (!slug) return { status: "idle" };
+
+  const key = projectCacheKey(type, slug, language);
+  const cached = projectBySlugCache.get(key);
+  if (cached !== undefined) {
+    return { status: "success", data: cached };
+  }
+
+  const error = projectBySlugErrors.get(key);
+  if (error) {
+    return { status: "error", error };
+  }
+
+  return { status: "loading" };
 }
 
 export function useSanityAllProjectImageUrls(

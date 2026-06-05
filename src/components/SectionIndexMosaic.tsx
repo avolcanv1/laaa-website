@@ -16,6 +16,7 @@ import {
 import {
   entryIsSoonForType,
   orderProjectSlugs,
+  preloadProjectHeroUrl,
   projectBySlug,
   type ProjectWithSlug,
 } from "../lib/sanityProject";
@@ -191,6 +192,8 @@ function MosaicTile({ tile, tileIndex }: MosaicTileProps) {
         to={tile.href}
         className={tileClassName(false)}
         aria-label={label}
+        style={{ "--mosaic-i": tileIndex } as CSSProperties}
+        onTouchStart={() => preloadProjectHeroUrl(tile.slides[0])}
       >
         {inner}
       </NavLink>
@@ -198,7 +201,11 @@ function MosaicTile({ tile, tileIndex }: MosaicTileProps) {
   }
 
   return (
-    <div className={tileClassName(true)} aria-label={label}>
+    <div
+      className={tileClassName(true)}
+      aria-label={label}
+      style={{ "--mosaic-i": tileIndex } as CSSProperties}
+    >
       {inner}
     </div>
   );

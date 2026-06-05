@@ -4,7 +4,9 @@ import {
   resolveNavHoverPreview,
   useHomeNavPreviews,
 } from "../hooks/useHomeNavPreviews";
+import { useHoverFade } from "../hooks/useHoverFade";
 import { useMainNavHover } from "../context/MainNavHoverContext";
+import type { NavHoverPreviewData } from "../lib/homeNavPreviews";
 
 export function MainNavHoverPreview() {
   const { pathname } = useLocation();
@@ -13,38 +15,57 @@ export function MainNavHoverPreview() {
   const isTienda = pathname.startsWith("/tienda");
   const preview =
     hovered && !isTienda ? resolveNavHoverPreview(hovered, previews) : null;
+
+  const lastPreviewRef = useRef<NavHoverPreviewData | null>(null);
+  if (preview) lastPreviewRef.current = preview;
+  const displayPreview = preview ?? lastPreviewRef.current;
+
+  const { mounted, visible } = useHoverFade(Boolean(preview));
   const imgRef = useRef<HTMLImageElement>(null);
   const [imageReady, setImageReady] = useState(false);
+
   const layoutMod =
-    preview?.layout === "vertical"
+    displayPreview?.layout === "vertical"
       ? "mainHoverPreview--vertical"
       : "mainHoverPreview--horizontal";
 
   useEffect(() => {
-    if (!preview) {
+    if (!displayPreview) {
       setImageReady(false);
       return;
     }
     setImageReady(false);
     const img = imgRef.current;
     if (img?.complete && img.naturalWidth > 0) setImageReady(true);
-  }, [preview?.imageSrc, preview]);
+  }, [displayPreview?.imageSrc, displayPreview]);
 
-  if (!preview) return null;
+  if (!mounted || !displayPreview) return null;
 
   return (
     <div
-      className={`mainHoverPreview ${layoutMod}`.trim()}
-      aria-hidden={!preview.caption}
+      className={[
+        "mainHoverPreview",
+        "hoverFade",
+        layoutMod,
+        visible ? "hoverFade--visible" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      aria-hidden={!displayPreview.caption}
     >
       <div
-        className={`mainHoverPreview__imageWrap${
-          imageReady ? " mainHoverPreview__imageWrap--ready" : ""
-        }`.trim()}
+        key={displayPreview.imageSrc}
+        className={[
+          "mainHoverPreview__imageWrap",
+          "hoverContentEnter",
+          imageReady ? "mainHoverPreview__imageWrap--ready" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
       >
         <img
           ref={imgRef}
-          src={preview.imageSrc}
+          src={displayPreview.imageSrc}
           alt=""
           className="mainHoverPreview__img"
           loading="eager"
@@ -54,11 +75,11 @@ export function MainNavHoverPreview() {
         />
         <div
           className="mainHoverPreview__tint"
-          style={{ backgroundColor: preview.overlayColor }}
+          style={{ backgroundColor: displayPreview.overlayColor }}
         />
       </div>
-      {preview.caption ? (
-        <p className="mainHoverPreview__caption">{preview.caption}</p>
+      {displayPreview.caption ? (
+        <p className="mainHoverPreview__caption">{displayPreview.caption}</p>
       ) : null}
     </div>
   );

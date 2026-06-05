@@ -2,25 +2,33 @@ import { useLayoutEffect, useState } from "react";
 
 /**
  * Loads `src` and returns whether it is strictly horizontal (width > height).
- * `null` until known or on error.
+ * `null` until known or on error. Resets synchronously when `src` changes.
  */
 export function useImageIsLandscape(src: string | undefined): boolean | null {
-  const [landscape, setLandscape] = useState<boolean | null>(null);
+  const [resolved, setResolved] = useState<{
+    src: string;
+    landscape: boolean | null;
+  } | null>(null);
 
   useLayoutEffect(() => {
     if (!src) {
-      setLandscape(null);
+      setResolved(null);
       return;
     }
+
+    setResolved(null);
     let cancelled = false;
     const img = new Image();
     img.onload = () => {
       if (!cancelled) {
-        setLandscape(img.naturalWidth > img.naturalHeight);
+        setResolved({
+          src,
+          landscape: img.naturalWidth > img.naturalHeight,
+        });
       }
     };
     img.onerror = () => {
-      if (!cancelled) setLandscape(null);
+      if (!cancelled) setResolved({ src, landscape: null });
     };
     img.src = src;
     return () => {
@@ -28,5 +36,6 @@ export function useImageIsLandscape(src: string | undefined): boolean | null {
     };
   }, [src]);
 
-  return landscape;
+  if (!src || resolved?.src !== src) return null;
+  return resolved.landscape;
 }

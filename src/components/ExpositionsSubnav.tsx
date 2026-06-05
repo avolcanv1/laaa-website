@@ -6,6 +6,7 @@ import { useSanityProjectList } from "../hooks/useSanityProjects";
 import {
   entryIsSoonForType,
   orderProjectSlugs,
+  preloadProjectHero,
   projectBySlug,
   type ProjectWithSlug,
 } from "../lib/sanityProject";
@@ -117,7 +118,10 @@ function ExpositionsSubnavList({
                     .filter(Boolean)
                     .join(" ")
                 }
-                onMouseEnter={() => setHoveredSlug(row.slug)}
+                onMouseEnter={() => {
+                  preloadProjectHero(projects, row.slug);
+                  setHoveredSlug(row.slug);
+                }}
               >
                 <span className="expoSub__meta">{row.left}</span>
                 <span className="expoSub__title">{row.title}</span>

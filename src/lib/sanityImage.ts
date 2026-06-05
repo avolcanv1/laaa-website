@@ -10,3 +10,11 @@ export function urlForSanityImage(source: SanityImageSource | undefined | null):
   if (!source) return "";
   return builder.image(source).auto("format").url();
 }
+
+/** URL sin recorte ni hotspot — para lightbox y descarga. */
+export function urlForSanityImageOriginal(
+  source: SanityImageSource | undefined | null,
+): string {
+  if (!source) return "";
+  return builder.image(source).ignoreImageParams().auto("format").url();
+}

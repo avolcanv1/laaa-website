@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ExhibitionCascade } from "../components/ExhibitionCascade";
 import { GalleryLightbox } from "../components/GalleryLightbox";
@@ -8,13 +8,14 @@ import { ProjectDetailEnter } from "../components/ProjectDetailEnter";
 import { ProjectDetailGallery } from "../components/ProjectDetailGallery";
 import { SanityQueryState } from "../components/SanityQueryState";
 import { useTalleresSubHover } from "../context/TalleresSubHoverContext";
+import { useProjectDetailNavigation } from "../hooks/useProjectDetailNavigation";
 import { useSanityProjectBySlug } from "../hooks/useSanityProjects";
-import { cargoFreightUrlToOriginal } from "../lib/cargoImage";
 
 export function TalleresDetailPage() {
   const { slug = "" } = useParams();
   const { hoveredSlug } = useTalleresSubHover();
   const fetchState = useSanityProjectBySlug("taller", slug || undefined);
+  const { skipEnter } = useProjectDetailNavigation(slug, hoveredSlug);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const hideActiveContent = Boolean(
@@ -23,6 +24,10 @@ export function TalleresDetailPage() {
 
   const openAt = useCallback((i: number) => setLightboxIndex(i), []);
   const closeLb = useCallback(() => setLightboxIndex(null), []);
+
+  useEffect(() => {
+    setLightboxIndex(null);
+  }, [slug]);
 
   return (
     <SanityQueryState
@@ -36,6 +41,10 @@ export function TalleresDetailPage() {
               <p className="exhibitionDetail__missing">Taller no encontrado.</p>
             </div>
           );
+        }
+
+        if (content.slug !== slug) {
+          return null;
         }
 
         return (
@@ -53,14 +62,14 @@ export function TalleresDetailPage() {
             />
             {lightboxIndex !== null && content.slideshow.length > 0 ? (
               <GalleryLightbox
-                images={content.slideshow.map(cargoFreightUrlToOriginal)}
+                images={content.slideshowLightbox}
                 index={lightboxIndex}
                 onClose={closeLb}
                 onGoTo={setLightboxIndex}
               />
             ) : null}
             {content.slideshow.length > 0 ? (
-              <ProjectDetailEnter slugKey={slug}>
+              <ProjectDetailEnter key={slug} slugKey={slug} skipEnter={skipEnter}>
                 <ProjectDetailGallery
                   slugKey={slug}
                   title={content.title}
@@ -73,7 +82,7 @@ export function TalleresDetailPage() {
                 />
               </ProjectDetailEnter>
             ) : (
-              <ProjectDetailEnter slugKey={slug}>
+              <ProjectDetailEnter key={slug} slugKey={slug} skipEnter={skipEnter}>
                 <ProjectBody body={content.body} bodyBlocks={content.bodyBlocks} />
                 <ExhibitionCascade
                   blocks={content.cascade}

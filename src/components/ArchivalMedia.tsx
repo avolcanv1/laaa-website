@@ -31,24 +31,21 @@ export function ArchivalMedia({
   onIntrinsicDimensions,
 }: ArchivalMediaProps) {
   const imgRef = useRef<HTMLImageElement>(null);
-  const [imageReady, setImageReady] = useState(false);
+  const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
+  const imageReady = loadedSrc === src;
   const ratioClass = aspectRatio ? " archivalMedia--ratio" : "";
   const naturalClass = treatment === "natural" ? " archivalMedia--natural" : "";
-  const loadedClass =
-    treatment === "natural" || imageReady ? " archivalMedia--imageLoaded" : "";
+  const loadedClass = imageReady ? " archivalMedia--imageLoaded" : "";
 
   const syncFromImg = useCallback(() => {
     const img = imgRef.current;
     if (!img || img.naturalWidth <= 0) return;
-    if (treatment !== "natural") setImageReady(true);
+    setLoadedSrc(src);
     onIntrinsicDimensions?.(img.naturalWidth, img.naturalHeight);
-  }, [treatment, onIntrinsicDimensions]);
+  }, [src, onIntrinsicDimensions]);
 
   useEffect(() => {
-    setImageReady(false);
-  }, [src]);
-
-  useEffect(() => {
+    setLoadedSrc((current) => (current === src ? current : null));
     syncFromImg();
     const id = requestAnimationFrame(() => syncFromImg());
     return () => cancelAnimationFrame(id);
@@ -60,6 +57,7 @@ export function ArchivalMedia({
       style={aspectRatio ? { aspectRatio } : undefined}
     >
       <img
+        key={src}
         ref={imgRef}
         src={src}
         alt={alt}

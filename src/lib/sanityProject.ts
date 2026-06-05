@@ -16,7 +16,7 @@ import {
   talleresQuery,
 } from "./queries";
 import { sanityClient } from "./sanityClient";
-import { urlForSanityImage } from "./sanityImage";
+import { urlForSanityImage, urlForSanityImageOriginal } from "./sanityImage";
 
 export type { ExhibitionContent as ProjectContent };
 export { exhibitionEntryIsSoon, investigacionEntryIsSoon, compareListDateDesc };
@@ -24,6 +24,8 @@ export { exhibitionEntryIsSoon, investigacionEntryIsSoon, compareListDateDesc };
 export type ProjectWithSlug = ExhibitionContent & {
   slug: string;
   bodyBlocks?: PortableTextBlock[];
+  /** Full file URLs for the lightbox (no Sanity crop / hotspot). */
+  slideshowLightbox: string[];
 };
 
 type SanityGalleryRow = {
@@ -54,6 +56,13 @@ function galleryRowToUrl(row: SanityGalleryRow): string {
   return image.asset?.url ?? "";
 }
 
+function galleryRowToLightboxUrl(row: SanityGalleryRow): string {
+  const image = row.image;
+  if (!image) return "";
+  if (image.asset?.url) return image.asset.url;
+  return urlForSanityImageOriginal(image);
+}
+
 function galleryCascadeFromUrls(urls: string[]): GalleryCascadeBlock[] {
   const out: GalleryCascadeBlock[] = [];
   let i = 0;
@@ -79,6 +88,10 @@ function mapSanityProject(raw: SanityProjectRaw): ProjectWithSlug | null {
     .map(galleryRowToUrl)
     .filter((url) => url.length > 0);
 
+  const slideshowLightbox = (raw.gallery ?? [])
+    .map(galleryRowToLightboxUrl)
+    .filter((url) => url.length > 0);
+
   const title = raw.title?.trim() ?? slug;
   const listDate = raw.listDate?.trim() ?? "";
   const bodyBlocks = raw.body?.length ? raw.body : undefined;
@@ -91,6 +104,7 @@ function mapSanityProject(raw: SanityProjectRaw): ProjectWithSlug | null {
     body,
     bodyBlocks,
     slideshow,
+    slideshowLightbox,
     cascade: cascadeAfterHero(slideshow),
   };
 }
@@ -210,4 +224,21 @@ export function projectBySlug(
   slug: string,
 ): ProjectWithSlug | undefined {
   return projects.find((p) => p.slug === slug);
+}
+
+const preloadedHeroUrls = new Set<string>();
+
+/** Warm the browser cache for a project's hero before navigation. */
+export function preloadProjectHeroUrl(url: string | undefined): void {
+  if (!url || preloadedHeroUrls.has(url)) return;
+  preloadedHeroUrls.add(url);
+  const img = new Image();
+  img.src = url;
+}
+
+export function preloadProjectHero(
+  projects: ProjectWithSlug[],
+  slug: string,
+): void {
+  preloadProjectHeroUrl(projectBySlug(projects, slug)?.slideshow[0]);
 }

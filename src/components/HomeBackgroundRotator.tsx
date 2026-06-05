@@ -106,10 +106,6 @@ export function HomeBackgroundRotator() {
     return () => window.clearInterval(id);
   }, [poolKey, pool, reduceMotion]);
 
-  if (hideForNavHover) {
-    return null;
-  }
-
   if (urlFetchState.status === "loading" || urlFetchState.status === "idle") {
     return null;
   }
@@ -124,7 +120,12 @@ export function HomeBackgroundRotator() {
 
   return (
     <div
-      className="pageHome__ambient"
+      className={[
+        "pageHome__ambient",
+        hideForNavHover ? "pageHome__ambient--hidden" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
       aria-hidden
       data-single-layer={pool.length === 1 || reduceMotion ? "true" : undefined}
     >

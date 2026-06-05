@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ArchivalMedia } from "./ArchivalMedia";
 
 type CascadeArchivalMediaProps = {
@@ -34,6 +34,10 @@ export function CascadeArchivalMedia({
 }: CascadeArchivalMediaProps) {
   const [shape, setShape] = useState<IntrinsicShape>(null);
 
+  useEffect(() => {
+    setShape(null);
+  }, [src]);
+
   const handleIntrinsicDimensions = useCallback(
     (w: number, h: number) => {
       setShape(classifyShape(w, h));
@@ -46,6 +50,7 @@ export function CascadeArchivalMedia({
 
   return (
     <ArchivalMedia
+      key={src}
       src={src}
       alt=""
       className={className}

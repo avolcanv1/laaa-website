@@ -20,7 +20,7 @@ export function ExhibitionSlideshow({
   if (!heroUrl) return null;
 
   return (
-    <ExhibitionHeroSlotShell heroUrl={heroUrl}>
+    <ExhibitionHeroSlotShell key={heroUrl} heroUrl={heroUrl}>
       <button
         type="button"
         className="exhibitionSlideshow__heroBtn"

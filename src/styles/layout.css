@@ -99,10 +99,41 @@
   height: 100dvh;
   background: var(--color-white);
   overflow-y: auto;
+  transition: margin-left 0.55s cubic-bezier(0.22, 1, 0.32, 1);
 }
 
 .appShell--expo .appMain {
   margin-left: calc(var(--nav-width) * 2);
+}
+
+.routeTransition {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  min-height: min-content;
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.32, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
+.routeTransition:not(.routeTransition--active) {
+  opacity: 0;
+  transform: translate3d(0, clamp(12px, 2vw, 20px), 0);
+}
+
+.routeTransition--active {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.appMain--tienda > .routeTransition {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
 }
 
 /* Tienda: one viewport-tall row; horizontal scroll lives inside .tiendaPage__scroll */
@@ -114,6 +145,13 @@
 }
 
 .appMain--tienda > *:last-child {
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* Legacy fallback if route wrapper is absent */
+.appMain--tienda > .routeTransition:last-child {
   flex: 1 1 auto;
   min-height: 0;
   min-width: 0;
@@ -132,6 +170,35 @@
   pointer-events: none;
 }
 
+.hoverFade {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1),
+    visibility 0.55s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
+.hoverFade--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hoverContentEnter {
+  animation: hoverContentEnter 0.55s cubic-bezier(0.22, 1, 0.32, 1) both;
+}
+
+@keyframes hoverContentEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .mainHoverPreview--vertical {
   width: 35%;
 }
@@ -145,7 +212,7 @@
   width: 100%;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1);
 }
 
 .mainHoverPreview__imageWrap--ready {
@@ -182,6 +249,17 @@
   line-height: 1.35;
   text-align: right;
   color: var(--color-ink, #000);
+  opacity: 0;
+  transform: translate3d(0, 6px, 0);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
+.hoverFade--visible .mainHoverPreview__caption {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.08s;
 }
 
 .logoBlock {
@@ -265,6 +343,12 @@
   font-size: var(--text-body);
   line-height: normal;
   color: var(--color-black);
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
+.mainNav__label,
+.mainNav__glyphWrap {
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.32, 1);
 }
 
 .mainNav__row--home .mainNav__label {
@@ -320,6 +404,19 @@
   overflow: hidden;
   border-right: 1px solid var(--color-stroke);
   background: var(--color-white);
+  animation: sidebarColumnEnter 0.55s cubic-bezier(0.22, 1, 0.32, 1) both;
+}
+
+@keyframes sidebarColumnEnter {
+  from {
+    opacity: 0;
+    transform: translate3d(-14px, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .expoSub__list {
@@ -413,6 +510,12 @@
   height: 100%;
   min-height: 100%;
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
+.pageHome__ambient--hidden {
+  opacity: 0;
 }
 
 .pageHome__ambientLayer {
@@ -513,7 +616,7 @@
 
 .archivalMedia:not(.archivalMedia--natural) {
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1);
 }
 
 .archivalMedia:not(.archivalMedia--natural).archivalMedia--imageLoaded {
@@ -573,6 +676,15 @@
   display: none;
 }
 
+.archivalMedia--natural:not(.archivalMedia--imageLoaded) .archivalMedia__img {
+  opacity: 0;
+}
+
+.archivalMedia--natural.archivalMedia--imageLoaded .archivalMedia__img {
+  opacity: 1;
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
 /* Subnav hover preview — image only (archival); ficha uses full layout */
 .expoSubHover {
   position: absolute;
@@ -590,6 +702,7 @@
   flex-direction: column;
   gap: var(--detail-gap);
   align-items: flex-start;
+  animation: hoverContentEnter 0.55s cubic-bezier(0.22, 1, 0.32, 1) both;
 }
 
 .expoSubHover--imageOnly .expoSubHover__inner {
@@ -711,9 +824,6 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition:
-    opacity 0.35s ease,
-    visibility 0.35s ease;
 }
 
 .projectDetailEnter {
@@ -722,6 +832,19 @@
   align-items: stretch;
   gap: var(--detail-gap);
   width: 100%;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1),
+    visibility 0.55s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
+.projectDetailEnter .exhibitionSlideshow,
+.projectDetailEnter .exhibitionDetail__body,
+.projectDetailEnter .exhibitionCascade {
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.32, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.32, 1);
 }
 
 .projectDetailEnter:not(.projectDetailEnter--active) .exhibitionSlideshow,
@@ -729,6 +852,7 @@
 .projectDetailEnter:not(.projectDetailEnter--active) .exhibitionCascade {
   opacity: 0;
   transform: translate3d(0, clamp(14px, 2.4vw, 24px), 0);
+  transition-delay: 0s;
 }
 
 .projectDetailEnter--active .exhibitionSlideshow,
@@ -736,9 +860,10 @@
 .projectDetailEnter--active .exhibitionCascade {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  transition:
-    opacity 0.75s cubic-bezier(0.22, 1, 0.32, 1),
-    transform 0.75s cubic-bezier(0.22, 1, 0.32, 1);
+}
+
+.projectDetailEnter--active .exhibitionSlideshow {
+  transition-delay: 0s;
 }
 
 .projectDetailEnter--active .exhibitionDetail__body {
@@ -749,7 +874,30 @@
   transition-delay: 0.22s;
 }
 
+.projectDetailEnter--skipEnter .exhibitionSlideshow,
+.projectDetailEnter--skipEnter .exhibitionDetail__body,
+.projectDetailEnter--skipEnter .exhibitionCascade {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .appMain {
+    transition: none;
+  }
+
+  .routeTransition,
+  .routeTransition--active {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .expoSub {
+    animation: none;
+  }
+
   .projectDetailEnter:not(.projectDetailEnter--active) .exhibitionSlideshow,
   .projectDetailEnter:not(.projectDetailEnter--active) .exhibitionDetail__body,
   .projectDetailEnter:not(.projectDetailEnter--active) .exhibitionCascade,
@@ -757,6 +905,46 @@
     opacity: 1;
     visibility: visible;
     transform: none;
+    transition: none;
+  }
+
+  .projectDetailEnter .exhibitionSlideshow,
+  .projectDetailEnter .exhibitionDetail__body,
+  .projectDetailEnter .exhibitionCascade {
+    transition: none;
+  }
+
+  .archivalMedia--natural:not(.archivalMedia--imageLoaded) .archivalMedia__img,
+  .archivalMedia--natural.archivalMedia--imageLoaded .archivalMedia__img {
+    opacity: 1;
+    transition: none;
+  }
+
+  .hoverFade,
+  .hoverFade--visible {
+    opacity: 1;
+    visibility: visible;
+    transition: none;
+  }
+
+  .hoverContentEnter,
+  .expoSubHover__inner {
+    animation: none;
+  }
+
+  .mainHoverPreview__caption,
+  .hoverFade--visible .mainHoverPreview__caption {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .pageHome__ambient,
+  .pageHome__ambient--hidden {
+    transition: none;
+  }
+
+  .projectDetailEnter {
     transition: none;
   }
 }
@@ -920,13 +1108,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 0;
+  min-height: 0;
   pointer-events: none;
 }
 
 .galleryLightbox__media {
   position: relative;
-  max-width: 100%;
-  max-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
 }
 
 .galleryLightbox__media::after {
@@ -944,6 +1139,7 @@
   width: auto;
   height: auto;
   object-fit: contain;
+  object-position: center;
   pointer-events: none;
 }
 
@@ -1512,6 +1708,17 @@
     border-bottom: 1px solid var(--color-stroke);
     border-right: 1px solid var(--color-stroke);
     box-sizing: border-box;
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    transition:
+      opacity 0.55s cubic-bezier(0.22, 1, 0.32, 1),
+      transform 0.55s cubic-bezier(0.22, 1, 0.32, 1);
+    transition-delay: calc(var(--mosaic-i, 0) * 42ms + 80ms);
+  }
+
+  .routeTransition--active .mobileMosaic__tile {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 
   .sectionIndex__mosaic > a.mobileMosaic__tile:nth-child(2n),
@@ -1784,6 +1991,13 @@
 }
 
 @media (max-width: 1200px) and (prefers-reduced-motion: reduce) {
+  .mobileMosaic__tile,
+  .routeTransition--active .mobileMosaic__tile {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
   .appSidebarZone,
   .navDrawerScrim {
     transition: none;

@@ -6,6 +6,7 @@ import { useSanityProjectList } from "../hooks/useSanityProjects";
 import {
   entryIsSoonForType,
   orderProjectSlugs,
+  preloadProjectHero,
   projectBySlug,
   type ProjectWithSlug,
 } from "../lib/sanityProject";
@@ -96,7 +97,10 @@ function InvestigacionSubnavList({
                     .filter(Boolean)
                     .join(" ")
                 }
-                onMouseEnter={() => setHoveredSlug(slug)}
+                onMouseEnter={() => {
+                  preloadProjectHero(projects, slug);
+                  setHoveredSlug(slug);
+                }}
               >
                 <span className="expoSub__meta">{item.listDate}</span>
                 <span className="expoSub__title">{item.title}</span>

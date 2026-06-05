@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { ExpoSubHoverPreview } from "../components/ExpoSubHoverPreview";
 import { ExpositionsSubnav } from "../components/ExpositionsSubnav";
@@ -7,6 +7,7 @@ import { InvestigacionSubnav } from "../components/InvestigacionSubnav";
 import { MainNav } from "../components/MainNav";
 import { MainNavHoverPreview } from "../components/MainNavHoverPreview";
 import { MobileHeader } from "../components/MobileHeader";
+import { RouteTransition } from "../components/RouteTransition";
 import { TalleresSubHoverPreview } from "../components/TalleresSubHoverPreview";
 import { TalleresSubnav } from "../components/TalleresSubnav";
 import { ExpoSubHoverProvider } from "../context/ExpoSubHoverContext";
@@ -15,9 +16,11 @@ import { MainNavHoverProvider } from "../context/MainNavHoverContext";
 import { MobileNavProvider, useMobileNav } from "../context/MobileNavContext";
 import { TalleresSubHoverProvider } from "../context/TalleresSubHoverContext";
 import { useMobileLayoutMax1200 } from "../hooks/useMobileLayoutMax1200";
+import { getRouteTransitionKey, commitRouteSectionKey } from "../lib/routeTransitionKey";
 
 function AppLayoutChrome() {
   const { pathname } = useLocation();
+  const routeTransitionKey = getRouteTransitionKey(pathname);
   const { close, isOpen } = useMobileNav();
   const isMobileLayout = useMobileLayoutMax1200();
   const showExpoSub = pathname.startsWith("/exposiciones");
@@ -27,6 +30,10 @@ function AppLayoutChrome() {
   const showMainNavHoverPreview =
     !showExpoSub && !showInvSub && !showTalleresSub;
   const isTienda = pathname.startsWith("/tienda");
+
+  useLayoutEffect(() => {
+    commitRouteSectionKey(routeTransitionKey);
+  }, [routeTransitionKey]);
 
   useEffect(() => {
     close();
@@ -79,7 +86,9 @@ function AppLayoutChrome() {
         {showInvSub ? <InvestigacionSubHoverPreview /> : null}
         {showTalleresSub ? <TalleresSubHoverPreview /> : null}
         {showMainNavHoverPreview ? <MainNavHoverPreview /> : null}
-        <Outlet />
+        <RouteTransition transitionKey={routeTransitionKey}>
+          <Outlet />
+        </RouteTransition>
       </main>
     </div>
   );

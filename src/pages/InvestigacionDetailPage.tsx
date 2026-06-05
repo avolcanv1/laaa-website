@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ExhibitionCascade } from "../components/ExhibitionCascade";
 import { GalleryLightbox } from "../components/GalleryLightbox";
@@ -8,13 +8,14 @@ import { ProjectDetailEnter } from "../components/ProjectDetailEnter";
 import { ProjectDetailGallery } from "../components/ProjectDetailGallery";
 import { SanityQueryState } from "../components/SanityQueryState";
 import { useInvestigacionSubHover } from "../context/InvestigacionSubHoverContext";
+import { useProjectDetailNavigation } from "../hooks/useProjectDetailNavigation";
 import { useSanityProjectBySlug } from "../hooks/useSanityProjects";
-import { cargoFreightUrlToOriginal } from "../lib/cargoImage";
 
 export function InvestigacionDetailPage() {
   const { slug = "" } = useParams();
   const { hoveredSlug } = useInvestigacionSubHover();
   const fetchState = useSanityProjectBySlug("investigacion", slug || undefined);
+  const { skipEnter } = useProjectDetailNavigation(slug, hoveredSlug);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const hideActiveExhibitionContent = Boolean(
@@ -23,6 +24,10 @@ export function InvestigacionDetailPage() {
 
   const openAt = useCallback((i: number) => setLightboxIndex(i), []);
   const closeLb = useCallback(() => setLightboxIndex(null), []);
+
+  useEffect(() => {
+    setLightboxIndex(null);
+  }, [slug]);
 
   return (
     <SanityQueryState
@@ -36,6 +41,10 @@ export function InvestigacionDetailPage() {
               <p className="exhibitionDetail__missing">Proyecto no encontrado.</p>
             </div>
           );
+        }
+
+        if (content.slug !== slug) {
+          return null;
         }
 
         const hasSlides = content.slideshow.length > 0;
@@ -55,14 +64,14 @@ export function InvestigacionDetailPage() {
             />
             {lightboxIndex !== null && hasSlides ? (
               <GalleryLightbox
-                images={content.slideshow.map(cargoFreightUrlToOriginal)}
+                images={content.slideshowLightbox}
                 index={lightboxIndex}
                 onClose={closeLb}
                 onGoTo={setLightboxIndex}
               />
             ) : null}
             {hasSlides ? (
-              <ProjectDetailEnter slugKey={slug}>
+              <ProjectDetailEnter key={slug} slugKey={slug} skipEnter={skipEnter}>
                 <ProjectDetailGallery
                   slugKey={slug}
                   title={content.title}
@@ -75,7 +84,7 @@ export function InvestigacionDetailPage() {
                 />
               </ProjectDetailEnter>
             ) : (
-              <ProjectDetailEnter slugKey={slug}>
+              <ProjectDetailEnter key={slug} slugKey={slug} skipEnter={skipEnter}>
                 <ProjectBody body={content.body} bodyBlocks={content.bodyBlocks} />
                 <ExhibitionCascade
                   blocks={content.cascade}
