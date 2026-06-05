@@ -6,6 +6,7 @@ import {
 } from "react";
 import { Link } from "react-router-dom";
 import shopCardPlaceholder from "../assets/shop-card-placeholder.png";
+import { useWheelScrollContainer } from "../hooks/useWheelScrollContainer";
 import {
   type ShopifyProductCard,
   fetchStorefrontProducts,
@@ -25,6 +26,7 @@ const DEMO_PRODUCTS: ShopifyProductCard[] = Array.from({ length: 8 }, (_, i) => 
 }));
 
 export function TiendaPage() {
+  const scrollRef = useWheelScrollContainer();
   const [products, setProducts] = useState<ShopifyProductCard[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -51,7 +53,12 @@ export function TiendaPage() {
           No hay productos disponibles en la tienda.
         </p>
       ) : (
-        <div className="tiendaPage__scroll" role="region" aria-label="Productos">
+        <div
+          ref={scrollRef}
+          className="tiendaPage__scroll"
+          role="region"
+          aria-label="Productos"
+        >
           <div className="tiendaPage__grid" aria-busy={loading}>
             {products.map((p) => (
               <article key={p.id} className="tiendaCard">
