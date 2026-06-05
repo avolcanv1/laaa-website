@@ -6,6 +6,7 @@ import { HomePage } from "./pages/HomePage";
 import { InvestigacionDetailPage } from "./pages/InvestigacionDetailPage";
 import { PlaceholderPage } from "./pages/PlaceholderPage";
 import { TiendaPage } from "./pages/TiendaPage";
+import { TiendaProductPage } from "./pages/TiendaProductPage";
 import { TalleresDetailPage } from "./pages/TalleresDetailPage";
 
 export default function App() {
@@ -26,7 +27,10 @@ export default function App() {
           <Route path=":slug" element={<TalleresDetailPage />} />
         </Route>
         <Route path="acerca" element={<PlaceholderPage title="Acerca" />} />
-        <Route path="tienda" element={<TiendaPage />} />
+        <Route path="tienda">
+          <Route index element={<TiendaPage />} />
+          <Route path=":handle" element={<TiendaProductPage />} />
+        </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

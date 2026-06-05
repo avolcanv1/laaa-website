@@ -1,4 +1,5 @@
 import { TiendaNavBrackets } from "./TiendaNavBrackets";
+import type { MouseEvent } from "react";
 
 type Glyph = "plus" | "minus" | "plusMuted" | "tienda" | "tiendaMuted";
 
@@ -42,6 +43,8 @@ type NavGlyphProps = {
   className?: string;
   /** Laaa Tienda: total items; shown between `[` `]` */
   tiendaCartCount?: number;
+  /** Laaa Tienda: open cart drawer instead of navigating */
+  onTiendaClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 };
 
 export function NavGlyph({
@@ -49,6 +52,7 @@ export function NavGlyph({
   label,
   className,
   tiendaCartCount = 0,
+  onTiendaClick,
 }: NavGlyphProps) {
   if (kind === "plus" || kind === "plusMuted") {
     return (
@@ -71,13 +75,19 @@ export function NavGlyph({
   }
 
   return (
-    <span className={className} aria-hidden="true" title={label}>
-      <span className="navGlyph navGlyph--tiendaWrap">
+    <button
+      type="button"
+      className={["navGlyphBtn", className].filter(Boolean).join(" ")}
+      title={label}
+      aria-label="Abrir carrito"
+      onClick={onTiendaClick}
+    >
+      <span className="navGlyph navGlyph--tiendaWrap" aria-hidden="true">
         <TiendaNavBrackets
           count={tiendaCartCount}
           muted={kind === "tiendaMuted"}
         />
       </span>
-    </span>
+    </button>
   );
 }

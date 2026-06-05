@@ -4,42 +4,27 @@ import {
   useState,
   type CSSProperties,
 } from "react";
+import { Link } from "react-router-dom";
 import shopCardPlaceholder from "../assets/shop-card-placeholder.png";
-import { useTiendaCart } from "../context/TiendaCartContext";
 import {
   type ShopifyProductCard,
   fetchStorefrontProducts,
+  formatShopifyMoney,
   isShopifyConfigured,
 } from "../lib/shopifyStorefront";
-
-function formatMoney(
-  price: { amount: string; currencyCode: string } | null,
-): string {
-  if (!price) return "—";
-  const n = Number(price.amount);
-  if (Number.isNaN(n)) return "—";
-  try {
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: price.currencyCode,
-    }).format(n);
-  } catch {
-    return `$${price.amount}`;
-  }
-}
 
 /** Demo tiles when Storefront env vars are not set (layout matches Figma grid). */
 const DEMO_PRODUCTS: ShopifyProductCard[] = Array.from({ length: 8 }, (_, i) => ({
   id: `demo-${i}`,
+  handle: `demo-${i}`,
   title: "Lorem ipsum",
   imageUrl: null,
   imageAlt: null,
-  firstVariantId: null,
+  firstVariantId: "demo-variant",
   price: { amount: "300", currencyCode: "USD" },
 }));
 
 export function TiendaPage() {
-  const { addVariantToCart } = useTiendaCart();
   const [products, setProducts] = useState<ShopifyProductCard[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -70,11 +55,10 @@ export function TiendaPage() {
           <div className="tiendaPage__grid" aria-busy={loading}>
             {products.map((p) => (
               <article key={p.id} className="tiendaCard">
-                <button
-                  type="button"
+                <Link
+                  to={`/tienda/${p.handle}`}
                   className="tiendaCard__hit"
-                  onClick={() => void addVariantToCart(p.firstVariantId)}
-                  aria-label={`${p.title}, ${formatMoney(p.price)} — añadir al carrito`}
+                  aria-label={`${p.title}, ${formatShopifyMoney(p.price)}`}
                 >
                   <div
                     className={
@@ -111,10 +95,10 @@ export function TiendaPage() {
                   <div className="tiendaCard__meta">
                     <span className="tiendaCard__title">{p.title}</span>
                     <span className="tiendaCard__price">
-                      {formatMoney(p.price)}
+                      {formatShopifyMoney(p.price)}
                     </span>
                   </div>
-                </button>
+                </Link>
               </article>
             ))}
           </div>

@@ -31,7 +31,7 @@ function routeActive(key: NavHoverKey, pathname: string): boolean {
 
 export function MainNav() {
   const { pathname } = useLocation();
-  const { itemCount } = useTiendaCart();
+  const { itemCount, openDrawer } = useTiendaCart();
   const { setHovered } = useMainNavHover();
   const { close: closeMobileNav } = useMobileNav();
   const home = pathname === "/";
@@ -187,9 +187,14 @@ export function MainNav() {
           </span>
           <NavGlyph
             kind={dimInactive && !tie ? "tiendaMuted" : "tienda"}
-            label="Tienda"
+            label="Carrito"
             className="mainNav__glyphWrap"
             tiendaCartCount={itemCount}
+            onTiendaClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              openDrawer();
+            }}
           />
         </NavLink>
       </nav>
