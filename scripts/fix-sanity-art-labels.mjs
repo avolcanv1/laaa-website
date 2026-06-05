@@ -1,5 +1,5 @@
 /**
- * Separa bloques de ficha con etiquetas de obra en líneas Panama (artLabel).
+ * Separa bloques de ficha con etiquetas de obra en líneas artLabel (Univers).
  *
  *   node scripts/fix-sanity-art-labels.mjs [--dry-run]
  */

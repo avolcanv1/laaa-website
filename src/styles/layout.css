@@ -999,12 +999,10 @@
 
 .exhibitionDetail__body .exhibitionDetail__artLabel {
   margin: 0;
-  font-family: var(--font-panama);
   line-height: var(--line-height-body);
 }
 
 .exhibitionDetail__artLabel em {
-  font-family: var(--font-panama);
   font-style: italic;
 }
 

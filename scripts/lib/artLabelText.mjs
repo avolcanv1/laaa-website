@@ -80,7 +80,7 @@ function artLabelBlock(line, index, source) {
   };
 }
 
-/** Split newline-joined label blocks into one Panama art-label line per block. */
+/** Split newline-joined label blocks into one art-label line per block. */
 export function structureArtLabelsInBlocks(blocks) {
   if (!blocks?.length) return blocks ?? undefined;
 
