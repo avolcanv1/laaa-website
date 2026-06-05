@@ -999,11 +999,18 @@
 
 .exhibitionDetail__body .exhibitionDetail__artLabel {
   margin: 0;
+  font-family: var(--font-panama);
   line-height: var(--line-height-body);
 }
 
 .exhibitionDetail__artLabel em {
+  font-family: var(--font-panama);
   font-style: italic;
+}
+
+.exhibitionDetail__artLabelDate {
+  font-family: var(--font-sans);
+  font-style: normal;
 }
 
 .exhibitionDetail__body .exhibitionDetail__artLabel + .exhibitionDetail__artLabel {
@@ -1207,6 +1214,22 @@
 .exhibitionCascade__full {
   width: 100%;
   min-width: 0;
+}
+
+/* Portrait 3∶4 frames — cap height to viewport (pair cells + last single-column portrait) */
+.exhibitionCascade .archivalMedia--ratio {
+  max-height: var(--exhibition-cascade-portrait-max-height);
+  width: min(100%, calc(var(--exhibition-cascade-portrait-max-height) * 3 / 4));
+}
+
+/* Before intrinsic dimensions resolve — avoid a full-width portrait flash */
+.exhibitionCascade__cell:not(.archivalMedia--ratio) .archivalMedia__img,
+.exhibitionCascade__full:not(.archivalMedia--ratio) .archivalMedia__img {
+  max-height: var(--exhibition-cascade-portrait-max-height);
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .exhibitionCascade__hit {

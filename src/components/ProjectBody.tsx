@@ -14,6 +14,9 @@ const portableTextComponents: PortableTextComponents = {
     ),
   },
   marks: {
+    dateUnivers: ({ children }) => (
+      <span className="exhibitionDetail__artLabelDate">{children}</span>
+    ),
     link: ({ value, children }) => {
       const href = typeof value?.href === "string" ? value.href : "#";
       return (

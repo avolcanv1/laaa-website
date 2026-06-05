@@ -33,6 +33,31 @@ function isArtLabelGroup(lines: string[]): boolean {
   return lines.some((line) => DIMENSION_LINE.test(line) || /,\s*\d{4}\s*$/.test(line));
 }
 
+function splitYearUnivers(
+  children: PortableTextBlock["children"],
+): PortableTextBlock["children"] {
+  const out: PortableTextBlock["children"] = [];
+
+  for (const child of children ?? []) {
+    const text = child.text ?? "";
+    const yearMatch = text.match(/^(.*?)(,\s*\d{4})\s*$/);
+    if (yearMatch?.[2]) {
+      if (yearMatch[1]) {
+        out.push({ ...child, text: yearMatch[1] });
+      }
+      out.push({
+        _type: "span",
+        text: yearMatch[2],
+        marks: ["dateUnivers"],
+      });
+      continue;
+    }
+    out.push(child);
+  }
+
+  return out;
+}
+
 function spansForArtLabelLine(
   line: string,
   options: { italicTitle?: boolean },
@@ -51,7 +76,7 @@ function spansForArtLabelLine(
   }
 
   const { children } = parseInlineHtmlToSpans(normalized);
-  return children;
+  return splitYearUnivers(children);
 }
 
 function refreshArtLabelBlock(block: PortableTextBlock): PortableTextBlock {
