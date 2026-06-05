@@ -11,22 +11,26 @@ export function MainNavHoverPreview() {
   const { hovered } = useMainNavHover();
   const previews = useHomeNavPreviews();
   const isTienda = pathname.startsWith("/tienda");
-  if (!hovered) return null;
-  if (isTienda) return null;
-
-  const preview = resolveNavHoverPreview(hovered, previews);
+  const preview =
+    hovered && !isTienda ? resolveNavHoverPreview(hovered, previews) : null;
   const imgRef = useRef<HTMLImageElement>(null);
   const [imageReady, setImageReady] = useState(false);
   const layoutMod =
-    preview.layout === "vertical"
+    preview?.layout === "vertical"
       ? "mainHoverPreview--vertical"
       : "mainHoverPreview--horizontal";
 
   useEffect(() => {
+    if (!preview) {
+      setImageReady(false);
+      return;
+    }
     setImageReady(false);
     const img = imgRef.current;
     if (img?.complete && img.naturalWidth > 0) setImageReady(true);
-  }, [preview.imageSrc]);
+  }, [preview?.imageSrc, preview]);
+
+  if (!preview) return null;
 
   return (
     <div
