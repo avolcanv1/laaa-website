@@ -6,7 +6,7 @@ const portableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p>{children}</p>,
     artLabel: ({ children }) => (
-      <p className="exhibitionDetail__artLabel">{children}</p>
+      <span className="exhibitionDetail__artLabel">{children}</span>
     ),
     h2: ({ children }) => <h2 className="exhibitionDetail__bodyHeading">{children}</h2>,
     blockquote: ({ children }) => (

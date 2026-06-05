@@ -1016,15 +1016,17 @@
   color: var(--color-black);
 }
 
-.exhibitionDetail__body p {
+.exhibitionDetail__body p:not(.exhibitionDetail__artLabel) {
   margin: 0 0 1em;
 }
 
-.exhibitionDetail__artLabel {
+.exhibitionDetail__body .exhibitionDetail__artLabel {
+  display: block;
   margin: 0;
+  padding: 0;
   font-family: var(--font-panama);
-  font-size: var(--text-exhibition);
-  line-height: 1.35;
+  font-size: calc(1em + 2px);
+  line-height: 1;
   color: var(--color-black);
 }
 
@@ -1033,8 +1035,8 @@
   font-style: italic;
 }
 
-.exhibitionDetail__artLabel + .exhibitionDetail__artLabel {
-  margin-top: 0.15em;
+.exhibitionDetail__body .exhibitionDetail__artLabel + .exhibitionDetail__artLabel {
+  margin-top: 0;
 }
 
 .exhibitionDetail__body .exhibitionDetail__artLabel + p,
