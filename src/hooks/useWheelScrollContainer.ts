@@ -109,6 +109,12 @@ export function useWheelScrollContainer<
       state.pointerId = -1;
     };
 
+    const beginDrag = (state: typeof dragState.current, pointerId: number) => {
+      state.moved = true;
+      el.classList.add("tiendaPage__scroll--dragging");
+      el.setPointerCapture(pointerId);
+    };
+
     const onPointerDown = (e: PointerEvent) => {
       if (e.button !== 0) return;
       const scrollX = canScrollX(el);
@@ -123,8 +129,6 @@ export function useWheelScrollContainer<
       state.startY = e.clientY;
       state.scrollLeft = el.scrollLeft;
       state.scrollTop = el.scrollTop;
-      el.classList.add("tiendaPage__scroll--dragging");
-      el.setPointerCapture(e.pointerId);
     };
 
     const onPointerMove = (e: PointerEvent) => {
@@ -143,7 +147,9 @@ export function useWheelScrollContainer<
         return;
       }
 
-      state.moved = true;
+      if (!state.moved) {
+        beginDrag(state, e.pointerId);
+      }
 
       if (scrollX) {
         el.scrollLeft = state.scrollLeft - dx;
