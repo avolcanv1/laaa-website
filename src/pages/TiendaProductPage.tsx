@@ -140,24 +140,28 @@ export function TiendaProductPage() {
         >
           {images.map((img, i) =>
             img.url ? (
-              <img
-                key={img.url + i}
-                src={img.url}
-                alt={img.altText ?? `${product.title} — imagen ${i + 1}`}
-                className="tiendaProduct__galleryImg"
-              />
+              <div key={img.url + i} className="tiendaProduct__galleryFrame">
+                <img
+                  src={img.url}
+                  alt={img.altText ?? `${product.title} — imagen ${i + 1}`}
+                  className="tiendaProduct__galleryImg"
+                />
+                <div className="tiendaProduct__galleryMat" aria-hidden />
+              </div>
             ) : (
-              <img
-                key="placeholder"
-                src={shopCardPlaceholder}
-                alt=""
-                className="tiendaProduct__galleryImg tiendaProduct__galleryImg--placeholder"
-                style={
-                  {
-                    "--tienda-placeholder-mask": `url(${shopCardPlaceholder})`,
-                  } as CSSProperties
-                }
-              />
+              <div key="placeholder" className="tiendaProduct__galleryFrame">
+                <img
+                  src={shopCardPlaceholder}
+                  alt=""
+                  className="tiendaProduct__galleryImg tiendaProduct__galleryImg--placeholder"
+                  style={
+                    {
+                      "--tienda-placeholder-mask": `url(${shopCardPlaceholder})`,
+                    } as CSSProperties
+                  }
+                />
+                <div className="tiendaProduct__galleryMat" aria-hidden />
+              </div>
             ),
           )}
         </div>
