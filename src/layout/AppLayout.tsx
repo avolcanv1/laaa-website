@@ -31,6 +31,7 @@ function AppLayoutChrome() {
   const showMainNavHoverPreview =
     !showExpoSub && !showInvSub && !showTalleresSub;
   const isTienda = pathname.startsWith("/tienda");
+  const isAcerca = pathname.startsWith("/acerca");
 
   useLayoutEffect(() => {
     commitRouteSectionKey(routeTransitionKey);
@@ -78,7 +79,11 @@ function AppLayoutChrome() {
         onClick={close}
       />
       <main
-        className={["appMain", isTienda ? "appMain--tienda" : ""]
+        className={[
+          "appMain",
+          isTienda ? "appMain--tienda" : "",
+          isAcerca ? "appMain--acerca" : "",
+        ]
           .filter(Boolean)
           .join(" ")}
         aria-hidden={isMobileLayout && isOpen}

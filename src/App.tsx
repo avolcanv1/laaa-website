@@ -4,7 +4,7 @@ import { AppLayout } from "./layout/AppLayout";
 import { ExhibitionDetailPage } from "./pages/ExhibitionDetailPage";
 import { HomePage } from "./pages/HomePage";
 import { InvestigacionDetailPage } from "./pages/InvestigacionDetailPage";
-import { PlaceholderPage } from "./pages/PlaceholderPage";
+import { AcercaPage } from "./pages/AcercaPage";
 import { TiendaPage } from "./pages/TiendaPage";
 import { TiendaProductPage } from "./pages/TiendaProductPage";
 import { TalleresDetailPage } from "./pages/TalleresDetailPage";
@@ -26,7 +26,7 @@ export default function App() {
           <Route index element={<SectionIndexMosaic section="talleres" />} />
           <Route path=":slug" element={<TalleresDetailPage />} />
         </Route>
-        <Route path="acerca" element={<PlaceholderPage title="Acerca" />} />
+        <Route path="acerca" element={<AcercaPage />} />
         <Route path="tienda">
           <Route index element={<TiendaPage />} />
           <Route path=":handle" element={<TiendaProductPage />} />
