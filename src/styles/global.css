@@ -44,6 +44,7 @@
   --tracking-logo: clamp(6px, 0.55vw, 9px);
   --color-exhibition-body: #737373;
   --color-archival-wash: #82781b;
+  --color-underline: var(--color-archival-wash);
   /** Subtle tint so #FFF image backgrounds don’t vanish into the page */
   --color-image-mat: rgba(0, 0, 0, 0.05);
   --space-nav-row-y: clamp(10px, 1.1vw, 14px);
@@ -71,6 +72,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  text-decoration-color: var(--color-underline);
 }
 
 html,
