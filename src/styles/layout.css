@@ -1408,13 +1408,13 @@
   -webkit-overflow-scrolling: touch;
   cursor: grab;
   scrollbar-width: thin;
-  scrollbar-color: rgb(0 0 0 / 0.12) transparent;
+  scrollbar-color: rgb(0 0 0 / 0.06) transparent;
   container-type: inline-size;
 }
 
 .tiendaPage__scroll::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
+  width: 2px;
+  height: 2px;
 }
 
 .tiendaPage__scroll::-webkit-scrollbar-track {
@@ -1422,12 +1422,12 @@
 }
 
 .tiendaPage__scroll::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.1);
+  background-color: rgb(0 0 0 / 0.06);
   border-radius: 999px;
 }
 
 .tiendaPage__scroll:hover::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.18);
+  background-color: rgb(0 0 0 / 0.12);
 }
 
 .tiendaPage__scroll--dragging {
@@ -1590,6 +1590,25 @@ a.tiendaCard__hit {
   overflow-y: auto;
   width: 100%;
   box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(0 0 0 / 0.06) transparent;
+}
+
+.tiendaProduct::-webkit-scrollbar {
+  width: 2px;
+}
+
+.tiendaProduct::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tiendaProduct::-webkit-scrollbar-thumb {
+  background-color: rgb(0 0 0 / 0.06);
+  border-radius: 999px;
+}
+
+.tiendaProduct:hover::-webkit-scrollbar-thumb {
+  background-color: rgb(0 0 0 / 0.12);
 }
 
 .tiendaProduct__layout {
@@ -1862,6 +1881,25 @@ a.tiendaCard__hit {
   list-style: none;
   margin: 0;
   padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(0 0 0 / 0.06) transparent;
+}
+
+.tiendaCartDrawer__lines::-webkit-scrollbar {
+  width: 2px;
+}
+
+.tiendaCartDrawer__lines::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tiendaCartDrawer__lines::-webkit-scrollbar-thumb {
+  background-color: rgb(0 0 0 / 0.06);
+  border-radius: 999px;
+}
+
+.tiendaCartDrawer__lines:hover::-webkit-scrollbar-thumb {
+  background-color: rgb(0 0 0 / 0.12);
 }
 
 .tiendaCartLine {
