@@ -1609,6 +1609,7 @@ a.tiendaCard__hit {
   position: relative;
   display: block;
   width: 100%;
+  overflow: hidden;
 }
 
 .tiendaProduct__galleryMat {
@@ -1626,6 +1627,15 @@ a.tiendaCard__hit {
   border: 0;
   object-fit: contain;
   object-position: center bottom;
+  transform-origin: center center;
+  transition: transform 0.45s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tiendaProduct__galleryFrame:hover
+    .tiendaProduct__galleryImg:not(.tiendaProduct__galleryImg--placeholder) {
+    transform: scale(1.06);
+  }
 }
 
 .tiendaProduct__galleryImg--placeholder {
