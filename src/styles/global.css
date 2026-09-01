@@ -90,13 +90,13 @@ body {
 }
 
 ::selection {
-  background: var(--color-archival-wash);
-  color: var(--color-white);
+  background: var(--color-beige);
+  color: var(--color-black);
 }
 
 ::-moz-selection {
-  background: var(--color-archival-wash);
-  color: var(--color-white);
+  background: var(--color-beige);
+  color: var(--color-black);
 }
 
 p {
