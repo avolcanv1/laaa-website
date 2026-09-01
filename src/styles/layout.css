@@ -1478,6 +1478,11 @@
   height: 100%;
   object-fit: contain;
   object-position: bottom center;
+  transition: filter 0.22s ease;
+}
+
+.tiendaCard__hit:hover .tiendaCard__img {
+  filter: saturate(0);
 }
 
 .tiendaCard__media--placeholder {
@@ -2750,6 +2755,10 @@ a.tiendaCard__hit {
 
   .tiendaCard__hit:active .tiendaCard__media::after {
     opacity: 1;
+  }
+
+  .tiendaCard__hit:active .tiendaCard__img {
+    filter: saturate(0);
   }
 
   .tiendaCard__title {
