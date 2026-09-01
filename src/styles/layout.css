@@ -1730,6 +1730,10 @@ a.tiendaCard__hit {
   margin-bottom: 0;
 }
 
+.tiendaProduct__section--cta {
+  transition: background-color 0.22s ease;
+}
+
 .tiendaProduct__addBtn {
   display: block;
   width: 100%;
@@ -1741,6 +1745,16 @@ a.tiendaCard__hit {
   font-size: var(--text-body);
   text-align: left;
   cursor: pointer;
+  transition: color 0.22s ease;
+}
+
+.tiendaProduct__section--cta:has(.tiendaProduct__addBtn:not(:disabled)):hover {
+  background-color: color-mix(in srgb, var(--color-black) 4%, var(--color-white));
+}
+
+.tiendaProduct__section--cta:has(.tiendaProduct__addBtn:not(:disabled)):hover
+  .tiendaProduct__addBtn {
+  color: var(--color-black);
 }
 
 .tiendaProduct__addBtn:disabled {
