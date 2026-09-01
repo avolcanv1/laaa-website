@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Link, useParams } from "react-router-dom";
 import shopCardPlaceholder from "../assets/shop-card-placeholder.png";
+import { TiendaProductGalleryFrame } from "../components/TiendaProductGalleryFrame";
 import { TiendaTestBanner } from "../components/TiendaTestBanner";
 import { useTiendaCart } from "../context/TiendaCartContext";
 import { isTiendaTestMode } from "../lib/tiendaTestMode";
@@ -140,16 +141,16 @@ export function TiendaProductPage() {
         >
           {images.map((img, i) =>
             img.url ? (
-              <div key={img.url + i} className="tiendaProduct__galleryFrame">
+              <TiendaProductGalleryFrame key={img.url + i}>
                 <img
                   src={img.url}
                   alt={img.altText ?? `${product.title} — imagen ${i + 1}`}
                   className="tiendaProduct__galleryImg"
                 />
                 <div className="tiendaProduct__galleryMat" aria-hidden />
-              </div>
+              </TiendaProductGalleryFrame>
             ) : (
-              <div key="placeholder" className="tiendaProduct__galleryFrame">
+              <TiendaProductGalleryFrame key="placeholder">
                 <img
                   src={shopCardPlaceholder}
                   alt=""
@@ -161,7 +162,7 @@ export function TiendaProductPage() {
                   }
                 />
                 <div className="tiendaProduct__galleryMat" aria-hidden />
-              </div>
+              </TiendaProductGalleryFrame>
             ),
           )}
         </div>
