@@ -1487,7 +1487,7 @@
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
-  background: var(--color-white);
+  background: var(--color-image-mat);
   isolation: isolate;
 }
 
@@ -1518,7 +1518,7 @@
 }
 
 .tiendaCard__media--placeholder {
-  background: transparent;
+  background: var(--color-image-mat);
 }
 
 .tiendaCard__img--placeholder {
@@ -1832,6 +1832,7 @@ a.tiendaCard__hit {
   height: 72px;
   border: 1px solid var(--color-stroke);
   overflow: hidden;
+  background: var(--color-image-mat);
 }
 
 .tiendaCartLine__img {
