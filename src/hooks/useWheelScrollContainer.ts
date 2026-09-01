@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 
+const DRAG_THRESHOLD_PX = 4;
+
 function canScrollX(el: HTMLElement): boolean {
   return el.scrollWidth > el.clientWidth + 1;
 }
@@ -9,13 +11,22 @@ function canScrollY(el: HTMLElement): boolean {
 }
 
 /**
- * Maps wheel / trackpad gestures to the scrollable axis of a container.
- * Desktop tienda strip (horizontal-only): vertical wheel scrolls horizontally.
+ * Wheel / trackpad + pointer-drag scrolling for tienda gallery strips.
+ * Desktop: vertical wheel maps to horizontal scroll; drag moves horizontally.
  */
 export function useWheelScrollContainer<
   T extends HTMLElement = HTMLDivElement,
 >() {
   const ref = useRef<T>(null);
+  const dragState = useRef({
+    active: false,
+    moved: false,
+    pointerId: -1,
+    startX: 0,
+    startY: 0,
+    scrollLeft: 0,
+    scrollTop: 0,
+  });
 
   useEffect(() => {
     const el = ref.current;
@@ -83,8 +94,95 @@ export function useWheelScrollContainer<
       }
     };
 
+    const endDrag = () => {
+      const state = dragState.current;
+      if (!state.active) return;
+      state.active = false;
+      el.classList.remove("tiendaPage__scroll--dragging");
+      if (state.pointerId >= 0) {
+        try {
+          el.releasePointerCapture(state.pointerId);
+        } catch {
+          /* already released */
+        }
+      }
+      state.pointerId = -1;
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      const scrollX = canScrollX(el);
+      const scrollY = canScrollY(el);
+      if (!scrollX && !scrollY) return;
+
+      const state = dragState.current;
+      state.active = true;
+      state.moved = false;
+      state.pointerId = e.pointerId;
+      state.startX = e.clientX;
+      state.startY = e.clientY;
+      state.scrollLeft = el.scrollLeft;
+      state.scrollTop = el.scrollTop;
+      el.classList.add("tiendaPage__scroll--dragging");
+      el.setPointerCapture(e.pointerId);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      const state = dragState.current;
+      if (!state.active || e.pointerId !== state.pointerId) return;
+
+      const dx = e.clientX - state.startX;
+      const dy = e.clientY - state.startY;
+      const scrollX = canScrollX(el);
+      const scrollY = canScrollY(el);
+
+      if (
+        !state.moved &&
+        Math.hypot(dx, dy) < DRAG_THRESHOLD_PX
+      ) {
+        return;
+      }
+
+      state.moved = true;
+
+      if (scrollX) {
+        el.scrollLeft = state.scrollLeft - dx;
+      }
+      if (scrollY) {
+        el.scrollTop = state.scrollTop - dy;
+      }
+
+      e.preventDefault();
+    };
+
+    const onPointerUp = (e: PointerEvent) => {
+      if (e.pointerId !== dragState.current.pointerId) return;
+      endDrag();
+    };
+
+    const onClickCapture = (e: MouseEvent) => {
+      if (!dragState.current.moved) return;
+      e.preventDefault();
+      e.stopPropagation();
+      dragState.current.moved = false;
+    };
+
     el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
+    el.addEventListener("pointerdown", onPointerDown);
+    el.addEventListener("pointermove", onPointerMove);
+    el.addEventListener("pointerup", onPointerUp);
+    el.addEventListener("pointercancel", onPointerUp);
+    el.addEventListener("click", onClickCapture, true);
+
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("pointerdown", onPointerDown);
+      el.removeEventListener("pointermove", onPointerMove);
+      el.removeEventListener("pointerup", onPointerUp);
+      el.removeEventListener("pointercancel", onPointerUp);
+      el.removeEventListener("click", onClickCapture, true);
+      el.classList.remove("tiendaPage__scroll--dragging");
+    };
   }, []);
 
   return ref;

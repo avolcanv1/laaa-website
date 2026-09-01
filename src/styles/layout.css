@@ -396,25 +396,21 @@
   }
 }
 
-.expoSub__list,
-.tiendaPage__scroll {
+.expoSub__list {
   scrollbar-width: thin;
   scrollbar-color: var(--color-stroke) transparent;
 }
 
-.expoSub__list::-webkit-scrollbar,
-.tiendaPage__scroll::-webkit-scrollbar {
+.expoSub__list::-webkit-scrollbar {
   width: 1px;
   height: 1px;
 }
 
-.expoSub__list::-webkit-scrollbar-track,
-.tiendaPage__scroll::-webkit-scrollbar-track {
+.expoSub__list::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.expoSub__list::-webkit-scrollbar-thumb,
-.tiendaPage__scroll::-webkit-scrollbar-thumb {
+.expoSub__list::-webkit-scrollbar-thumb {
   background-color: var(--color-stroke);
   border-radius: 0;
 }
@@ -1299,6 +1295,36 @@
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(0 0 0 / 0.12) transparent;
+}
+
+.tiendaPage__scroll::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+.tiendaPage__scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tiendaPage__scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(0 0 0 / 0.1);
+  border-radius: 999px;
+}
+
+.tiendaPage__scroll:hover::-webkit-scrollbar-thumb {
+  background-color: rgb(0 0 0 / 0.18);
+}
+
+.tiendaPage__scroll--dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.tiendaPage__scroll--dragging .tiendaCard__hit {
+  pointer-events: none;
 }
 
 .tiendaPage__grid {
