@@ -28,8 +28,11 @@ type TiendaCartContextValue = {
   subtotal: CartDetails["subtotal"];
   checkoutUrl: string | null;
   isDrawerOpen: boolean;
+  isConfirmOpen: boolean;
+  confirmLineId: string | null;
   openDrawer: () => void;
   closeDrawer: () => void;
+  closeConfirm: () => void;
   refreshCart: () => Promise<void>;
   addVariantToCart: (variantGid: string | null) => Promise<void>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
@@ -85,12 +88,26 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
   const [subtotal, setSubtotal] = useState<CartDetails["subtotal"]>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [confirmLineId, setConfirmLineId] = useState<string | null>(null);
   const [mockLines, setMockLines] = useState<CartLine[]>([]);
 
   const shopify = isShopifyConfigured();
 
-  const openDrawer = useCallback(() => setIsDrawerOpen(true), []);
+  const openDrawer = useCallback(() => {
+    setIsConfirmOpen(false);
+    setIsDrawerOpen(true);
+  }, []);
   const closeDrawer = useCallback(() => setIsDrawerOpen(false), []);
+  const closeConfirm = useCallback(() => {
+    setIsConfirmOpen(false);
+    setConfirmLineId(null);
+  }, []);
+
+  const openConfirmForLine = useCallback((lineId: string) => {
+    setConfirmLineId(lineId);
+    setIsConfirmOpen(true);
+  }, []);
 
   const refreshCart = useCallback(async () => {
     if (!shopify || !cartId) return;
@@ -144,9 +161,11 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
       if (!variantGid) return;
 
       if (!shopify) {
+        let addedLineId: string | null = null;
         setMockLines((prev) => {
           const existing = prev.find((l) => l.merchandiseId === variantGid);
           if (existing) {
+            addedLineId = existing.id;
             const qty = existing.quantity + 1;
             const amount = String(Number(existing.price.amount) * qty);
             return prev.map((l) =>
@@ -159,8 +178,17 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
                 : l,
             );
           }
-          return [...prev, { ...DEMO_LINE, id: `demo-${Date.now()}`, merchandiseId: variantGid }];
+          const newLine = {
+            ...DEMO_LINE,
+            id: `demo-${Date.now()}`,
+            merchandiseId: variantGid,
+          };
+          addedLineId = newLine.id;
+          return [...prev, newLine];
         });
+        if (addedLineId) {
+          openConfirmForLine(addedLineId);
+        }
         return;
       }
 
@@ -184,9 +212,15 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
           setSubtotal,
           setCheckoutUrl,
         });
+        const addedLine = details.lines.find(
+          (l) => l.merchandiseId === variantGid,
+        );
+        if (addedLine) {
+          openConfirmForLine(addedLine.id);
+        }
       }
     },
-    [cartId, shopify],
+    [cartId, openConfirmForLine, shopify],
   );
 
   const updateQuantity = useCallback(
@@ -283,8 +317,11 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
           : null,
       checkoutUrl,
       isDrawerOpen,
+      isConfirmOpen,
+      confirmLineId,
       openDrawer,
       closeDrawer,
+      closeConfirm,
       refreshCart,
       addVariantToCart,
       updateQuantity,
@@ -294,7 +331,10 @@ export function TiendaCartProvider({ children }: { children: ReactNode }) {
     [
       addVariantToCart,
       checkoutUrl,
+      closeConfirm,
       closeDrawer,
+      confirmLineId,
+      isConfirmOpen,
       isDrawerOpen,
       itemCount,
       lines,

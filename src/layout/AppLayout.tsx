@@ -9,6 +9,7 @@ import { MainNavHoverPreview } from "../components/MainNavHoverPreview";
 import { MobileHeader } from "../components/MobileHeader";
 import { RouteTransition } from "../components/RouteTransition";
 import { TiendaCartDrawer } from "../components/TiendaCartDrawer";
+import { TiendaCartConfirmPopup } from "../components/TiendaCartConfirmPopup";
 import { TalleresSubHoverPreview } from "../components/TalleresSubHoverPreview";
 import { TalleresSubnav } from "../components/TalleresSubnav";
 import { ExpoSubHoverProvider } from "../context/ExpoSubHoverContext";
@@ -95,7 +96,12 @@ function AppLayoutChrome() {
         <RouteTransition transitionKey={routeTransitionKey}>
           <Outlet />
         </RouteTransition>
-        {isTienda ? <TiendaCartDrawer /> : null}
+        {isTienda ? (
+          <>
+            <TiendaCartConfirmPopup />
+            <TiendaCartDrawer />
+          </>
+        ) : null}
       </main>
     </div>
   );
