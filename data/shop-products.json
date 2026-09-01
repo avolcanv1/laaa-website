@@ -8,10 +8,10 @@
     "status": "ACTIVE",
     "variants": [{ "price": "250.00", "sku": "LAAA-05-01-01" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-01llavero-01.jpeg", "altText": "Llavero — vista 1" },
-      { "src": "data/shop-product-images/05-01/05-01-img-01llavero-02.jpeg", "altText": "Llavero — vista 2" },
-      { "src": "data/shop-product-images/05-01/05-01-img-01llavero-03.jpeg", "altText": "Llavero — vista 3" },
-      { "src": "data/shop-product-images/05-01/05-01-img-01llavero-04.jpeg", "altText": "Llavero — vista 4" }
+      { "src": "data/shop-product-images/drive-2026/laaa_llaverosCopiasOriginales.png", "altText": "Llavero — conjunto" },
+      { "src": "data/shop-product-images/drive-2026/laaa_llaverosCopiasOriginales-mexica.png", "altText": "Llavero — mexica" },
+      { "src": "data/shop-product-images/drive-2026/laaa_llaverosCopiasOriginales-olmeca.png", "altText": "Llavero — olmeca" },
+      { "src": "data/shop-product-images/drive-2026/laaa_llaverosCopiasOriginales-totonaca.png", "altText": "Llavero — totonaca" }
     ]
   },
   {
@@ -23,7 +23,8 @@
     "status": "ACTIVE",
     "variants": [{ "price": "300.00", "sku": "LAAA-05-01-02" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-02jabon.jpeg", "altText": "Jabón" }
+      { "src": "data/shop-product-images/drive-2026/laaa_jabonOlmeca_conBolsa.png", "altText": "Jabón — con bolsa" },
+      { "src": "data/shop-product-images/drive-2026/laaa_jabonOlmeca_sinBolsa.png", "altText": "Jabón — sin bolsa" }
     ]
   },
   {
@@ -40,14 +41,16 @@
   },
   {
     "title": "Figura coleccionable",
-    "descriptionHtml": "<p>Reproducción facsimilar a escala de Xipe Tótec de tradición totonaca.</p><p>Impresión 3D SLA en resina, arcilla y carbón pulverizado.<br>5 × 2 × 3 cm aprox.</p><p><em>Agotado.</em></p>",
+    "descriptionHtml": "<p>Reproducción facsimilar a escala de Xipe Tótec de tradición totonaca.</p><p>Impresión 3D SLA en resina, arcilla y carbón pulverizado.<br>5 × 2 × 3 cm aprox.</p>",
     "vendor": "LAAA",
     "productType": "Figura",
-    "tags": ["laaa-tienda", "catálogo-2026", "sold-out"],
+    "tags": ["laaa-tienda", "catálogo-2026"],
     "status": "ACTIVE",
     "variants": [{ "price": "750.00", "sku": "LAAA-05-01-04" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-04juguete.jpeg", "altText": "Figura coleccionable" }
+      { "src": "data/shop-product-images/drive-2026/laaa_10cm_coatlicue_frente.jpg", "altText": "Figura coleccionable — frente" },
+      { "src": "data/shop-product-images/drive-2026/laaa_10cm_coatlicue.jpg", "altText": "Figura coleccionable" },
+      { "src": "data/shop-product-images/drive-2026/laaa_10cm_coatlicue_detalle.jpg", "altText": "Figura coleccionable — detalle" }
     ]
   },
   {
@@ -71,7 +74,7 @@
     "status": "ACTIVE",
     "variants": [{ "price": "50.00", "sku": "LAAA-05-01-06" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-06miniaturas.jpeg", "altText": "Miniaturas" }
+      { "src": "data/shop-product-images/drive-2026/laaa_miniatura_coatlicue.jpg", "altText": "Miniaturas" }
     ]
   },
   {
@@ -107,7 +110,8 @@
     "status": "ACTIVE",
     "variants": [{ "price": "300.00", "sku": "LAAA-05-01-09" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-09llaveroOlmeca.jpeg", "altText": "Llavero Olmeca" }
+      { "src": "data/shop-product-images/drive-2026/laaa_llaveroCabezaOlmeca_conBolsa.png", "altText": "Llavero Olmeca — con bolsa" },
+      { "src": "data/shop-product-images/drive-2026/laaa_llaveroCabezaOlmeca_sinBolsa.png", "altText": "Llavero Olmeca — sin bolsa" }
     ]
   },
   {
@@ -119,7 +123,7 @@
     "status": "ACTIVE",
     "variants": [{ "price": "2500.00", "sku": "LAAA-05-01-10" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-10cc1.jpeg", "altText": "Cabeza Colosal San Lorenzo 1" }
+      { "src": "data/shop-product-images/drive-2026/laaa_25cm_coatlicue_frente.jpg", "altText": "Cabeza Colosal San Lorenzo 1" }
     ]
   },
   {
