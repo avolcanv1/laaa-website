@@ -50,7 +50,6 @@ export function TiendaProductPage() {
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(
     null,
   );
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [adding, setAdding] = useState(false);
 
   const load = useCallback(async () => {
@@ -70,7 +69,6 @@ export function TiendaProductPage() {
   }, [load]);
 
   useEffect(() => {
-    setActiveImageIndex(0);
     setSelectedVariantId(null);
   }, [handle]);
 
@@ -104,8 +102,6 @@ export function TiendaProductPage() {
     ? product.images
     : [{ url: "", altText: null }];
 
-  const activeImage = images[activeImageIndex] ?? images[0];
-
   const onAdd = async () => {
     if (!selectedVariant || soldOut) return;
     setAdding(true);
@@ -138,120 +134,101 @@ export function TiendaProductPage() {
     <div className="tiendaProduct">
       <TiendaTestBanner />
       <div className="tiendaProduct__layout">
-        <div className="tiendaProduct__gallery">
-          <div
-            className={
-              activeImage?.url
-                ? "tiendaProduct__hero"
-                : "tiendaProduct__hero tiendaProduct__hero--placeholder"
-            }
-            style={
-              activeImage?.url
-                ? undefined
-                : ({
-                    "--tienda-placeholder-mask": `url(${shopCardPlaceholder})`,
-                  } as CSSProperties)
-            }
-          >
-            {activeImage?.url ? (
+        <div
+          className="tiendaProduct__gallery"
+          aria-label="Imágenes del producto"
+        >
+          {images.map((img, i) =>
+            img.url ? (
               <img
-                src={activeImage.url}
-                alt={activeImage.altText ?? product.title}
-                className="tiendaProduct__heroImg"
+                key={img.url + i}
+                src={img.url}
+                alt={img.altText ?? `${product.title} — imagen ${i + 1}`}
+                className="tiendaProduct__galleryImg"
               />
             ) : (
               <img
+                key="placeholder"
                 src={shopCardPlaceholder}
                 alt=""
-                className="tiendaProduct__heroImg tiendaProduct__heroImg--placeholder"
+                className="tiendaProduct__galleryImg tiendaProduct__galleryImg--placeholder"
+                style={
+                  {
+                    "--tienda-placeholder-mask": `url(${shopCardPlaceholder})`,
+                  } as CSSProperties
+                }
               />
-            )}
-          </div>
-          {product.images.length > 1 ? (
-            <ul className="tiendaProduct__thumbs" aria-label="Imágenes">
-              {product.images.map((img, i) => (
-                <li key={img.url + i}>
-                  <button
-                    type="button"
-                    className={[
-                      "tiendaProduct__thumb",
-                      i === activeImageIndex
-                        ? "tiendaProduct__thumb--active"
-                        : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                    onClick={() => setActiveImageIndex(i)}
-                    aria-label={`Imagen ${i + 1}`}
-                    aria-current={i === activeImageIndex ? "true" : undefined}
-                  >
-                    <img src={img.url} alt="" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : null}
+            ),
+          )}
         </div>
 
         <div className="tiendaProduct__info">
-          <Link to="/tienda" className="tiendaProduct__back">
-            ← Tienda
-          </Link>
-          <h1 className="tiendaProduct__title">{product.title}</h1>
-          <p className="tiendaProduct__price">
-            {formatShopifyMoney(displayPrice)}
-          </p>
-
-          {showVariantPicker ? (
-            <div className="tiendaProduct__variants">
-              <span className="tiendaProduct__variantsLabel">Variante</span>
-              <div className="tiendaProduct__variantList">
-                {variants.map((v) => (
-                  <button
-                    key={v.id}
-                    type="button"
-                    className={[
-                      "tiendaProduct__variantBtn",
-                      v.id === selectedVariant?.id
-                        ? "tiendaProduct__variantBtn--active"
-                        : "",
-                      !v.availableForSale
-                        ? "tiendaProduct__variantBtn--disabled"
-                        : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                    disabled={!v.availableForSale}
-                    onClick={() => setSelectedVariantId(v.id)}
-                  >
-                    {variantLabel(v) || v.title}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
+          <section className="tiendaProduct__section">
+            <h1 className="tiendaProduct__title">{product.title}</h1>
+          </section>
 
           {product.descriptionHtml ? (
-            <div
-              className="tiendaProduct__description"
-              dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-            />
+            <section className="tiendaProduct__section">
+              <div
+                className="tiendaProduct__description"
+                dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+              />
+            </section>
           ) : null}
 
-          <button
-            type="button"
-            className="tiendaProduct__addBtn"
-            disabled={soldOut || adding || !selectedVariant}
-            onClick={() => void onAdd()}
-          >
-            {soldOut
-              ? "Agotado"
-              : adding
-                ? "Añadiendo…"
-                : isTiendaTestMode()
-                  ? "Añadir al carrito (prueba)"
-                  : "Añadir al carrito"}
-          </button>
+          {showVariantPicker ? (
+            <section className="tiendaProduct__section">
+              <div className="tiendaProduct__variants">
+                <span className="tiendaProduct__variantsLabel">Variante</span>
+                <div className="tiendaProduct__variantList">
+                  {variants.map((v) => (
+                    <button
+                      key={v.id}
+                      type="button"
+                      className={[
+                        "tiendaProduct__variantBtn",
+                        v.id === selectedVariant?.id
+                          ? "tiendaProduct__variantBtn--active"
+                          : "",
+                        !v.availableForSale
+                          ? "tiendaProduct__variantBtn--disabled"
+                          : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      disabled={!v.availableForSale}
+                      onClick={() => setSelectedVariantId(v.id)}
+                    >
+                      {variantLabel(v) || v.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
+          ) : null}
+
+          <section className="tiendaProduct__section">
+            <p className="tiendaProduct__price">
+              {formatShopifyMoney(displayPrice)}
+            </p>
+          </section>
+
+          <section className="tiendaProduct__section tiendaProduct__section--cta">
+            <button
+              type="button"
+              className="tiendaProduct__addBtn"
+              disabled={soldOut || adding || !selectedVariant}
+              onClick={() => void onAdd()}
+            >
+              {soldOut
+                ? "Agotado"
+                : adding
+                  ? "Agregando…"
+                  : isTiendaTestMode()
+                    ? "Agregar al carrito (prueba)"
+                    : "Agregar al carrito"}
+            </button>
+          </section>
         </div>
       </div>
     </div>
