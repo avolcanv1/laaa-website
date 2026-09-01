@@ -1,0 +1,137 @@
+[
+  {
+    "title": "Llavero",
+    "descriptionHtml": "<p>Reproducción fiel a escala de tres piezas mesoamericanas actualmente resguardadas fuera del país.</p><p>Impresión 3D SLA en resina y cable de acero inoxidable.<br>Disponible en 6 colores.<br>5 × 2 × 3 cm aprox.</p>",
+    "vendor": "LAAA",
+    "productType": "Llavero",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "250.00", "sku": "LAAA-05-01-01" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-01llavero-01.jpeg", "altText": "Llavero — vista 1" },
+      { "src": "data/shop-product-images/05-01/05-01-img-01llavero-02.jpeg", "altText": "Llavero — vista 2" },
+      { "src": "data/shop-product-images/05-01/05-01-img-01llavero-03.jpeg", "altText": "Llavero — vista 3" },
+      { "src": "data/shop-product-images/05-01/05-01-img-01llavero-04.jpeg", "altText": "Llavero — vista 4" }
+    ]
+  },
+  {
+    "title": "Jabón",
+    "descriptionHtml": "<p>Copia fiel de un hacha votiva olmeca resguardada en el British Museum.</p><p>Jabón neutro con arcilla.<br>7 × 4 × 3 cm aprox.</p>",
+    "vendor": "LAAA",
+    "productType": "Jabón",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "300.00", "sku": "LAAA-05-01-02" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-02jabon.jpeg", "altText": "Jabón" }
+    ]
+  },
+  {
+    "title": "Sticker",
+    "descriptionHtml": "<p>Piezas mesoamericanas resguardadas en museos de Europa y Estados Unidos.</p><p>56 modelos diferentes.<br>5 × 3 cm aprox.</p>",
+    "vendor": "LAAA",
+    "productType": "Sticker",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "25.00", "sku": "LAAA-05-01-03" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-03stickers.jpeg", "altText": "Sticker" }
+    ]
+  },
+  {
+    "title": "Figura coleccionable",
+    "descriptionHtml": "<p>Reproducción facsimilar a escala de Xipe Tótec de tradición totonaca.</p><p>Impresión 3D SLA en resina, arcilla y carbón pulverizado.<br>5 × 2 × 3 cm aprox.</p><p><em>Agotado.</em></p>",
+    "vendor": "LAAA",
+    "productType": "Figura",
+    "tags": ["laaa-tienda", "catálogo-2026", "sold-out"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "750.00", "sku": "LAAA-05-01-04" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-04juguete.jpeg", "altText": "Figura coleccionable" }
+    ]
+  },
+  {
+    "title": "Bolsa zipper",
+    "descriptionHtml": "<p>Bolsa 100% algodón con imagen de Xipe Tótec de tradición totonaca.</p><p>Tinta sobre tela.<br>27 × 19 cm.</p>",
+    "vendor": "LAAA",
+    "productType": "Bolsa",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "350.00", "sku": "LAAA-05-01-05" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-05bolsa.jpeg", "altText": "Bolsa zipper" }
+    ]
+  },
+  {
+    "title": "Miniaturas",
+    "descriptionHtml": "<p>Reproducción fiel a escala de tres piezas mesoamericanas actualmente resguardadas fuera del país.</p><p>Impresión 3D SLA en resina.<br>2.5 × 1 × 1 cm aprox.</p>",
+    "vendor": "LAAA",
+    "productType": "Miniatura",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "50.00", "sku": "LAAA-05-01-06" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-06miniaturas.jpeg", "altText": "Miniaturas" }
+    ]
+  },
+  {
+    "title": "Risografía",
+    "descriptionHtml": "<p>Reproducción de 5 piezas mesoamericanas actualmente resguardadas fuera del país.</p><p>Impresión en risografía sobre papel de 280 g/m2.<br>27.9 × 43.2 cm.</p>",
+    "vendor": "LAAA",
+    "productType": "Impresión",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "350.00", "sku": "LAAA-05-01-07" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-07risografía.jpeg", "altText": "Risografía" }
+    ]
+  },
+  {
+    "title": "Impresión digital",
+    "descriptionHtml": "<p>Reproducción de 100 piezas mesoamericanas actualmente resguardadas fuera del país.</p><p>Impresión digital sobre papel de 280 g/m2.<br>14 × 21.6 cm.</p>",
+    "vendor": "LAAA",
+    "productType": "Impresión",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "150.00", "sku": "LAAA-05-01-08" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-08impresión.jpeg", "altText": "Impresión digital" }
+    ]
+  },
+  {
+    "title": "Llavero Olmeca",
+    "descriptionHtml": "<p>Reproducción fiel a escala de la Cabeza Colosal 1 de San Lorenzo.</p><p>Impresión 3D SLA en resina y cable de acero inoxidable.<br>5 × 3.5 × 2.5 cm aprox.</p>",
+    "vendor": "LAAA",
+    "productType": "Llavero",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "300.00", "sku": "LAAA-05-01-09" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-09llaveroOlmeca.jpeg", "altText": "Llavero Olmeca" }
+    ]
+  },
+  {
+    "title": "Cabeza Colosal San Lorenzo 1",
+    "descriptionHtml": "<p>Reproducción fiel a escala de la Cabeza Colosal 1 de San Lorenzo.</p><p>Impresión 3D SLA en resina con acabado blanco mate.<br>15 × 10 × 5 cm aprox.</p>",
+    "vendor": "LAAA",
+    "productType": "Escultura",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "2500.00", "sku": "LAAA-05-01-10" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-10cc1.jpeg", "altText": "Cabeza Colosal San Lorenzo 1" }
+    ]
+  },
+  {
+    "title": "Bookends",
+    "descriptionHtml": "<p>Bookends de Quetzalcóatl de Teotihuacán, esculpidos por Geraz Ato.</p><p>Tezontle rojo, tezontle negro y cemento.<br>10 × 16 × 8 cm aprox.</p>",
+    "vendor": "LAAA",
+    "productType": "Bookends",
+    "tags": ["laaa-tienda", "catálogo-2026"],
+    "status": "ACTIVE",
+    "variants": [{ "price": "2500.00", "sku": "LAAA-05-01-11" }],
+    "images": [
+      { "src": "data/shop-product-images/05-01/05-01-img-11bookend.jpeg", "altText": "Bookends" }
+    ]
+  }
+]
