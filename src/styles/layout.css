@@ -2069,7 +2069,7 @@ a.tiendaCard__hit {
 .tiendaCartConfirm__total {
   padding: 12px 16px;
   border-top: 1px solid var(--color-stroke);
-  text-align: right;
+  text-align: center;
   font-size: var(--text-body);
   color: var(--color-black);
 }
