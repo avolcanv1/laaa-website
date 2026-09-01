@@ -36,7 +36,7 @@
     "status": "ACTIVE",
     "variants": [{ "price": "25.00", "sku": "LAAA-05-01-03" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-03stickers.jpeg", "altText": "Sticker" }
+      { "src": "data/shop-product-images/drive-2026/laaa_stickers.jpeg", "altText": "Sticker" }
     ]
   },
   {
@@ -62,7 +62,7 @@
     "status": "ACTIVE",
     "variants": [{ "price": "350.00", "sku": "LAAA-05-01-05" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-05bolsa.jpeg", "altText": "Bolsa zipper" }
+      { "src": "data/shop-product-images/drive-2026/laaa_bolsaZipper.jpeg", "altText": "Bolsa zipper" }
     ]
   },
   {
@@ -86,7 +86,7 @@
     "status": "ACTIVE",
     "variants": [{ "price": "350.00", "sku": "LAAA-05-01-07" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-07risografía.jpeg", "altText": "Risografía" }
+      { "src": "data/shop-product-images/drive-2026/laaa_risografia.jpeg", "altText": "Risografía" }
     ]
   },
   {
@@ -98,7 +98,7 @@
     "status": "ACTIVE",
     "variants": [{ "price": "150.00", "sku": "LAAA-05-01-08" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-08impresión.jpeg", "altText": "Impresión digital" }
+      { "src": "data/shop-product-images/drive-2026/laaa_impresionDigital.jpeg", "altText": "Impresión digital" }
     ]
   },
   {
@@ -135,7 +135,7 @@
     "status": "ACTIVE",
     "variants": [{ "price": "2500.00", "sku": "LAAA-05-01-11" }],
     "images": [
-      { "src": "data/shop-product-images/05-01/05-01-img-11bookend.jpeg", "altText": "Bookends" }
+      { "src": "data/shop-product-images/drive-2026/laaa_bookends.jpeg", "altText": "Bookends" }
     ]
   }
 ]
