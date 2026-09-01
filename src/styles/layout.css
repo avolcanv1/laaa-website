@@ -1409,6 +1409,7 @@
   cursor: grab;
   scrollbar-width: thin;
   scrollbar-color: rgb(0 0 0 / 0.12) transparent;
+  container-type: inline-size;
 }
 
 .tiendaPage__scroll::-webkit-scrollbar {
@@ -1451,7 +1452,7 @@
 
 .tiendaCard {
   flex: 0 0 auto;
-  width: clamp(260px, 24vw, 384px);
+  width: calc(100cqw / 2.5);
   height: 100%;
   min-height: 0;
   display: flex;
