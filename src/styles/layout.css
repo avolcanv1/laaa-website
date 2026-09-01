@@ -1501,6 +1501,13 @@
   object-fit: contain;
   object-position: bottom center;
 }
+  transition: filter 0.22s ease;
+}
+
+/* Archival duotone recipe: B&W base + --color-tienda screen on .tiendaCard__media::after */
+.tiendaCard__hit:hover .tiendaCard__img {
+  filter: saturate(0);
+}
 
 .tiendaCard__media--placeholder {
   background: transparent;
