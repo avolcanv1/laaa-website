@@ -62,9 +62,9 @@
   /** Portrait cascade frames — never taller than the viewport */
   --exhibition-cascade-portrait-max-height: calc(100dvh - 2 * var(--detail-pad));
   --mobile-header-height: 52px;
-  --scrollbar-size: 2px;
-  --scrollbar-thumb: rgb(0 0 0 / 0.06);
-  --scrollbar-thumb-hover: rgb(0 0 0 / 0.11);
+  --scrollbar-size: 3px;
+  --scrollbar-thumb: color-mix(in srgb, var(--color-stroke) 55%, transparent);
+  --scrollbar-thumb-hover: color-mix(in srgb, var(--color-stroke) 90%, transparent);
 }
 
 *,
