@@ -44,11 +44,10 @@ export function MainNav() {
   const ac = routeActive("acerca", pathname);
   const tie = routeActive("tienda", pathname);
 
+  const navHoverDisabled = tie || ac;
+
   const onRowEnter = (key: NavHoverKey) => () => {
-    if (tie || ac) {
-      setHovered(null);
-      return;
-    }
+    if (navHoverDisabled) return;
     setHovered(key);
   };
   const onNavLeave = () => setHovered(null);

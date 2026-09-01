@@ -2,10 +2,12 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+import { useLocation } from "react-router-dom";
 import type { NavHoverKey } from "../nav/navHoverPreviews";
 
 type MainNavHoverContextValue = {
@@ -19,6 +21,11 @@ const MainNavHoverContext = createContext<MainNavHoverContextValue | null>(
 
 export function MainNavHoverProvider({ children }: { children: ReactNode }) {
   const [hovered, setHoveredState] = useState<NavHoverKey | null>(null);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    setHoveredState(null);
+  }, [pathname]);
 
   const setHovered = useCallback((key: NavHoverKey | null) => {
     setHoveredState(key);
