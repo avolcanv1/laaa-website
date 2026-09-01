@@ -3,7 +3,7 @@ import type { MouseEvent } from "react";
 
 type Glyph = "plus" | "minus" | "plusMuted" | "tienda" | "tiendaMuted";
 
-function IconPlus({ muted }: { muted: boolean }) {
+export function NavPlusIcon({ muted = false }: { muted?: boolean }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -18,6 +18,10 @@ function IconPlus({ muted }: { muted: boolean }) {
       />
     </svg>
   );
+}
+
+function IconPlus({ muted }: { muted: boolean }) {
+  return <NavPlusIcon muted={muted} />;
 }
 
 function IconMinus() {

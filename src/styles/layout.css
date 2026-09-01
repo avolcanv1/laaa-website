@@ -1829,13 +1829,21 @@ a.tiendaCard__hit {
 }
 
 .tiendaCartDrawer__close {
-  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: clamp(40px, 4.2vw, 50px);
+  height: clamp(40px, 4.2vw, 50px);
+  padding: 0;
   border: 0;
   background: none;
-  font-size: 24px;
-  line-height: 1;
   cursor: pointer;
   color: var(--color-black);
+}
+
+.tiendaCartDrawer__closeGlyph {
+  transform: rotate(45deg);
 }
 
 .tiendaCartDrawer__empty {

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import shopCardPlaceholder from "../assets/shop-card-placeholder.png";
+import { NavPlusIcon } from "../components/NavGlyph";
 import { TiendaTestBanner } from "../components/TiendaTestBanner";
 import { useTiendaCart } from "../context/TiendaCartContext";
 import { isTiendaTestMode } from "../lib/tiendaTestMode";
@@ -41,7 +42,9 @@ export function TiendaCartDrawer() {
             onClick={closeDrawer}
             aria-label="Cerrar carrito"
           >
-            ×
+            <span className="navGlyph navGlyph--plusWrap tiendaCartDrawer__closeGlyph">
+              <NavPlusIcon />
+            </span>
           </button>
         </header>
 
