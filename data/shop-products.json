@@ -48,7 +48,8 @@
     "status": "ACTIVE",
     "variants": [{ "price": "750.00", "sku": "LAAA-05-01-04" }],
     "images": [
-      { "src": "data/shop-product-images/drive-2026/laaa_10cm_coatlicue_frente.jpg", "altText": "Figura coleccionable — frente" },
+      { "src": "data/shop-product-images/drive-2026/laaa_25cm_coatlicue_frente.jpg", "altText": "Figura coleccionable — frente" },
+      { "src": "data/shop-product-images/drive-2026/laaa_10cm_coatlicue_frente.jpg", "altText": "Figura coleccionable — detalle frente" },
       { "src": "data/shop-product-images/drive-2026/laaa_10cm_coatlicue.jpg", "altText": "Figura coleccionable" },
       { "src": "data/shop-product-images/drive-2026/laaa_10cm_coatlicue_detalle.jpg", "altText": "Figura coleccionable — detalle" }
     ]
@@ -123,7 +124,7 @@
     "status": "ACTIVE",
     "variants": [{ "price": "2500.00", "sku": "LAAA-05-01-10" }],
     "images": [
-      { "src": "data/shop-product-images/drive-2026/laaa_25cm_coatlicue_frente.jpg", "altText": "Cabeza Colosal San Lorenzo 1" }
+      { "src": "data/shop-product-images/05-01/05-01-img-10cc1.jpeg", "altText": "Cabeza Colosal San Lorenzo 1" }
     ]
   },
   {
