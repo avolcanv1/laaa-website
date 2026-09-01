@@ -424,25 +424,6 @@
 }
 
 .expoSub__list {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-stroke) transparent;
-}
-
-.expoSub__list::-webkit-scrollbar {
-  width: 1px;
-  height: 1px;
-}
-
-.expoSub__list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.expoSub__list::-webkit-scrollbar-thumb {
-  background-color: var(--color-stroke);
-  border-radius: 0;
-}
-
-.expoSub__list {
   flex: 1;
   min-height: 0;
   list-style: none;
@@ -1407,27 +1388,7 @@
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
   cursor: grab;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(0 0 0 / 0.06) transparent;
   container-type: inline-size;
-}
-
-.tiendaPage__scroll::-webkit-scrollbar {
-  width: 2px;
-  height: 2px;
-}
-
-.tiendaPage__scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tiendaPage__scroll::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.06);
-  border-radius: 999px;
-}
-
-.tiendaPage__scroll:hover::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.12);
 }
 
 .tiendaPage__scroll--dragging {
@@ -1590,25 +1551,6 @@ a.tiendaCard__hit {
   overflow-y: auto;
   width: 100%;
   box-sizing: border-box;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(0 0 0 / 0.06) transparent;
-}
-
-.tiendaProduct::-webkit-scrollbar {
-  width: 2px;
-}
-
-.tiendaProduct::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tiendaProduct::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.06);
-  border-radius: 999px;
-}
-
-.tiendaProduct:hover::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.12);
 }
 
 .tiendaProduct__layout {
@@ -1883,25 +1825,6 @@ a.tiendaCard__hit {
   list-style: none;
   margin: 0;
   padding: 0;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(0 0 0 / 0.06) transparent;
-}
-
-.tiendaCartDrawer__lines::-webkit-scrollbar {
-  width: 2px;
-}
-
-.tiendaCartDrawer__lines::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tiendaCartDrawer__lines::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.06);
-  border-radius: 999px;
-}
-
-.tiendaCartDrawer__lines:hover::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.12);
 }
 
 .tiendaCartLine {
