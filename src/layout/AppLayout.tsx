@@ -27,11 +27,11 @@ function AppLayoutChrome() {
   const showExpoSub = pathname.startsWith("/exposiciones");
   const showInvSub = pathname.startsWith("/investigacion");
   const showTalleresSub = pathname.startsWith("/talleres");
-  const secondColumnNav = showExpoSub || showInvSub || showTalleresSub;
-  const showMainNavHoverPreview =
-    !showExpoSub && !showInvSub && !showTalleresSub;
   const isTienda = pathname.startsWith("/tienda");
   const isAcerca = pathname.startsWith("/acerca");
+  const secondColumnNav = showExpoSub || showInvSub || showTalleresSub;
+  const showMainNavHoverPreview =
+    !showExpoSub && !showInvSub && !showTalleresSub && !isAcerca && !isTienda;
 
   useLayoutEffect(() => {
     commitRouteSectionKey(routeTransitionKey);

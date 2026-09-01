@@ -166,6 +166,11 @@
   overflow: hidden;
 }
 
+/* Match sidebarColumnEnter: deploy main content left → right (no subnav column). */
+.appMain--acerca > .routeTransition:not(.routeTransition--active) {
+  transform: translate3d(-14px, 0, 0);
+}
+
 .appMain--acerca {
   display: flex;
   flex-direction: column;

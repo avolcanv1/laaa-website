@@ -14,8 +14,11 @@ export function MainNavHoverPreview() {
   const { hovered } = useMainNavHover();
   const previews = useHomeNavPreviews();
   const isTienda = pathname.startsWith("/tienda");
+  const isAcerca = pathname.startsWith("/acerca");
   const preview =
-    hovered && !isTienda ? resolveNavHoverPreview(hovered, previews) : null;
+    hovered && !isTienda && !isAcerca
+      ? resolveNavHoverPreview(hovered, previews)
+      : null;
 
   const lastPreviewRef = useRef<NavHoverPreviewData | null>(null);
   if (preview) lastPreviewRef.current = preview;

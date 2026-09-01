@@ -45,7 +45,7 @@ export function MainNav() {
   const tie = routeActive("tienda", pathname);
 
   const onRowEnter = (key: NavHoverKey) => () => {
-    if (tie) {
+    if (tie || ac) {
       setHovered(null);
       return;
     }
