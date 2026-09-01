@@ -1795,7 +1795,9 @@ a.tiendaCard__hit {
   border: 0;
   padding: 0;
   margin: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   cursor: pointer;
 }
 
@@ -1981,19 +1983,41 @@ a.tiendaCard__hit {
   font-size: var(--text-body);
 }
 
+.tiendaCartDrawer__checkoutSection {
+  flex-shrink: 0;
+  border-top: 1px solid var(--color-stroke);
+  transition: background-color 0.22s ease;
+}
+
 .tiendaCartDrawer__checkout {
+  display: block;
   width: 100%;
-  padding: 14px;
+  padding: clamp(14px, 1.6vw, 22px) var(--detail-pad);
   border: 0;
-  background: var(--color-tienda);
-  color: var(--color-white);
+  background: none;
+  color: var(--color-tienda);
   font: inherit;
   font-size: var(--text-body);
+  text-align: left;
   cursor: pointer;
+  transition: color 0.22s ease;
+}
+
+.tiendaCartDrawer__checkoutSection:has(
+    .tiendaCartDrawer__checkout:not(:disabled)
+  ):hover {
+  background-color: color-mix(in srgb, var(--color-black) 4%, var(--color-white));
+}
+
+.tiendaCartDrawer__checkoutSection:has(
+    .tiendaCartDrawer__checkout:not(:disabled)
+  ):hover
+  .tiendaCartDrawer__checkout {
+  color: var(--color-black);
 }
 
 .tiendaCartDrawer__checkout:disabled {
-  background: var(--color-stroke);
+  color: var(--color-stroke);
   cursor: not-allowed;
 }
 

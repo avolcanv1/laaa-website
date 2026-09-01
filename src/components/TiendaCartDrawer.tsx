@@ -144,6 +144,8 @@ export function TiendaCartDrawer() {
                 <span>Subtotal</span>
                 <span>{formatShopifyMoney(subtotal)}</span>
               </div>
+            </footer>
+            <section className="tiendaCartDrawer__checkoutSection">
               <button
                 type="button"
                 className="tiendaCartDrawer__checkout"
@@ -152,7 +154,7 @@ export function TiendaCartDrawer() {
               >
                 {isTiendaTestMode() ? "Probar checkout" : "Finalizar compra"}
               </button>
-            </footer>
+            </section>
           </>
         )}
       </aside>
