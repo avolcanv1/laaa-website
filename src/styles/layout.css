@@ -1647,10 +1647,6 @@ a.tiendaCard__hit {
   border-bottom: 1px solid var(--color-stroke);
 }
 
-.tiendaProduct__section--cta {
-  border-bottom: 0;
-}
-
 .tiendaProduct__back {
   font-size: var(--text-body);
   color: var(--color-tienda);
