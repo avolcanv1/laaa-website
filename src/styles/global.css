@@ -1,5 +1,13 @@
 @font-face {
   font-family: UniversLTStd;
+  src: url("../fonts/UniversLTStd-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: UniversLTStd;
   src: url("../fonts/UniversLTStd.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
