@@ -2859,3 +2859,39 @@ a.tiendaCard__hit {
     transition: none;
   }
 }
+
+/* Inactivity — stickers fill the viewport after 3 min idle */
+.inactivityStickers {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.inactivityStickers__item {
+  position: absolute;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  transform: rotate(var(--sticker-rot, 0deg));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .inactivityStickers__item {
+    animation: inactivityStickerIn 0.45s ease-out both;
+  }
+}
+
+@keyframes inactivityStickerIn {
+  from {
+    opacity: 0;
+    transform: rotate(var(--sticker-rot, 0deg)) scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(var(--sticker-rot, 0deg)) scale(1);
+  }
+}

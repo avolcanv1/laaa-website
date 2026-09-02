@@ -4,6 +4,7 @@ import { ExpoSubHoverPreview } from "../components/ExpoSubHoverPreview";
 import { ExpositionsSubnav } from "../components/ExpositionsSubnav";
 import { InvestigacionSubHoverPreview } from "../components/InvestigacionSubHoverPreview";
 import { InvestigacionSubnav } from "../components/InvestigacionSubnav";
+import { InactivityStickers } from "../components/InactivityStickers";
 import { MainNav } from "../components/MainNav";
 import { MainNavHoverPreview } from "../components/MainNavHoverPreview";
 import { MobileHeader } from "../components/MobileHeader";
@@ -103,6 +104,7 @@ function AppLayoutChrome() {
           </>
         ) : null}
       </main>
+      <InactivityStickers />
     </div>
   );
 }
