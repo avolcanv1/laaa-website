@@ -14,8 +14,6 @@ function BracketLeft({ muted }: { muted: boolean }) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 11 29"
-      width="11"
-      height="29"
       className="tiendaNavBrackets__bracket"
       aria-hidden
     >
@@ -36,8 +34,6 @@ function BracketRight({ muted }: { muted: boolean }) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 11 29"
-      width="11"
-      height="29"
       className="tiendaNavBrackets__bracket"
       aria-hidden
     >
