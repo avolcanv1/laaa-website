@@ -288,6 +288,7 @@
 
 .logoBlock__mark {
   display: block;
+  font-family: var(--font-logo);
   letter-spacing: var(--tracking-logo);
   font-size: var(--text-logo);
   line-height: 1;

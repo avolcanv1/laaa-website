@@ -1,4 +1,36 @@
 @font-face {
+  font-family: UniversNextPro;
+  src: url("../fonts/UniversNextPro-Thin.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: UniversNextPro;
+  src: url("../fonts/UniversNextPro-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: UniversNextPro;
+  src: url("../fonts/UniversNextPro-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: UniversNextPro;
+  src: url("../fonts/UniversNextPro-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: UniversLTStd;
   src: url("../fonts/UniversLTStd-Light.otf") format("opentype");
   font-weight: 300;
@@ -33,6 +65,8 @@
 :root {
   --font-sans: UniversLTStd, "Helvetica Neue", Helvetica, "Arial Nova", Arial,
     ui-sans-serif, system-ui, sans-serif;
+  --font-logo: UniversNextPro, UniversLTStd, "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
   --font-panama: Panama, UniversLTStd, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --color-black: #000000;
   --color-white: #ffffff;
