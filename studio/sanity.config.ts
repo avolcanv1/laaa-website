@@ -2,6 +2,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 
 import { schemaTypes } from "./schemaDefinitions";
+import { ACERCA_PAGE_DOCUMENT_ID } from "./schemaTypes/acercaPage";
 import { HOME_NAV_PREVIEWS_DOCUMENT_ID } from "./schemaTypes/homeNavPreviews";
 
 export default defineConfig({
@@ -21,6 +22,14 @@ export default defineConfig({
                 S.document()
                   .schemaType("homeNavPreviews")
                   .documentId(HOME_NAV_PREVIEWS_DOCUMENT_ID),
+              ),
+            S.listItem()
+              .title("Acerca")
+              .id(ACERCA_PAGE_DOCUMENT_ID)
+              .child(
+                S.document()
+                  .schemaType("acercaPage")
+                  .documentId(ACERCA_PAGE_DOCUMENT_ID),
               ),
             S.divider(),
             S.documentTypeListItem("exhibition").title("Exposiciones"),

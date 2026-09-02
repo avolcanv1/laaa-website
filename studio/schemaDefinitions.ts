@@ -1,3 +1,4 @@
+import acercaPage from "./schemaTypes/acercaPage";
 import exhibition from "./schemaTypes/exhibition";
 import homeNavPreviews from "./schemaTypes/homeNavPreviews";
 import investigacion from "./schemaTypes/investigacion";
@@ -14,6 +15,7 @@ export const schemaTypes = [
   listDate,
   navSectionHoverItem,
   homeNavPreviews,
+  acercaPage,
   exhibition,
   investigacion,
   taller,

@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "download-media": "node scripts/download-cargo-media.mjs",
     "migrate:sanity": "TS_NODE_PROJECT=tsconfig.scripts.json npx ts-node --esm scripts/migrate-to-sanity.ts",
+    "seed:acerca": "node scripts/seed-acerca-page.mjs",
     "clear:sanity": "node scripts/clear-sanity-content.mjs",
     "studio:dev": "npm run dev --prefix studio",
     "studio:build": "npm run build --prefix studio",
