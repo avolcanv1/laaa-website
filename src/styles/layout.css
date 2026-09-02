@@ -2662,16 +2662,37 @@ a.tiendaCard__hit {
     padding: 24px 18px;
   }
 
+  .appMain--acerca {
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .appMain--acerca > .routeTransition {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
   .acercaPage {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto min(52vh, 420px);
     height: auto;
     min-height: 0;
+    max-height: none;
+    overflow: visible;
   }
 
   .acercaPage__copy {
     order: 1;
     padding: 24px 18px 20px;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .acercaPage__body {
+    flex: 0 1 auto;
+    min-height: auto;
     overflow: visible;
   }
 
@@ -2683,10 +2704,6 @@ a.tiendaCard__hit {
 
   .acercaPage__img {
     min-height: min(52vh, 420px);
-  }
-
-  .appMain--acerca {
-    overflow-y: auto;
   }
 
   .exhibitionHeroSlot:not(.exhibitionHeroSlot--landscapeFirst) {
