@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useState,
   type CSSProperties,
 } from "react";
@@ -14,6 +15,12 @@ import {
   formatShopifyMoney,
   isShopifyConfigured,
 } from "../lib/shopifyStorefront";
+import {
+  consumeTiendaScrollRestore,
+  rememberTiendaScrollBeforeProduct,
+  restoreTiendaScroll,
+  saveTiendaScroll,
+} from "../lib/tiendaScrollPosition";
 
 /** Demo tiles when Storefront env vars are not set (layout matches Figma grid). */
 const DEMO_PRODUCTS: ShopifyProductCard[] = Array.from({ length: 8 }, (_, i) => ({
@@ -47,6 +54,26 @@ export function TiendaPage() {
     void load();
   }, [load]);
 
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const onScroll = () => saveTiendaScroll(el);
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [loading, products.length]);
+
+  useLayoutEffect(() => {
+    if (loading) return;
+    if (!consumeTiendaScrollRestore()) return;
+
+    const el = scrollRef.current;
+    if (!el) return;
+
+    restoreTiendaScroll(el);
+    requestAnimationFrame(() => restoreTiendaScroll(el));
+  }, [loading, products.length]);
+
   return (
     <div className="tiendaPage">
       <TiendaTestBanner />
@@ -68,6 +95,7 @@ export function TiendaPage() {
                   to={`/tienda/${p.handle}`}
                   className="tiendaCard__hit"
                   aria-label={`${p.title}, ${formatShopifyMoney(p.price)}`}
+                  onClick={() => rememberTiendaScrollBeforeProduct(scrollRef.current)}
                 >
                   <div
                     className={

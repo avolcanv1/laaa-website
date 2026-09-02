@@ -19,6 +19,7 @@ import {
   type ShopifyProductDetail,
   type ShopifyProductVariant,
 } from "../lib/shopifyStorefront";
+import { markTiendaScrollRestore } from "../lib/tiendaScrollPosition";
 
 const DEMO_PRODUCT: ShopifyProductDetail = {
   id: "demo-product",
@@ -122,7 +123,11 @@ export function TiendaProductPage() {
     return (
       <div className="tiendaProduct tiendaProduct--empty">
         <p className="tiendaProduct__missing">Producto no encontrado.</p>
-        <Link to="/tienda" className="tiendaProduct__back">
+        <Link
+          to="/tienda"
+          className="tiendaProduct__back"
+          onClick={() => markTiendaScrollRestore()}
+        >
           Volver a la tienda
         </Link>
       </div>
@@ -168,6 +173,16 @@ export function TiendaProductPage() {
         </div>
 
         <div className="tiendaProduct__info">
+          <section className="tiendaProduct__section tiendaProduct__section--back">
+            <Link
+              to="/tienda"
+              className="tiendaProduct__back"
+              onClick={() => markTiendaScrollRestore()}
+            >
+              &lt;-- Tienda
+            </Link>
+          </section>
+
           <section className="tiendaProduct__section">
             <h1 className="tiendaProduct__title">{product.title}</h1>
           </section>

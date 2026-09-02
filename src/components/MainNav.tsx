@@ -3,6 +3,10 @@ import { useMobileNav } from "../context/MobileNavContext";
 import { useTiendaCart } from "../context/TiendaCartContext";
 import { useMainNavHover } from "../context/MainNavHoverContext";
 import type { NavHoverKey } from "../nav/navHoverPreviews";
+import {
+  clearTiendaScrollRestore,
+  markTiendaScrollRestore,
+} from "../lib/tiendaScrollPosition";
 import { Logo } from "./Logo";
 import { NavGlyph } from "./NavGlyph";
 
@@ -157,7 +161,14 @@ export function MainNav() {
 
         <NavLink
           to="/tienda"
-          onClick={closeMobileNav}
+          onClick={() => {
+            if (/^\/tienda\/.+/.test(pathname)) {
+              markTiendaScrollRestore();
+            } else {
+              clearTiendaScrollRestore();
+            }
+            closeMobileNav();
+          }}
           onMouseEnter={onRowEnter("tienda")}
           className={({ isActive }) =>
             [
