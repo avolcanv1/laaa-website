@@ -4,7 +4,7 @@ export const ACERCA_PAGE_DOCUMENT_ID = "acercaPage";
 
 export default defineType({
   name: "acercaPage",
-  title: "Acerca",
+  title: "Info",
   type: "document",
   fields: [
     defineField({
@@ -57,7 +57,7 @@ export default defineType({
   ],
   preview: {
     prepare() {
-      return { title: "Acerca" };
+      return { title: "Info" };
     },
   },
 });

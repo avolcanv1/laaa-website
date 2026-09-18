@@ -3,6 +3,7 @@ import { useMobileNav } from "../context/MobileNavContext";
 import { useTiendaCart } from "../context/TiendaCartContext";
 import { useMainNavHover } from "../context/MainNavHoverContext";
 import type { NavHoverKey } from "../nav/navHoverPreviews";
+import { SECTION_LABELS } from "../nav/sectionLabels";
 import {
   clearTiendaScrollRestore,
   markTiendaScrollRestore,
@@ -80,7 +81,7 @@ export function MainNav() {
                 : "mainNav__label"
             }
           >
-            Exposiciones
+            {SECTION_LABELS.exposiciones}
           </span>
           <NavGlyph
             kind={ex ? "minus" : dimInactive && !ex ? "plusMuted" : "plus"}
@@ -102,7 +103,7 @@ export function MainNav() {
                 : "mainNav__label"
             }
           >
-            Investigación y desarrollo
+            {SECTION_LABELS.investigacion}
           </span>
           <NavGlyph
             kind={
@@ -126,7 +127,7 @@ export function MainNav() {
                 : "mainNav__label"
             }
           >
-            Talleres
+            {SECTION_LABELS.talleres}
           </span>
           <NavGlyph
             kind={
@@ -150,7 +151,7 @@ export function MainNav() {
                 : "mainNav__label"
             }
           >
-            Acerca
+            {SECTION_LABELS.acerca}
           </span>
           <NavGlyph
             kind={ac ? "minus" : dimInactive && !ac ? "plusMuted" : "plus"}
@@ -188,7 +189,7 @@ export function MainNav() {
                 : "mainNav__label mainNav__label--tienda"
             }
           >
-            Laaa Tienda
+            {SECTION_LABELS.tienda}
             {itemCount > 0 ? (
               <span className="visuallyHidden">
                 {`, ${itemCount} artículo${itemCount === 1 ? "" : "s"} en el carrito`}

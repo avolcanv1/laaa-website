@@ -10,6 +10,7 @@ import { SanityQueryState } from "../components/SanityQueryState";
 import { useInvestigacionSubHover } from "../context/InvestigacionSubHoverContext";
 import { useProjectDetailNavigation } from "../hooks/useProjectDetailNavigation";
 import { useSanityProjectBySlug } from "../hooks/useSanityProjects";
+import { SECTION_LABELS } from "../nav/sectionLabels";
 
 export function InvestigacionDetailPage() {
   const { slug = "" } = useParams();
@@ -59,7 +60,7 @@ export function InvestigacionDetailPage() {
           >
             <MobileDetailRouteBar
               sectionHref="/investigacion"
-              sectionLabel="Investigación y desarrollo"
+              sectionLabel={SECTION_LABELS.investigacion}
               entryTitle={content.title}
             />
             {lightboxIndex !== null && hasSlides ? (

@@ -24,7 +24,7 @@ export default defineConfig({
                   .documentId(HOME_NAV_PREVIEWS_DOCUMENT_ID),
               ),
             S.listItem()
-              .title("Acerca")
+              .title("Info")
               .id(ACERCA_PAGE_DOCUMENT_ID)
               .child(
                 S.document()
@@ -32,8 +32,8 @@ export default defineConfig({
                   .documentId(ACERCA_PAGE_DOCUMENT_ID),
               ),
             S.divider(),
-            S.documentTypeListItem("exhibition").title("Exposiciones"),
-            S.documentTypeListItem("investigacion").title("Investigación"),
+            S.documentTypeListItem("exhibition").title("Investigación"),
+            S.documentTypeListItem("investigacion").title("Colaboraciones"),
             S.documentTypeListItem("taller").title("Talleres"),
           ]),
     }),

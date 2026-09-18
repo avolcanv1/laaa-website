@@ -17,17 +17,15 @@ const DOCUMENT_ID = "acercaPage";
 
 const CONTENT = {
   paragraphs: [
-    "Un espacio de investigación y desarrollo con sede en la Ciudad de México desde 2020, enfocado en la conceptualización de nuevos proyectos con artistas, arquitectxs e investigadores, así como en la preservación del patrimonio mediante la hibridación entre el uso de tecnologías contemporáneas y procesos vernaculares.",
-    "En 2024 presentó una iniciativa de ley ante el Senado de la República para la creación del Repositorio de Artefactos Mesoamericanos (RAM), un archivo digital de acceso libre para la preservación y consulta educativa y científica de piezas arqueológicas.",
-    "En 2025 inauguró LAAA Biblioteca PRAXIS, un proyecto de investigación orientado a democratizar el acceso a archivos y colecciones, iniciado con la biblioteca del Taller de Arquitectura PRAXIS de Agustín Hernández Navarro. Ese mismo año LAAA fue seleccionado en IN-PULSO CREATIVO, iniciativa del IFAL–Embajada de Francia en México que apoya a las industrias culturales y creativas mexicanas.",
-    "Actualmente LAAA colabora con instituciones como el Museo Nacional de Antropología, el Museo del Templo Mayor, la Fundación Cultural Armella Spitalier, y el Archivo Agustín Hernández et al.",
+    "LAAA (Laboratorio de Arte, Arquitectura y Arqueología) es un espacio de investigación fundado en 2020 por Francisco Regalado en la Ciudad de México. Desarrolla proyectos que combinan investigación histórica, digitalización, fabricación y archivo, articulando tecnologías contemporáneas y procesos vernaculares.",
+    "Colabora tanto con artistas, arquitectxs y arqueologxs contemporáneos como con instituciones e investigadorxs dedicadxs al patrimonio cultural, entendiendo el pasado y el presente como materias igualmente vivas, abiertas a nuevas interpretaciones y formas de circulación. Opera a través de objetos, exposiciones, publicaciones y plataformas digitales.",
   ],
   contactEmail: "info@laaa.mx",
   instagramHandle: "@laaa_mx",
   instagramUrl: "https://instagram.com/laaa_mx",
   address:
     "Gob. Rafael Rebollar 93 Col. San Miguel Chapultepec\n11580 Ciudad de México, México",
-  heroAlt: "Biblioteca LAAA Biblioteca PRAXIS",
+  heroAlt: "Estudio LAAA",
 };
 
 function readToken() {
@@ -59,6 +57,7 @@ async function uploadHeroImage(client) {
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
+  const textOnly = process.argv.includes("--text-only");
   const token = readToken();
   const client = createClient({
     projectId: PROJECT_ID,
@@ -68,8 +67,23 @@ async function main() {
     useCdn: false,
   });
 
+  if (textOnly) {
+    if (dryRun) {
+      console.log("[dry-run] Patch texto Info:", CONTENT);
+      return;
+    }
+    await client
+      .patch(DOCUMENT_ID)
+      .set(CONTENT)
+      .commit();
+    console.log(`Documento "${DOCUMENT_ID}" actualizado (solo texto).`);
+    return;
+  }
+
   console.log("Subiendo imagen hero…");
-  const heroImage = dryRun ? { _type: "image", asset: { _ref: "dry-run" } } : await uploadHeroImage(client);
+  const heroImage = dryRun
+    ? { _type: "image", asset: { _ref: "dry-run" } }
+    : await uploadHeroImage(client);
 
   const doc = {
     _id: DOCUMENT_ID,
@@ -79,7 +93,7 @@ async function main() {
   };
 
   if (dryRun) {
-    console.log("[dry-run] Documento Acerca:", JSON.stringify(doc, null, 2));
+    console.log("[dry-run] Documento Info:", JSON.stringify(doc, null, 2));
     return;
   }
 

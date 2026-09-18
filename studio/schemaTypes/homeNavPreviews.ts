@@ -9,12 +9,12 @@ export default defineType({
   fields: [
     defineField({
       name: "exposiciones",
-      title: "Exposiciones",
+      title: "Investigación",
       type: "navSectionHoverItem",
     }),
     defineField({
       name: "investigacion",
-      title: "Investigación y desarrollo",
+      title: "Colaboraciones",
       type: "navSectionHoverItem",
     }),
     defineField({
@@ -24,12 +24,12 @@ export default defineType({
     }),
     defineField({
       name: "acerca",
-      title: "Acerca",
+      title: "Info",
       type: "navSectionHoverItem",
     }),
     defineField({
       name: "tienda",
-      title: "Laaa Tienda",
+      title: "Laaa tienda",
       type: "navSectionHoverItem",
     }),
   ],

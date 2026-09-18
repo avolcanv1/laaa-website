@@ -10,6 +10,7 @@ import { SanityQueryState } from "../components/SanityQueryState";
 import { useTalleresSubHover } from "../context/TalleresSubHoverContext";
 import { useProjectDetailNavigation } from "../hooks/useProjectDetailNavigation";
 import { useSanityProjectBySlug } from "../hooks/useSanityProjects";
+import { SECTION_LABELS } from "../nav/sectionLabels";
 
 export function TalleresDetailPage() {
   const { slug = "" } = useParams();
@@ -57,7 +58,7 @@ export function TalleresDetailPage() {
           >
             <MobileDetailRouteBar
               sectionHref="/talleres"
-              sectionLabel="Talleres"
+              sectionLabel={SECTION_LABELS.talleres}
               entryTitle={content.title}
             />
             {lightboxIndex !== null && content.slideshow.length > 0 ? (

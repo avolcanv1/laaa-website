@@ -4,7 +4,7 @@ import { projectDocumentFields } from "./shared/projectDocumentFields";
 
 export default defineType({
   name: "exhibition",
-  title: "Exposición",
+  title: "Investigación",
   type: "document",
   fields: [...projectDocumentFields],
   preview: {

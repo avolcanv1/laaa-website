@@ -21,6 +21,7 @@ import {
   type ProjectWithSlug,
 } from "../lib/sanityProject";
 import { SanityQueryState } from "./SanityQueryState";
+import { SECTION_LABELS } from "../nav/sectionLabels";
 
 export type SectionIndexMosaicSection =
   | "exposiciones"
@@ -83,9 +84,9 @@ function tilesFromProjects(
 
 /** Section title in the mobile grid — sticky like {@link MobileDetailRouteBar} while scrolling tiles. */
 const mosaicSectionHeading: Record<SectionIndexMosaicSection, string> = {
-  exposiciones: "Exposiciones",
-  investigacion: "Investigación y desarrollo",
-  talleres: "Talleres",
+  exposiciones: SECTION_LABELS.exposiciones,
+  investigacion: SECTION_LABELS.investigacion,
+  talleres: SECTION_LABELS.talleres,
 };
 
 function tileClassName(soon: boolean): string {

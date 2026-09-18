@@ -10,6 +10,7 @@ import {
   projectBySlug,
   type ProjectWithSlug,
 } from "../lib/sanityProject";
+import { SECTION_LABELS } from "../nav/sectionLabels";
 import { SanityQueryState } from "./SanityQueryState";
 
 export function TalleresSubnav() {
@@ -53,7 +54,7 @@ function TalleresSubnavList({
   );
 
   return (
-    <aside className="expoSub" aria-label="Talleres">
+    <aside className="expoSub" aria-label={SECTION_LABELS.talleres}>
       <ul
         className={[
           "expoSub__list",
