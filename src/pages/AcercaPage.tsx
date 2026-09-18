@@ -13,31 +13,12 @@ export function AcercaPage() {
 
   return (
     <div className="acercaPage">
-      <div className="acercaPage__copy">
-        <div className="acercaPage__body">
-          {paragraphs.map((paragraph) => (
-            <p key={paragraph.slice(0, 32)} className="acercaPage__paragraph">
-              {paragraph}
-            </p>
-          ))}
-        </div>
-        <footer className="acercaPage__contact">
-          <p className="acercaPage__contactLine">
-            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-            {"  "}
-            <a href={instagramUrl} target="_blank" rel="noreferrer">
-              {instagramHandle}
-            </a>
+      <div className="acercaPage__body">
+        {paragraphs.map((paragraph) => (
+          <p key={paragraph.slice(0, 32)} className="acercaPage__paragraph">
+            {paragraph}
           </p>
-          <p className="acercaPage__contactLine">
-            {addressLines.map((line, index) => (
-              <span key={line}>
-                {line}
-                {index < addressLines.length - 1 ? <br /> : null}
-              </span>
-            ))}
-          </p>
-        </footer>
+        ))}
       </div>
       <figure className="acercaPage__media">
         <img
@@ -47,6 +28,23 @@ export function AcercaPage() {
           decoding="async"
         />
       </figure>
+      <footer className="acercaPage__contact">
+        <p className="acercaPage__contactLine">
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          {"  "}
+          <a href={instagramUrl} target="_blank" rel="noreferrer">
+            {instagramHandle}
+          </a>
+        </p>
+        <p className="acercaPage__contactLine">
+          {addressLines.map((line, index) => (
+            <span key={line}>
+              {line}
+              {index < addressLines.length - 1 ? <br /> : null}
+            </span>
+          ))}
+        </p>
+      </footer>
     </div>
   );
 }
