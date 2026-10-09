@@ -47,6 +47,8 @@ type NavGlyphProps = {
   className?: string;
   /** Laaa Tienda: total items; shown between `[` `]` */
   tiendaCartCount?: number;
+  /** Laaa Tienda: text between the brackets instead of the cart count. */
+  tiendaLabel?: string;
   /** Laaa Tienda: open cart drawer instead of navigating */
   onTiendaClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 };
@@ -56,6 +58,7 @@ export function NavGlyph({
   label,
   className,
   tiendaCartCount = 0,
+  tiendaLabel,
   onTiendaClick,
 }: NavGlyphProps) {
   if (kind === "plus" || kind === "plusMuted") {
@@ -73,6 +76,20 @@ export function NavGlyph({
       <span className={className} aria-hidden="true" title={label}>
         <span className="navGlyph navGlyph--minusWrap">
           <IconMinus />
+        </span>
+      </span>
+    );
+  }
+
+  if (tiendaLabel) {
+    return (
+      <span className={className}>
+        <span className="navGlyph navGlyph--tiendaWrap navGlyph--tiendaSoon">
+          <TiendaNavBrackets
+            count={0}
+            muted={kind === "tiendaMuted"}
+            label={tiendaLabel}
+          />
         </span>
       </span>
     );

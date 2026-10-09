@@ -5,8 +5,6 @@ import { ExhibitionDetailPage } from "./pages/ExhibitionDetailPage";
 import { HomePage } from "./pages/HomePage";
 import { InvestigacionDetailPage } from "./pages/InvestigacionDetailPage";
 import { AcercaPage } from "./pages/AcercaPage";
-import { TiendaPage } from "./pages/TiendaPage";
-import { TiendaProductPage } from "./pages/TiendaProductPage";
 import { TalleresDetailPage } from "./pages/TalleresDetailPage";
 
 export default function App() {
@@ -27,10 +25,8 @@ export default function App() {
           <Route path=":slug" element={<TalleresDetailPage />} />
         </Route>
         <Route path="acerca" element={<AcercaPage />} />
-        <Route path="tienda">
-          <Route index element={<TiendaPage />} />
-          <Route path=":handle" element={<TiendaProductPage />} />
-        </Route>
+        <Route path="tienda" element={<Navigate to="/" replace />} />
+        <Route path="tienda/:handle" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

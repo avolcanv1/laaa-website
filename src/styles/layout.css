@@ -60,6 +60,12 @@
   height: clamp(40px, 4.2vw, 50px);
 }
 
+.navGlyph--tiendaSoon {
+  width: auto;
+  height: auto;
+  min-height: clamp(22px, 2.2vw, 29px);
+}
+
 .tiendaNavBrackets {
   display: flex;
   align-items: center;
@@ -90,6 +96,24 @@
   font-variant-numeric: tabular-nums;
   line-height: 1;
   text-align: center;
+}
+
+.tiendaNavBrackets__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(22px, 2.2vw, 29px);
+  padding: 0 1px;
+  font-size: clamp(8px, 0.72vw, 12px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mainNav__row--tiendaSoon {
+  cursor: default;
 }
 
 .appShell {
@@ -2323,6 +2347,19 @@ a.tiendaCard__hit {
 
   .mainNav__glyphWrap {
     display: none !important;
+  }
+
+  .mainNav__row--tiendaSoon {
+    justify-content: space-between;
+  }
+
+  .mainNav__row--tiendaSoon .mainNav__glyphWrap {
+    display: flex !important;
+    flex: 0 0 auto;
+  }
+
+  .tiendaNavBrackets__label {
+    font-size: 13px;
   }
 
   .mainNav__list {

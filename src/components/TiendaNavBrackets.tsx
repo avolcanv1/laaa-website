@@ -6,6 +6,8 @@ type TiendaNavBracketsProps = {
   /** Total items in cart (line quantity); 0 shows empty brackets */
   count: number;
   muted?: boolean;
+  /** Shown between the brackets instead of the cart count. */
+  label?: string;
 };
 
 function BracketLeft({ muted }: { muted: boolean }) {
@@ -48,21 +50,46 @@ function BracketRight({ muted }: { muted: boolean }) {
   );
 }
 
-export function TiendaNavBrackets({ count, muted }: TiendaNavBracketsProps) {
+export function TiendaNavBrackets({
+  count,
+  muted,
+  label,
+}: TiendaNavBracketsProps) {
   const color = muted ? "var(--color-stroke)" : "var(--color-tienda)";
-  const label =
-    count > 0 ? `${count} artículo${count === 1 ? "" : "s"} en el carrito` : "";
+  const showingLabel = Boolean(label);
+  const title = showingLabel
+    ? label
+    : count > 0
+      ? `${count} artículo${count === 1 ? "" : "s"} en el carrito`
+      : "";
 
   return (
     <span
-      className="tiendaNavBrackets"
-      aria-hidden={count === 0}
-      title={label || undefined}
+      className={
+        showingLabel
+          ? "tiendaNavBrackets tiendaNavBrackets--label"
+          : "tiendaNavBrackets"
+      }
+      aria-hidden={showingLabel ? undefined : count === 0}
+      title={title || undefined}
     >
       <span className="tiendaNavBrackets__inner">
         <BracketLeft muted={!!muted} />
-        <span className="tiendaNavBrackets__count" style={{ color }}>
-          {count > 0 ? (count > 99 ? "99+" : count) : ""}
+        <span
+          className={
+            showingLabel
+              ? "tiendaNavBrackets__label"
+              : "tiendaNavBrackets__count"
+          }
+          style={{ color }}
+        >
+          {showingLabel
+            ? label
+            : count > 0
+              ? count > 99
+                ? "99+"
+                : count
+              : ""}
         </span>
         <BracketRight muted={!!muted} />
       </span>

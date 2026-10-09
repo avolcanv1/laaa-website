@@ -5,6 +5,10 @@ import { useMainNavHover } from "../context/MainNavHoverContext";
 import type { NavHoverKey } from "../nav/navHoverPreviews";
 import { SECTION_LABELS } from "../nav/sectionLabels";
 import {
+  TIENDA_COMING_SOON,
+  TIENDA_COMING_SOON_LABEL,
+} from "../lib/tiendaComingSoon";
+import {
   clearTiendaScrollRestore,
   markTiendaScrollRestore,
 } from "../lib/tiendaScrollPosition";
@@ -53,6 +57,7 @@ export function MainNav() {
 
   const onRowEnter = (key: NavHoverKey) => () => {
     if (navHoverDisabled) return;
+    if (TIENDA_COMING_SOON && key === "tienda") return;
     setHovered(key);
   };
   const onNavLeave = () => setHovered(null);
@@ -162,7 +167,13 @@ export function MainNav() {
 
         <NavLink
           to="/tienda"
-          onClick={() => {
+          aria-disabled={TIENDA_COMING_SOON || undefined}
+          onClick={(event) => {
+            if (TIENDA_COMING_SOON) {
+              event.preventDefault();
+              closeMobileNav();
+              return;
+            }
             if (/^\/tienda\/.+/.test(pathname)) {
               markTiendaScrollRestore();
             } else {
@@ -175,8 +186,9 @@ export function MainNav() {
             [
               "mainNav__row",
               "mainNav__row--tienda",
+              TIENDA_COMING_SOON ? "mainNav__row--tiendaSoon" : "",
               dimInactive && !tie ? "mainNav__row--tiendaMuted" : "",
-              isActive ? "mainNav__row--active" : "",
+              !TIENDA_COMING_SOON && isActive ? "mainNav__row--active" : "",
             ]
               .filter(Boolean)
               .join(" ")
@@ -190,7 +202,7 @@ export function MainNav() {
             }
           >
             {SECTION_LABELS.tienda}
-            {itemCount > 0 ? (
+            {!TIENDA_COMING_SOON && itemCount > 0 ? (
               <span className="visuallyHidden">
                 {`, ${itemCount} artículo${itemCount === 1 ? "" : "s"} en el carrito`}
               </span>
@@ -198,14 +210,19 @@ export function MainNav() {
           </span>
           <NavGlyph
             kind={dimInactive && !tie ? "tiendaMuted" : "tienda"}
-            label="Carrito"
+            label={TIENDA_COMING_SOON ? TIENDA_COMING_SOON_LABEL : "Carrito"}
             className="mainNav__glyphWrap"
-            tiendaCartCount={itemCount}
-            onTiendaClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              openDrawer();
-            }}
+            tiendaCartCount={TIENDA_COMING_SOON ? 0 : itemCount}
+            tiendaLabel={TIENDA_COMING_SOON ? TIENDA_COMING_SOON_LABEL : undefined}
+            onTiendaClick={
+              TIENDA_COMING_SOON
+                ? undefined
+                : (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openDrawer();
+                  }
+            }
           />
         </NavLink>
       </nav>
