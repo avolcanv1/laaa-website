@@ -10,7 +10,7 @@ import {
   projectBySlug,
   type ProjectWithSlug,
 } from "../lib/sanityProject";
-import { SECTION_LABELS } from "../nav/sectionLabels";
+import { SECTION_LABELS, SECTION_PATHS } from "../nav/sectionLabels";
 import { SanityQueryState } from "./SanityQueryState";
 
 export function InvestigacionSubnav() {
@@ -18,7 +18,7 @@ export function InvestigacionSubnav() {
   const { setHoveredSlug } = useInvestigacionSubHover();
   const { close: closeMobileNav } = useMobileNav();
   const { pathname } = useLocation();
-  const detailOpen = /^\/investigacion\/[^/]+$/.test(pathname);
+  const detailOpen = new RegExp(`^${SECTION_PATHS.investigacion}/[^/]+$`).test(pathname);
 
   return (
     <SanityQueryState
@@ -87,7 +87,7 @@ function InvestigacionSubnavList({
           return (
             <li key={slug} className="expoSub__item">
               <NavLink
-                to={`/investigacion/${slug}`}
+                to={`${SECTION_PATHS.investigacion}/${slug}`}
                 onClick={closeMobileNav}
                 className={({ isActive }) =>
                   [

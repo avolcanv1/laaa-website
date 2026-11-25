@@ -10,7 +10,7 @@ import {
   projectBySlug,
   type ProjectWithSlug,
 } from "../lib/sanityProject";
-import { SECTION_LABELS } from "../nav/sectionLabels";
+import { SECTION_LABELS, SECTION_PATHS } from "../nav/sectionLabels";
 import { SanityQueryState } from "./SanityQueryState";
 
 export function TalleresSubnav() {
@@ -18,7 +18,7 @@ export function TalleresSubnav() {
   const { setHoveredSlug } = useTalleresSubHover();
   const { close: closeMobileNav } = useMobileNav();
   const { pathname } = useLocation();
-  const detailOpen = /^\/talleres\/[^/]+$/.test(pathname);
+  const detailOpen = new RegExp(`^${SECTION_PATHS.talleres}/[^/]+$`).test(pathname);
 
   return (
     <SanityQueryState
@@ -87,7 +87,7 @@ function TalleresSubnavList({
           return (
             <li key={slug} className="expoSub__item">
               <NavLink
-                to={`/talleres/${slug}`}
+                to={`${SECTION_PATHS.talleres}/${slug}`}
                 onClick={closeMobileNav}
                 className={({ isActive }) =>
                   [

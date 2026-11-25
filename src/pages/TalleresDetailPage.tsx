@@ -10,7 +10,7 @@ import { SanityQueryState } from "../components/SanityQueryState";
 import { useTalleresSubHover } from "../context/TalleresSubHoverContext";
 import { useProjectDetailNavigation } from "../hooks/useProjectDetailNavigation";
 import { useSanityProjectBySlug } from "../hooks/useSanityProjects";
-import { SECTION_LABELS } from "../nav/sectionLabels";
+import { SECTION_LABELS, SECTION_PATHS } from "../nav/sectionLabels";
 
 export function TalleresDetailPage() {
   const { slug = "" } = useParams();
@@ -57,7 +57,7 @@ export function TalleresDetailPage() {
             }
           >
             <MobileDetailRouteBar
-              sectionHref="/talleres"
+              sectionHref={SECTION_PATHS.talleres}
               sectionLabel={SECTION_LABELS.talleres}
               entryTitle={content.title}
             />

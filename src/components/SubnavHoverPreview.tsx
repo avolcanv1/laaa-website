@@ -8,10 +8,11 @@ import type { ProjectDocumentType } from "../lib/queries";
 import { ArchivalMedia } from "./ArchivalMedia";
 import { ExhibitionHeroSlotShell } from "./ExhibitionHeroSlotShell";
 import { SanityQueryState } from "./SanityQueryState";
+import { SectionPath } from "../nav/sectionLabels";
 
 type SubnavHoverPreviewProps = {
   documentType: ProjectDocumentType;
-  pathPrefix: "/exposiciones" | "/investigacion" | "/talleres";
+  pathPrefix: SectionPath;
   hoveredSlug: string | null;
 };
 

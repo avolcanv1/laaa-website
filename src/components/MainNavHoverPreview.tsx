@@ -8,13 +8,14 @@ import { useHoverFade } from "../hooks/useHoverFade";
 import { useMainNavHover } from "../context/MainNavHoverContext";
 import type { NavHoverPreviewData } from "../lib/homeNavPreviews";
 import { ArchivalMedia } from "./ArchivalMedia";
+import { SECTION_PATHS } from "../nav/sectionLabels";
 
 export function MainNavHoverPreview() {
   const { pathname } = useLocation();
   const { hovered } = useMainNavHover();
   const previews = useHomeNavPreviews();
-  const isTienda = pathname.startsWith("/tienda");
-  const isAcerca = pathname.startsWith("/acerca");
+  const isTienda = pathname.startsWith(SECTION_PATHS.tienda);
+  const isAcerca = pathname.startsWith(SECTION_PATHS.acerca);
   const preview =
     hovered && !isTienda && !isAcerca
       ? resolveNavHoverPreview(hovered, previews)

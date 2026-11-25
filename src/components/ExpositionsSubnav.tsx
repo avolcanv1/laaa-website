@@ -10,7 +10,7 @@ import {
   projectBySlug,
   type ProjectWithSlug,
 } from "../lib/sanityProject";
-import { SECTION_LABELS } from "../nav/sectionLabels";
+import { SECTION_LABELS, SECTION_PATHS } from "../nav/sectionLabels";
 import { SanityQueryState } from "./SanityQueryState";
 
 type Row =
@@ -22,7 +22,7 @@ export function ExpositionsSubnav() {
   const { setHoveredSlug } = useExpoSubHover();
   const { close: closeMobileNav } = useMobileNav();
   const { pathname } = useLocation();
-  const detailOpen = /^\/exposiciones\/[^/]+$/.test(pathname);
+  const detailOpen = new RegExp(`^${SECTION_PATHS.exposiciones}/[^/]+$`).test(pathname);
 
   return (
     <SanityQueryState
@@ -108,7 +108,7 @@ function ExpositionsSubnavList({
               </div>
             ) : (
               <NavLink
-                to={`/exposiciones/${row.slug}`}
+                to={`${SECTION_PATHS.exposiciones}/${row.slug}`}
                 onClick={closeMobileNav}
                 className={({ isActive }) =>
                   [

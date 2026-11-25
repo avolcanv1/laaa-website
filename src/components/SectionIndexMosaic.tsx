@@ -21,7 +21,7 @@ import {
   type ProjectWithSlug,
 } from "../lib/sanityProject";
 import { SanityQueryState } from "./SanityQueryState";
-import { SECTION_LABELS } from "../nav/sectionLabels";
+import { SECTION_LABELS, SECTION_PATHS } from "../nav/sectionLabels";
 
 export type SectionIndexMosaicSection =
   | "exposiciones"
@@ -46,9 +46,9 @@ function sectionToDocumentType(
 }
 
 function sectionBasePath(section: SectionIndexMosaicSection): string {
-  if (section === "exposiciones") return "/exposiciones";
-  if (section === "investigacion") return "/investigacion";
-  return "/talleres";
+  if (section === "exposiciones") return SECTION_PATHS.exposiciones;
+  if (section === "investigacion") return SECTION_PATHS.investigacion;
+  return SECTION_PATHS.talleres;
 }
 
 function tilesFromProjects(

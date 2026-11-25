@@ -20,17 +20,18 @@ import { MobileNavProvider, useMobileNav } from "../context/MobileNavContext";
 import { TalleresSubHoverProvider } from "../context/TalleresSubHoverContext";
 import { useMobileLayoutMax1200 } from "../hooks/useMobileLayoutMax1200";
 import { getRouteTransitionKey, commitRouteSectionKey } from "../lib/routeTransitionKey";
+import { SECTION_PATHS } from "../nav/sectionLabels";
 
 function AppLayoutChrome() {
   const { pathname } = useLocation();
   const routeTransitionKey = getRouteTransitionKey(pathname);
   const { close, isOpen } = useMobileNav();
   const isMobileLayout = useMobileLayoutMax1200();
-  const showExpoSub = pathname.startsWith("/exposiciones");
-  const showInvSub = pathname.startsWith("/investigacion");
-  const showTalleresSub = pathname.startsWith("/talleres");
-  const isTienda = pathname.startsWith("/tienda");
-  const isAcerca = pathname.startsWith("/acerca");
+  const showExpoSub = pathname.startsWith(SECTION_PATHS.exposiciones);
+  const showInvSub = pathname.startsWith(SECTION_PATHS.investigacion);
+  const showTalleresSub = pathname.startsWith(SECTION_PATHS.talleres);
+  const isTienda = pathname.startsWith(SECTION_PATHS.tienda);
+  const isAcerca = pathname.startsWith(SECTION_PATHS.acerca);
   const secondColumnNav = showExpoSub || showInvSub || showTalleresSub;
   const showMainNavHoverPreview =
     !showExpoSub && !showInvSub && !showTalleresSub && !isAcerca && !isTienda;

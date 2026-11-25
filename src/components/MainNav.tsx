@@ -3,7 +3,7 @@ import { useMobileNav } from "../context/MobileNavContext";
 import { useTiendaCart } from "../context/TiendaCartContext";
 import { useMainNavHover } from "../context/MainNavHoverContext";
 import type { NavHoverKey } from "../nav/navHoverPreviews";
-import { SECTION_LABELS } from "../nav/sectionLabels";
+import { SECTION_LABELS, SECTION_PATHS } from "../nav/sectionLabels";
 import {
   TIENDA_COMING_SOON,
   TIENDA_COMING_SOON_LABEL,
@@ -24,15 +24,15 @@ const navItemClass = ({ isActive }: { isActive: boolean }) =>
 function routeActive(key: NavHoverKey, pathname: string): boolean {
   switch (key) {
     case "exposiciones":
-      return pathname.startsWith("/exposiciones");
+      return pathname.startsWith(SECTION_PATHS.exposiciones);
     case "investigacion":
-      return pathname.startsWith("/investigacion");
+      return pathname.startsWith(SECTION_PATHS.investigacion);
     case "talleres":
-      return pathname.startsWith("/talleres");
+      return pathname.startsWith(SECTION_PATHS.talleres);
     case "acerca":
-      return pathname.startsWith("/acerca");
+      return pathname.startsWith(SECTION_PATHS.acerca);
     case "tienda":
-      return pathname.startsWith("/tienda");
+      return pathname.startsWith(SECTION_PATHS.tienda);
     default:
       return false;
   }
@@ -67,7 +67,7 @@ export function MainNav() {
       <Logo onNavigate={closeMobileNav} />
       <nav className="mainNav__list" onMouseLeave={onNavLeave}>
         <NavLink
-          to="/exposiciones"
+          to={SECTION_PATHS.exposiciones}
           onClick={closeMobileNav}
           onMouseEnter={onRowEnter("exposiciones")}
           className={() =>
@@ -96,7 +96,7 @@ export function MainNav() {
         </NavLink>
 
         <NavLink
-          to="/investigacion"
+          to={SECTION_PATHS.investigacion}
           onClick={closeMobileNav}
           onMouseEnter={onRowEnter("investigacion")}
           className={navItemClass}
@@ -120,7 +120,7 @@ export function MainNav() {
         </NavLink>
 
         <NavLink
-          to="/talleres"
+          to={SECTION_PATHS.talleres}
           onClick={closeMobileNav}
           onMouseEnter={onRowEnter("talleres")}
           className={navItemClass}
@@ -144,7 +144,7 @@ export function MainNav() {
         </NavLink>
 
         <NavLink
-          to="/acerca"
+          to={SECTION_PATHS.acerca}
           onClick={closeMobileNav}
           onMouseEnter={onRowEnter("acerca")}
           className={navItemClass}
@@ -166,7 +166,7 @@ export function MainNav() {
         </NavLink>
 
         <NavLink
-          to="/tienda"
+          to={SECTION_PATHS.tienda}
           aria-disabled={TIENDA_COMING_SOON || undefined}
           onClick={(event) => {
             if (TIENDA_COMING_SOON) {

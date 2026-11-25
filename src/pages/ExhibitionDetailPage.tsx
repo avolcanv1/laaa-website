@@ -10,7 +10,7 @@ import { SanityQueryState } from "../components/SanityQueryState";
 import { useExpoSubHover } from "../context/ExpoSubHoverContext";
 import { useProjectDetailNavigation } from "../hooks/useProjectDetailNavigation";
 import { useSanityProjectBySlug } from "../hooks/useSanityProjects";
-import { SECTION_LABELS } from "../nav/sectionLabels";
+import { SECTION_LABELS, SECTION_PATHS } from "../nav/sectionLabels";
 
 export function ExhibitionDetailPage() {
   const { slug = "" } = useParams();
@@ -57,7 +57,7 @@ export function ExhibitionDetailPage() {
             }
           >
             <MobileDetailRouteBar
-              sectionHref="/exposiciones"
+              sectionHref={SECTION_PATHS.exposiciones}
               sectionLabel={SECTION_LABELS.exposiciones}
               entryTitle={content.title}
             />

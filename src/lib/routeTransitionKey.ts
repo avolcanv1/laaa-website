@@ -1,14 +1,27 @@
+import type { SectionLabelKey } from "../nav/sectionLabels";
+import { SECTION_PATHS } from "../nav/sectionLabels";
+
+/**
+ * Orden importante: las rutas más específicas van primero, para que un
+ * prefijo corto no se coma a uno largo.
+ */
+const SECTION_KEYS: SectionLabelKey[] = [
+  "exposiciones",
+  "investigacion",
+  "talleres",
+  "tienda",
+  "acerca",
+];
+
 /**
  * Groups routes that share the same main-column "slot" so slug changes within a
  * section (index ↔ ficha) do not re-trigger the page-level transition.
  */
 export function getRouteTransitionKey(pathname: string): string {
   if (pathname === "/") return "home";
-  if (pathname.startsWith("/exposiciones")) return "exposiciones";
-  if (pathname.startsWith("/investigacion")) return "investigacion";
-  if (pathname.startsWith("/talleres")) return "talleres";
-  if (pathname.startsWith("/tienda")) return "tienda";
-  if (pathname.startsWith("/acerca")) return "acerca";
+  for (const key of SECTION_KEYS) {
+    if (pathname.startsWith(SECTION_PATHS[key])) return key;
+  }
   return pathname;
 }
 
