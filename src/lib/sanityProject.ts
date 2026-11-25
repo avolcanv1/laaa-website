@@ -182,14 +182,31 @@ export function orderProjectSlugs(
   return [...soon, ...rest];
 }
 
+/**
+ * Oculta los proyectos "Próximamente" de todo el sitio.
+ *
+ * Son documentos publicados en Sanity cuyo `body` es literalmente
+ * "Próximamente." y que todavía no tienen imágenes. Se filtran aquí,
+ * en el único punto por el que pasan todas las listas (mosaico,
+ * subnavs, orden y pool de imágenes), para que no aparezcan como
+ * fichas vacías.
+ *
+ * Para volver a mostrarlos, poner esta constante en `false`; cuando
+ * un proyecto deje de decir "Próximamente." reaparece solo.
+ */
+const HIDE_UPCOMING_PROJECTS = true;
+
 export async function fetchProjectList(
   type: ProjectDocumentType,
   _language = DEFAULT_LANGUAGE,
 ): Promise<ProjectWithSlug[]> {
   const rows = await sanityClient.fetch<SanityProjectRaw[]>(listQueryForType(type));
-  return rows
+  const projects = rows
     .map(mapSanityProject)
     .filter((p): p is ProjectWithSlug => p !== null);
+
+  if (!HIDE_UPCOMING_PROJECTS) return projects;
+  return projects.filter((p) => !entryIsSoonForType(type, p));
 }
 
 export async function fetchProjectBySlug(
